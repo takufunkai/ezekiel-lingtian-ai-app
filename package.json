@@ -15,6 +15,7 @@
     "validate:contract": "tsx scripts/validate-contract.ts",
     "validate:output": "tsx scripts/validate-output.ts",
     "reconcile": "tsx src/cli.ts",
+    "gather": "tsx scripts/gather.ts",
     "ui": "tsx scripts/results-ui.ts",
     "smoke": "tsx scripts/smoke.ts",
     "format": "prettier --write .",

@@ -1,0 +1,8 @@
+[
+  {
+    "url": "https://example.org/fallback-source",
+    "title": "Fallback source used when no per-topic replay file exists",
+    "date": "2020-01-02",
+    "text": "This replay file is the fallback for any topic without its own canned results. It exists so the replay gatherer has something deterministic to return."
+  }
+]

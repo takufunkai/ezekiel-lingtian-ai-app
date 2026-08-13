@@ -8,7 +8,7 @@ See [`docs/INITIAL_PROJECT_IDEA.md`](docs/INITIAL_PROJECT_IDEA.md) for the full 
 
 ## Status
 
-The whole pipeline — contract, engine, fixture corpus, validator, renderer, and model configuration — is on `master`. Two pieces are still open. **This table is the only place status is tracked:** every command and file named elsewhere in this README, and in [`docs/demo.md`](docs/demo.md), is on `master` unless it appears here as open.
+The whole pipeline — contract, engine, fixture corpus, validator, renderer, and model configuration — is on `master`. Three pieces are still open. **This table is the only place status is tracked:** every command and file named elsewhere in this README, and in [`docs/demo.md`](docs/demo.md), is on `master` unless it appears here as open.
 
 | Piece                                                        | Where it stands                                                                                                                                             |
 | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -20,8 +20,9 @@ The whole pipeline — contract, engine, fixture corpus, validator, renderer, an
 | Model / gateway configuration via `.env`                     | `master`                                                                                                                                                    |
 | End-to-end harness with offline replay                       | **open** ([PR #25](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/25)) — adds `test:e2e`                                                        |
 | Prompt iteration — v1 → v2 before/after evidence             | **open** ([PR #20](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/20)) for [#7](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/7) |
+| Optional live source gathering — `npm run gather`            | **open** ([PR #28](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/28)) — the live path is unverified; the offline `--replay` path works         |
 
-**No fixture case has been reconciled against a live gateway from this repository**, so no scenario outcome or score is reported in this README or in [`docs/report.md`](docs/report.md). Every profile document committed here is hand-authored — the schema example, the renderer and validator test fixtures, and the samples the results UI is seeded with. That is checkable rather than a promise: the engine stamps a `model` field onto anything it produces (`src/engine.ts`), and none of them carry one, which is why the UI labels them "hand-written". `npm run reconcile` and `npm run smoke` are the two commands that need a key; everything else, including the whole test suite, runs offline.
+**No fixture case has been reconciled against a live gateway from this repository**, so no scenario outcome or score is reported in this README or in [`docs/report.md`](docs/report.md). Every profile document committed here is hand-authored — the schema example, the renderer and validator test fixtures, and the samples the results UI is seeded with. That is checkable rather than a promise: the engine stamps a `model` field onto anything it produces (`src/engine.ts`), and none of them carry one, which is why the UI labels them "hand-written". `npm run reconcile`, `npm run smoke` and `npm run gather` are the commands that need a key; everything else, including the whole test suite, runs offline (`gather --replay <path>` runs offline too).
 
 ### The fixture corpus
 
@@ -46,20 +47,22 @@ cp .env.example .env      # then add your OpenCode key
 
 Authentication goes through the **OpenCode** gateway (`OPENCODE_API_KEY`), not a personal Anthropic key. `LLM_MODEL` selects the model — it must be on the `SUPPORTED_MODELS` allowlist in `src/client.ts` (the structured-output request shape is model-specific, so new models are verified with `npm run smoke` before being added), and falls back to the pinned default when unset. `OPENCODE_BASE_URL` / `OPENAI_BASE_URL` override the gateway URL; a trailing `/v1` on either is stripped automatically because the Anthropic SDK appends `/v1/messages` itself. `OPENAI_BASE_URL` must be `https` (it is a machine-wide convention other tools set; the project-owned `OPENCODE_BASE_URL` carries no such restriction and takes precedence).
 
-`.env` is gitignored — never commit a real key. The tests and the contract check run fine without a key; only `npm run reconcile` and `npm run smoke` make live calls.
+`.env` is gitignored — never commit a real key. The tests and the contract check run fine without a key; only `npm run reconcile`, `npm run smoke` and `npm run gather` make live calls.
 
-| Command                                                | What it does                                                                 |
-| ------------------------------------------------------ | ---------------------------------------------------------------------------- |
-| `npm test`                                             | Run the test suite (vitest)                                                  |
-| `npm run typecheck`                                    | Type-check without emitting                                                  |
-| `npm run validate:contract`                            | Check every example document against the committed schemas                   |
-| `npm run reconcile -- <case.json> --out <out.json>`    | Run the reconciliation engine on a fixture case (needs a live key)           |
-| `npm run validate:output -- <profile.json> <sources…>` | Deterministically validate a finished profile against its sources            |
-| `npm run render -- <profile.json> [out.html]`          | Profile → one self-contained HTML page (stdout without an output path)       |
-| `npm run ui`                                           | Local results browser over `results/` (no key, no build step)                |
-| `npm run smoke`                                        | One tiny live structured-output call to probe the gateway (needs a live key) |
-| `npm run format`                                       | Format with prettier                                                         |
-| `npm run lint`                                         | Type-check + formatting check                                                |
+| Command                                                 | What it does                                                                   |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `npm test`                                              | Run the test suite (vitest)                                                    |
+| `npm run typecheck`                                     | Type-check without emitting                                                    |
+| `npm run validate:contract`                             | Check every example document against the committed schemas                     |
+| `npm run reconcile -- <case.json> --out <out.json>`     | Run the reconciliation engine on a fixture case (needs a live key)             |
+| `npm run reconcile -- --sources <dir> --out <out.json>` | Same pipeline over a gathered set instead of a fixture case (needs a live key) |
+| `npm run gather -- "<topic>" [--max <n>]`               | Optional live source gathering — **unverified**, see below (needs a live key)  |
+| `npm run validate:output -- <profile.json> <sources…>`  | Deterministically validate a finished profile against its sources              |
+| `npm run render -- <profile.json> [out.html]`           | Profile → one self-contained HTML page (stdout without an output path)         |
+| `npm run ui`                                            | Local results browser over `results/` (no key, no build step)                  |
+| `npm run smoke`                                         | One tiny live structured-output call to probe the gateway (needs a live key)   |
+| `npm run format`                                        | Format with prettier                                                           |
+| `npm run lint`                                          | Type-check + formatting check                                                  |
 
 `validate:output` takes any number of source arguments, each a document or a directory of `*.json`, and accepts `--json` (report as JSON) and `--strict` (treat an ungrouped claim as a failure). It exits 0 clean, 1 on violations, 2 when it could not run at all.
 
@@ -91,9 +94,47 @@ render      npm run render -- <profile.json> <out.html>
          side by side instead of smoothing them over
 ```
 
+[Optional live source gathering](#optional-live-source-gathering) swaps the first box for retrieved documents (`reconcile -- --sources <dir>`) and leaves the rest of the path exactly as it is, validation included. The fixture case remains the primary input, and the only one the tests use.
+
 The LLM does exactly one job — the semantic grouping in the middle. Everything before it is plain file loading, and everything after it is plain code, so a hallucinated citation is a test failure rather than a vibe.
 
 `reconcile` does not just write and hope: after the model's output passes the schema it runs `validateOutput` itself and exits non-zero if any citation is unresolvable or any quote is not verbatim. The failing profile is still written, because it is the evidence prompt iteration works from — the exit code is what says it is not a result. Running `validate:output` separately, as the demo does, is what puts that report on screen.
+
+## Optional live source gathering
+
+`docs/INITIAL_PROJECT_IDEA.md` rejected live retrieval as the _primary_ input — "all online information" has no boundary, and a live web dependency makes the tests non-reproducible — while sanctioning "one optional fetch path _after_ the fixture path passes". This is that path, and it is strictly additive: the fixture corpus is still what every test runs against, and nothing in the fixture pipeline imports it.
+
+```bash
+npm run gather -- "Nimbus Cartography Collective" --max 4
+npm run reconcile -- --sources gathered/nimbus-cartography-collective --out out.json
+npm run render -- out.json profile.html
+```
+
+`gather` writes a **gathered set**, which is gitignored (retrieved data, not fixtures):
+
+```
+gathered/<slug-of-topic>/
+  sources/src-01.json   each a valid SourceDocument — the same input format as examples/sources/
+  topic.json            { topic, entity: { name }, gatheredAt, sources: [{ id, url, title }] }
+```
+
+Three decisions are worth knowing:
+
+- **`topic.json` is deliberately not a `FixtureCase`.** A case requires `expect.questions` with at least one entry — the answer key the harness scores against. A gathered set has no ground truth: nobody wrote down which questions these pages answer, or whether they agree. Emitting an `expect` block to make the file validate would mean inventing an answer key and scoring runs against fiction, so a gathered set records provenance only, and `reconcile --sources` consumes it without a case file. No schema changed to accommodate it.
+- **The source URL goes in `notes`, and the reconcile step still validates.** `notes` is the one field `toModelInput` strips, so provenance is recorded without becoming prompt text. `reconcile --sources` runs the same mandatory `validateOutput` step as the case path — a gathered run needs it more, not less, because nobody hand-checked those documents.
+- **`date` never pretends to be a publication date.** The schema requires `date`; a result that carried no usable publication date gets the retrieval date instead, and its `notes` says so in words rather than guessing.
+
+**The live path is unverified, and nothing in this repository claims otherwise.** It is written against the web-search tool the pinned SDK actually ships — `web_search_20250305` (`BetaWebSearchTool20250305` in `@anthropic-ai/sdk@0.71.2`; no later revision exists in that version) — declared as a **server-side** tool, so the provider runs the search and returns `server_tool_use` / `web_search_tool_result` blocks that `src/search.ts` reads. But requests go through the OpenCode gateway, not the Anthropic API, and **no call through that gateway has ever succeeded from this repository**: it may not serve server-side web search at all. Every failure names the gateway, the model, and the tool type rather than surfacing an opaque SDK error, and the code has never been run against a real endpoint — there is no API key on the machine it was written on.
+
+What a live run would need to be verified: a working `OPENCODE_API_KEY` for a gateway that serves the configured model _and_ implements `web_search_20250305`, then `npm run smoke` (does the gateway answer at all?) followed by `npm run gather -- "<topic>"`. If the gateway accepts the request but never invokes the tool, the error says exactly that.
+
+Offline, the retrieval seam is injected the same way `ModelCaller` is, so the writing path is fully exercised without a key:
+
+```bash
+npm run gather -- "Nimbus Cartography Collective" --replay test/fixtures/gathered/replay
+```
+
+`test/search.test.ts` and `test/gather.test.ts` cover the replay gatherer, the slug rules for awkward topics (unicode, punctuation, absurd length, empty), schema-validity of every written document, and — against a mocked SDK client, never a socket — the request shape, the `pause_turn` continuation bound, the refusal/truncation branches, and the rule that a URL search never returned is **dropped as a fabricated source** rather than written to disk.
 
 ## Demo
 
@@ -189,14 +230,18 @@ schema/     JSON Schemas — the source of truth for the contract
 prompts/    Versioned reconciliation prompts (v1 is frozen)
 src/        client.ts (Anthropic), contract.ts (types), schema.ts (validators),
             engine.ts + prompt.ts + model-caller.ts + cli.ts (reconciliation engine),
-            validate.ts (deterministic output validator), render.ts (HTML page)
+            validate.ts (deterministic output validator), render.ts (HTML page),
+            search.ts (optional source-gathering seam: live + replay)
 examples/   The fixture corpus (*.case.json + sources/), a minimal format example, and a valid profile document
+gathered/   Gitignored output of `npm run gather` — retrieved source material, not fixtures
 scripts/    validate-contract.ts — contract check; smoke.ts — live gateway probe;
             validate-output.ts and render-profile.ts — the two CLI front-ends;
-            results-ui.ts — the local results browser
+            results-ui.ts — the local results browser; gather.ts — optional
+            live source gathering (unverified)
 results/    Store for the results UI: hand-authored sample profiles, plus
             anything reconcile writes there. Prettier-ignored (data, not code)
-test/       Contract sync, client, engine, validator and renderer suites, with
-            seeded-bad profiles under fixtures/
+test/       Contract sync, client, engine, validator, renderer, CLI and
+            source-gathering suites, with seeded-bad profiles and canned search
+            results under fixtures/
 docs/       Project idea, problem statement, demo script (demo.md), report (report.md)
 ```
