@@ -28,6 +28,7 @@ Authentication goes through the **OpenCode** gateway (`OPENCODE_API_KEY`), not a
 | `npm test`                  | Run the test suite (vitest)                                |
 | `npm run typecheck`         | Type-check without emitting                                |
 | `npm run validate:contract` | Check every example document against the committed schemas |
+| `npm run render`            | Render a reconciled profile JSON to a standalone HTML page |
 | `npm run format`            | Format with prettier                                       |
 | `npm run lint`              | Type-check + formatting check                              |
 
@@ -98,13 +99,24 @@ import { MODEL, getClient } from "./client.js";
 
 Requests go through OpenCode, but the Anthropic SDK is still the transport — it is simply pointed at the gateway via `baseURL`, so the Messages API surface is unchanged for callers. The module deliberately contains no prompt and no pipeline; those belong to the engine epic. If `OPENCODE_API_KEY` is missing, `getClient()` throws with a message explaining how to fix it; use `hasApiKey()` to skip live calls in tests and scripts.
 
+## Rendering a profile
+
+[`src/render.ts`](src/render.ts) turns a validated `ReconciledProfile` into one self-contained HTML page ([issue #5](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/5)):
+
+```bash
+npm run render -- examples/reconciled-profile.example.json --out profile.html
+```
+
+The page has an **Agreed** section (each claim followed by `[src-id]` citation markers linking to the source list), a **Disputed** section (each disputed group's question with the conflicting claims side by side — contradictions are surfaced, never smoothed over), and a **Sources** section with an anchor per source. Rendering is a pure function of the JSON — same input, byte-identical output — with no scripts and no external requests, and every profile string is HTML-escaped. The CLI validates its input against `schema/claims.schema.json` first and refuses invalid profiles with a non-zero exit.
+
 ## Layout
 
 ```
 schema/     JSON Schemas — the source of truth for the contract
-src/        client.ts (Anthropic), contract.ts (types), schema.ts (compiled validators)
+src/        client.ts (Anthropic), contract.ts (types), schema.ts (validators), render.ts (HTML)
 examples/   A valid profile document and two format-example sources
 scripts/    validate-contract.ts — checks the examples against the schemas
+            render.ts — renders a profile JSON to a standalone HTML page
 test/       Contract sync tests and client behaviour tests
 docs/       Project idea and problem statement
 ```

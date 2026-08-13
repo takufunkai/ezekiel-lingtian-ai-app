@@ -12,6 +12,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "validate:contract": "tsx scripts/validate-contract.ts",
+    "render": "tsx scripts/render.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "npm run typecheck && npm run format:check"
