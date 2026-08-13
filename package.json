@@ -16,6 +16,7 @@
     "validate:contract": "tsx scripts/validate-contract.ts",
     "validate:output": "tsx scripts/validate-output.ts",
     "reconcile": "tsx src/cli.ts",
+    "score:evidence": "tsx scripts/score-evidence.ts",
     "smoke": "tsx scripts/smoke.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
