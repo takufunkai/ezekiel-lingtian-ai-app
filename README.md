@@ -8,7 +8,20 @@ See [`docs/INITIAL_PROJECT_IDEA.md`](docs/INITIAL_PROJECT_IDEA.md) for the full 
 
 ## Status
 
-This repository currently contains the **scaffolding and the shared data contract** ([issue #1](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/1)). The reconciliation engine, deterministic validator, renderer, and fixture corpus are separate epics ([#2](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/2)–[#5](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/5)) that all build on the contract described below.
+The shared data contract ([#1](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/1)) and the reconciliation engine ([#3](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/3)) are merged to `master`. The remaining pieces are in review or in flight:
+
+| Piece                                                        | Where it stands                                                                     |
+| ------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| Data contract — schemas, TS mirrors, compiled validators, CI | `master`                                                                            |
+| Reconciliation engine — `npm run reconcile`                  | `master`                                                                            |
+| Fixture corpus — Sets A / B / C                              | in review ([PR #11](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/11)) |
+| Deterministic output validator                               | in review ([PR #13](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/13)) |
+| Profile renderer — self-contained HTML page                  | in review ([PR #15](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/15)) |
+| Model / gateway configuration via `.env`                     | in review ([PR #16](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/16)) |
+| End-to-end harness with offline replay                       | not started ([#6](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/6))  |
+| Prompt iteration — before/after evidence                     | in flight ([#7](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/7))    |
+
+Commands and files that arrive with an unmerged PR are marked with that PR number wherever they are mentioned below and in the demo script.
 
 ## Setup
 
@@ -32,6 +45,50 @@ Authentication goes through the **OpenCode** gateway (`OPENCODE_API_KEY`), not a
 | `npm run smoke`                                     | One tiny live structured-output call to probe the gateway (needs a live key) |
 | `npm run format`                                    | Format with prettier                                                         |
 | `npm run lint`                                      | Type-check + formatting check                                                |
+
+Two more commands land with the open PRs: `npm run validate:output -- <profile.json> <sources…>` (deterministic validation of a finished profile, PR #13) and `npm run render -- <profile.json> [out.html]` (profile → self-contained HTML page, PR #15).
+
+## The pipeline end to end
+
+One complete input-to-output path: a fixture case in, a cited profile page out.
+
+```
+fixture case (examples/*.case.json — PR #11)
+     │   toModelInput() strips author notes and the answer key;
+     │   the model sees only id, date, title, text
+     ▼
+reconcile          npm run reconcile -- <case.json> --out <profile.json>
+     │   the LLM extracts atomic claims, groups them by underlying
+     │   question, marks each group agreed or disputed; output that
+     │   violates the schema is rejected and retried, never patched
+     ▼
+validate (PR #13)  npm run validate:output -- <profile.json> <sources…>
+     │   deterministic, no LLM: every cited source exists, every
+     │   quote is a verbatim substring, disputes carry ≥ 2 sources
+     ▼
+render (PR #15)    npm run render -- <profile.json> <out.html>
+         one self-contained HTML page: agreed claims with citation
+         markers, and a Disputed section that shows conflicts
+         side by side instead of smoothing them over
+```
+
+The LLM does exactly one job — the semantic grouping in the middle. Everything before it is plain file loading, and everything after it is plain code, so a hallucinated citation is a test failure rather than a vibe.
+
+## Demo
+
+[`docs/demo.md`](docs/demo.md) is the ordered walkthrough: Set A (agreement) as the happy path ending in a rendered profile, Set B putting a planted contradiction on screen in the Disputed section, and Set C — the poisoned-input catch — as the closing moment. Each step lists the exact command; steps that depend on an unmerged PR are marked with its number.
+
+[`docs/report.md`](docs/report.md) is the project report: architecture, the input boundary and output contract, the three techniques with their evidence, what each test scenario proves, and the prompt-iteration section (#7, in flight).
+
+## Techniques and rubric
+
+Three course techniques, covering both mandatory categories. [`docs/report.md`](docs/report.md) expands on the evidence for each.
+
+| Technique                              | Rubric category              | Evidence                                                                                                                                                       |
+| -------------------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Structured output (strict JSON schema) | Controls LLM use             | Schema violations are rejected and retried, never patched (`src/engine.ts`, tested offline in `test/engine.test.ts`)                                           |
+| Code validation of model output        | Tests / constrains the model | Deterministic validator with seeded-failure tests — fabricated source id, altered quote, uncited claim each caught with a specific violation code (PR #13)     |
+| Source citations                       | Tests / constrains the model | Every claim carries ≥ 1 citation (schema-enforced); every quote must appear verbatim in its source (PR #13); the page links each claim to its sources (PR #15) |
 
 ## The contract
 
@@ -114,5 +171,5 @@ src/        client.ts (Anthropic), contract.ts (types), schema.ts (validators),
 examples/   A valid profile document and two format-example sources
 scripts/    validate-contract.ts — contract check; smoke.ts — live gateway probe
 test/       Contract sync tests, client behaviour tests, engine tests
-docs/       Project idea and problem statement
+docs/       Project idea, problem statement, demo script (demo.md), report (report.md)
 ```
