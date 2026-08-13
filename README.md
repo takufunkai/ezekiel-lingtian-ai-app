@@ -19,7 +19,7 @@ npm install
 cp .env.example .env      # then add your OpenCode key
 ```
 
-Authentication goes through the **OpenCode** gateway (`OPENCODE_API_KEY`), not a personal Anthropic key. Set `OPENCODE_BASE_URL` only if you need to point at a gateway other than the default.
+Authentication goes through the **OpenCode** gateway (`OPENCODE_API_KEY`), not a personal Anthropic key. `LLM_MODEL` selects the model (falling back to the pinned default in `src/client.ts`), and `OPENCODE_BASE_URL` / `OPENAI_BASE_URL` override the gateway URL if you need a route other than the default.
 
 `.env` is gitignored — never commit a real key. The tests and the contract check run fine without a key; only `npm run reconcile` and `npm run smoke` make live calls.
 
