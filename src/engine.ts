@@ -257,6 +257,8 @@ export async function reconcile(
     }
 
     // Schema-valid. Stamp the run metadata; claim content is never touched.
+    // getModel(), not the MODEL fallback constant: the profile must record the
+    // model that actually produced it.
     const profile: ReconciledProfile = { ...result.data, model: getModel() };
     return { ok: true, profile, attempts: attempt, failures };
   }

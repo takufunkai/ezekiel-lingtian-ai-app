@@ -11,7 +11,11 @@
  *     `{type: "enabled", budget_tokens}` and adaptive-style configs are not
  *     expressible/accepted on this SDK+model pairing.
  *   - `temperature`/`top_p`/`top_k` are omitted: the model rejects them (400),
- *     so determinism is pinned via `MODEL` and `DEFAULT_EFFORT` instead.
+ *     so determinism is pinned via the model id and `DEFAULT_EFFORT` instead.
+ *
+ * This shape is model-specific, which is why `getModel()` only accepts ids on
+ * the `SUPPORTED_MODELS` allowlist — each entry has been verified against this
+ * exact request via `npm run smoke`.
  */
 
 import { DEFAULT_EFFORT, DEFAULT_MAX_TOKENS, getClient, getModel } from "./client.js";

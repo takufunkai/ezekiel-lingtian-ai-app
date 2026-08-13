@@ -41,8 +41,8 @@
         "id": "q-collection-scope",
         "question": "What kind of seed does the library hold?",
         "status": "agreed",
-        "sourceIds": ["set-a-01", "set-a-02", "set-a-03"],
-        "plantedFact": "Vegetable and herb seed, which set-a-03 specifies as open-pollinated. set-a-02 refers to the same holdings as \"varieties\" without naming the crops."
+        "sourceIds": ["set-a-01", "set-a-03"],
+        "plantedFact": "Vegetable and herb seed, which set-a-03 specifies as open-pollinated. Only these two sources name the crops; set-a-02, set-a-04 and set-a-05 all say \"varieties\" without saying of what, so none of them is credited here. Crediting one of the three and not the others was the earlier mistake."
       },
       {
         "id": "q-initial-size",
@@ -104,5 +104,5 @@
     "requiredSourceIds": ["set-a-01", "set-a-02", "set-a-03", "set-a-04", "set-a-05"],
     "excludedSourceIds": []
   },
-  "notes": "Expected outcome: twelve agreed groups, zero disputed, every claim cited, all five sources represented. The question list is intended to be exhaustive over every fact these documents state about the entity, including the single-source ones, because `fixture-case.schema.json` defines group count as directly comparable to question count — a shorter list would make a correct run look under-merged. The interesting failure mode here is over-reporting: the founding-date and collection-size questions are each answered with five different forms of words, so a run that splits either into separate groups has under-merged, and a run that marks either disputed has confused paraphrase with disagreement."
+  "notes": "Expected outcome: zero disputed groups, every claim cited, all five sources represented. The assertion is that each question below appears in the output with the status given; group *count* is a signal, not a verdict. These questions are pitched finer than `prompts/reconcile.v1.md` calibrates for — it says only to group claims answering the same underlying question — so a run that fuses the three swap questions into one, or reports a fact left unlisted here (seed provenance, \"most of them collected from growers within the valley\" in set-a-01), is behaving reasonably and should be reported rather than failed. The failure this set is really built to catch is over-reporting: the founding-date and collection-size questions are each answered with five different forms of words, so a run that splits either into separate groups has under-merged, and a run that marks either disputed has confused paraphrase with disagreement."
 }

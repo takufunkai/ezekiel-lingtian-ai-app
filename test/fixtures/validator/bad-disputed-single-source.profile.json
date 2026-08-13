@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1.0.0",
+  "entity": {
+    "name": "Harrow Tin Works",
+    "aliases": ["Harrow Tin"]
+  },
+  "generatedAt": "2026-08-13T09:00:00Z",
+  "sources": [
+    {
+      "id": "src-01",
+      "date": "1997-06-02",
+      "title": "Harrow Tin Works: a short history"
+    },
+    {
+      "id": "src-02",
+      "date": "2004-11-19",
+      "title": "Notes on the Mersey tinware trade"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Harrow Tin Works opened in 1948.",
+      "citations": [{ "sourceId": "src-01", "quote": "opened its doors in 1948" }]
+    },
+    {
+      "id": "c2",
+      "text": "Harrow Tin Works was founded in 1951.",
+      "citations": [{ "sourceId": "src-01", "quote": "on the north bank of the Mersey" }]
+    },
+    {
+      "id": "c3",
+      "text": "The works employed forty-two people at its peak.",
+      "citations": [{ "sourceId": "src-01", "quote": "employed forty-two people at its peak" }]
+    },
+    {
+      "id": "c4",
+      "text": "The works closed in 1979.",
+      "citations": [{ "sourceId": "src-02", "quote": "closed in 1979" }]
+    }
+  ],
+  "groups": [
+    {
+      "id": "g1",
+      "question": "When was Harrow Tin Works founded?",
+      "status": "disputed",
+      "claimIds": ["c1", "c2"]
+    },
+    {
+      "id": "g2",
+      "question": "How many people did the works employ?",
+      "status": "agreed",
+      "claimIds": ["c3"]
+    },
+    {
+      "id": "g3",
+      "question": "When did the works close?",
+      "status": "agreed",
+      "claimIds": ["c4"]
+    }
+  ]
+}
