@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "validate": "tsx scripts/validate.ts",
     "validate:contract": "tsx scripts/validate-contract.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
