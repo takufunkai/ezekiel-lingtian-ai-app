@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "1.0.0",
+  "entity": {
+    "name": "Pasir Lane Hawker Archive",
+    "aliases": ["PLHA", "the Hawker Archive"]
+  },
+  "generatedAt": "2026-08-13T10:00:00Z",
+  "sources": [
+    { "id": "straits-chronicle", "date": "2018-10-08", "title": "Archiving grandmother's laksa: inside the Pasir Lane project" },
+    { "id": "uni-oral-history", "date": "2021-05-19", "title": "Oral history methods in community food archives" },
+    { "id": "kopi-times", "date": "2022-07-23", "title": "The archive that outgrew its void deck" },
+    { "id": "makan-quarterly", "date": "2023-04-11", "title": "Recipe provenance and the Pasir Lane dispute" }
+  ],
+  "claims": [
+    {
+      "id": "claim-01",
+      "text": "The Pasir Lane Hawker Archive documents recipes and oral histories from retiring hawkers.",
+      "citations": [
+        { "sourceId": "straits-chronicle", "quote": "documents recipes and oral histories from hawkers approaching retirement" },
+        { "sourceId": "uni-oral-history", "quote": "a community archive of hawker recipes and life histories" }
+      ]
+    },
+    {
+      "id": "claim-02",
+      "text": "The archive was founded by retired teacher Halimah Rashid.",
+      "citations": [{ "sourceId": "straits-chronicle", "quote": "founded by retired teacher Halimah Rashid" }]
+    },
+    {
+      "id": "claim-03",
+      "text": "The founding is attributed to a collective of nine volunteers with no single founder.",
+      "citations": [{ "sourceId": "makan-quarterly", "quote": "began as a collective of nine volunteers; members bristle at naming any single founder" }]
+    },
+    {
+      "id": "claim-04",
+      "text": "The collection holds over 600 documented recipes.",
+      "citations": [
+        { "sourceId": "kopi-times", "quote": "more than 600 recipes, from char kway teow to putu piring" },
+        { "sourceId": "makan-quarterly", "quote": "the 600-recipe milestone" }
+      ]
+    },
+    {
+      "id": "claim-05",
+      "text": "Recordings began in a Pasir Ris void deck before moving to a dedicated unit above a wet market.",
+      "citations": [{ "sourceId": "kopi-times", "quote": "started under an HDB void deck in Pasir Ris and now sits above a wet market" }]
+    }
+  ],
+  "groups": [
+    {
+      "id": "group-01",
+      "question": "What does the Pasir Lane Hawker Archive do?",
+      "status": "agreed",
+      "claimIds": ["claim-01"]
+    },
+    {
+      "id": "group-02",
+      "question": "Who founded the archive?",
+      "status": "disputed",
+      "claimIds": ["claim-02", "claim-03"]
+    },
+    {
+      "id": "group-03",
+      "question": "How large is the recipe collection?",
+      "status": "agreed",
+      "claimIds": ["claim-04"]
+    },
+    {
+      "id": "group-04",
+      "question": "Where is the archive located?",
+      "status": "agreed",
+      "claimIds": ["claim-05"]
+    }
+  ]
+}

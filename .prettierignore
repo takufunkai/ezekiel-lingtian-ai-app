@@ -10,3 +10,7 @@ docs/
 # Versioned model prompts are frozen artifacts — reformatting one silently changes
 # what the model sees, so prettier must never touch them.
 prompts/
+
+# Generated run outputs — data, not code
+out*.json
+results/
