@@ -1,7 +1,7 @@
 {
   "id": "set-b-05",
   "date": "2022-04-18",
-  "title": "The secretary's view: two decades of Cawden Vale weaving",
+  "title": "The secretary's view: weaving in Cawden Vale",
   "text": "We have been in the same valley the whole time, and we have never made anything but blankets: plain, ridge, and check. The Fenmoor award in 2015 changed how the shops treated us. Our members work their own hours on their own looms, which makes the cooperative sound smaller than it is.",
-  "notes": "Set B. Interview; corroborates the agreed facts and volunteers no figures."
+  "notes": "Set B. Interview; corroborates the agreed facts and volunteers no figures. Like set-b-01, its title carries no span of years: `toModelInput` keeps `title`, so \"two decades\" over a 2022 date would imply a founding around 2002 and leak a fourth answer into the one question whose answer key must have exactly three."
 }
