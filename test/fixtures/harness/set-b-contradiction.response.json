@@ -1,0 +1,367 @@
+{
+  "schemaVersion": "1.0.0",
+  "entity": {
+    "name": "Halberd Mills Cooperative",
+    "aliases": ["Halberd Mills"]
+  },
+  "generatedAt": "2026-08-13T09:21:07Z",
+  "sources": [
+    {
+      "id": "set-b-01",
+      "date": "2019-02-11",
+      "title": "Halberd Mills: a cooperative that outlasted the trade"
+    },
+    {
+      "id": "set-b-02",
+      "date": "2019-01-22",
+      "title": "Cooperative register: Halberd Mills, filing summary"
+    },
+    {
+      "id": "set-b-03",
+      "date": "2019-11-03",
+      "title": "Inside Halberd Mills"
+    },
+    {
+      "id": "set-b-04",
+      "date": "2018-05-30",
+      "title": "Cawden Vale blanket-makers expand dyehouse"
+    },
+    {
+      "id": "set-b-05",
+      "date": "2022-04-18",
+      "title": "The secretary's view: two decades of Cawden Vale weaving"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Halberd Mills Cooperative was founded in 1998.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "Halberd Mills Cooperative was founded in 1998"
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text": "Halberd Mills Cooperative was incorporated in the spring of 1997.",
+      "citations": [
+        {
+          "sourceId": "set-b-02",
+          "quote": "was incorporated in the spring of 1997"
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text": "The cooperative began trading in 1999.",
+      "citations": [
+        {
+          "sourceId": "set-b-03",
+          "quote": "The cooperative began trading in 1999"
+        }
+      ]
+    },
+    {
+      "id": "c4",
+      "text": "The cooperative has just over two hundred members.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "the cooperative counts just over two hundred members this year"
+        }
+      ]
+    },
+    {
+      "id": "c5",
+      "text": "The cooperative has about a hundred and fifty weavers on its rolls.",
+      "citations": [
+        {
+          "sourceId": "set-b-02",
+          "quote": "reports about a hundred and fifty weavers on its rolls"
+        }
+      ]
+    },
+    {
+      "id": "c6",
+      "text": "The cooperative has a couple of hundred members, give or take.",
+      "citations": [
+        {
+          "sourceId": "set-b-03",
+          "quote": "members put it at a couple of hundred of us, give or take"
+        }
+      ]
+    },
+    {
+      "id": "c7",
+      "text": "The cooperative is based in Cawden Vale.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "by a group of hand-weavers in Cawden Vale"
+        },
+        {
+          "sourceId": "set-b-02",
+          "quote": "remains registered at its original address in Cawden Vale"
+        },
+        {
+          "sourceId": "set-b-03",
+          "quote": "in a converted grain store in Cawden Vale that it still occupies"
+        },
+        {
+          "sourceId": "set-b-04",
+          "quote": "at its Cawden Vale site"
+        },
+        {
+          "sourceId": "set-b-05",
+          "quote": "We have been in the same valley the whole time"
+        }
+      ]
+    },
+    {
+      "id": "c8",
+      "text": "The cooperative makes wool blankets.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "it has produced wool blankets there ever since"
+        },
+        {
+          "sourceId": "set-b-02",
+          "quote": "manufacture of wool blankets and throws"
+        },
+        {
+          "sourceId": "set-b-03",
+          "quote": "Everything it sells is a wool blanket of one kind or another"
+        },
+        {
+          "sourceId": "set-b-04",
+          "quote": "which makes wool blankets"
+        },
+        {
+          "sourceId": "set-b-05",
+          "quote": "we have never made anything but blankets"
+        }
+      ]
+    },
+    {
+      "id": "c9",
+      "text": "The cooperative also makes throws.",
+      "citations": [
+        {
+          "sourceId": "set-b-02",
+          "quote": "manufacture of wool blankets and throws"
+        }
+      ]
+    },
+    {
+      "id": "c10",
+      "text": "The cooperative has won the Fenmoor design award.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "took the Fenmoor design award"
+        },
+        {
+          "sourceId": "set-b-02",
+          "quote": "Awards recorded in members' filings include the Fenmoor design award"
+        },
+        {
+          "sourceId": "set-b-03",
+          "quote": "The Fenmoor design award, won in 2015"
+        },
+        {
+          "sourceId": "set-b-04",
+          "quote": "it has held the Fenmoor design award since 2015"
+        },
+        {
+          "sourceId": "set-b-05",
+          "quote": "The Fenmoor award in 2015"
+        }
+      ]
+    },
+    {
+      "id": "c11",
+      "text": "The cooperative won the Fenmoor design award in 2015.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "In 2015 its ridge-pattern blanket took the Fenmoor design award"
+        },
+        {
+          "sourceId": "set-b-03",
+          "quote": "The Fenmoor design award, won in 2015"
+        },
+        {
+          "sourceId": "set-b-04",
+          "quote": "it has held the Fenmoor design award since 2015"
+        },
+        {
+          "sourceId": "set-b-05",
+          "quote": "The Fenmoor award in 2015"
+        }
+      ]
+    },
+    {
+      "id": "c12",
+      "text": "The cooperative makes blankets in plain, ridge and check patterns.",
+      "citations": [
+        {
+          "sourceId": "set-b-05",
+          "quote": "we have never made anything but blankets: plain, ridge, and check"
+        }
+      ]
+    },
+    {
+      "id": "c13",
+      "text": "The award-winning blanket was the ridge pattern.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "its ridge-pattern blanket took the Fenmoor design award"
+        }
+      ]
+    },
+    {
+      "id": "c14",
+      "text": "The cooperative occupies a converted grain store.",
+      "citations": [
+        {
+          "sourceId": "set-b-03",
+          "quote": "in a converted grain store in Cawden Vale that it still occupies"
+        }
+      ]
+    },
+    {
+      "id": "c15",
+      "text": "The cooperative is still at its original registered address.",
+      "citations": [
+        {
+          "sourceId": "set-b-02",
+          "quote": "remains registered at its original address in Cawden Vale"
+        }
+      ]
+    },
+    {
+      "id": "c16",
+      "text": "The cooperative's members work their own hours on their own looms.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "most of them working from home looms"
+        },
+        {
+          "sourceId": "set-b-04",
+          "quote": "every member works to their own hours"
+        },
+        {
+          "sourceId": "set-b-05",
+          "quote": "Our members work their own hours on their own looms"
+        }
+      ]
+    },
+    {
+      "id": "c17",
+      "text": "The cooperative employs no weavers directly.",
+      "citations": [
+        {
+          "sourceId": "set-b-04",
+          "quote": "It employs no weavers directly"
+        }
+      ]
+    },
+    {
+      "id": "c18",
+      "text": "The cooperative has opened a second dyehouse at its Cawden Vale site.",
+      "citations": [
+        {
+          "sourceId": "set-b-04",
+          "quote": "has opened a second dyehouse at its Cawden Vale site"
+        }
+      ]
+    },
+    {
+      "id": "c19",
+      "text": "Demand had outstripped the cooperative's single dye vat for three seasons.",
+      "citations": [
+        {
+          "sourceId": "set-b-04",
+          "quote": "demand has outstripped its single dye vat for three seasons running"
+        }
+      ]
+    },
+    {
+      "id": "c20",
+      "text": "The cooperative was founded by a group of hand-weavers.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "by a group of hand-weavers"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "id": "g1",
+      "question": "When was Halberd Mills Cooperative founded?",
+      "status": "disputed",
+      "claimIds": ["c1", "c2", "c3"]
+    },
+    {
+      "id": "g2",
+      "question": "How many members does the cooperative have?",
+      "status": "disputed",
+      "claimIds": ["c4", "c5", "c6"]
+    },
+    {
+      "id": "g3",
+      "question": "Where is the cooperative based?",
+      "status": "agreed",
+      "claimIds": ["c7"]
+    },
+    {
+      "id": "g4",
+      "question": "What does the cooperative make?",
+      "status": "agreed",
+      "claimIds": ["c8", "c9"]
+    },
+    {
+      "id": "g5",
+      "question": "What award has the cooperative won?",
+      "status": "agreed",
+      "claimIds": ["c10", "c11"]
+    },
+    {
+      "id": "g6",
+      "question": "What blanket patterns does the cooperative make?",
+      "status": "agreed",
+      "claimIds": ["c12", "c13"]
+    },
+    {
+      "id": "g7",
+      "question": "What premises does the cooperative occupy?",
+      "status": "agreed",
+      "claimIds": ["c14", "c15"]
+    },
+    {
+      "id": "g8",
+      "question": "How do the cooperative's members work?",
+      "status": "agreed",
+      "claimIds": ["c16", "c17"]
+    },
+    {
+      "id": "g9",
+      "question": "What has the cooperative recently expanded?",
+      "status": "agreed",
+      "claimIds": ["c18", "c19"]
+    },
+    {
+      "id": "g10",
+      "question": "Who founded the cooperative?",
+      "status": "agreed",
+      "claimIds": ["c20"]
+    }
+  ]
+}

@@ -1,0 +1,411 @@
+{
+  "schemaVersion": "1.0.0",
+  "entity": {
+    "name": "Thornwood Seed Library",
+    "aliases": ["Thornwood"]
+  },
+  "generatedAt": "2026-08-13T09:14:22Z",
+  "sources": [
+    {
+      "id": "set-a-01",
+      "date": "2019-04-11",
+      "title": "Seed library marks five years of lending in Ashgrove"
+    },
+    {
+      "id": "set-a-02",
+      "date": "2021-02-28",
+      "title": "Thornwood Seed Library: 2020 annual report, summary section"
+    },
+    {
+      "id": "set-a-03",
+      "date": "2022-06-01",
+      "title": "Directory listing: Thornwood Seed Library"
+    },
+    {
+      "id": "set-a-04",
+      "date": "2023-03-09",
+      "title": "\"We are a library, not a shop\": an interview with Thornwood's seed keeper"
+    },
+    {
+      "id": "set-a-05",
+      "date": "2020-05-02",
+      "title": "What I learned volunteering at the Thornwood Seed Library"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "The Thornwood Seed Library was founded in 2014.",
+      "citations": [
+        {
+          "sourceId": "set-a-01",
+          "quote": "was founded in 2014"
+        },
+        {
+          "sourceId": "set-a-02",
+          "quote": "established in 2014"
+        },
+        {
+          "sourceId": "set-a-03",
+          "quote": "operating since 2014"
+        },
+        {
+          "sourceId": "set-a-04",
+          "quote": "We opened in 2014"
+        },
+        {
+          "sourceId": "set-a-05",
+          "quote": "has been running in Ashgrove since 2014"
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text": "The library is based in Ashgrove.",
+      "citations": [
+        {
+          "sourceId": "set-a-01",
+          "quote": "has lent seed to Ashgrove gardeners every season"
+        },
+        {
+          "sourceId": "set-a-02",
+          "quote": "from its premises on Fell Road in Ashgrove"
+        },
+        {
+          "sourceId": "set-a-03",
+          "quote": "Thornwood Seed Library (Ashgrove)"
+        },
+        {
+          "sourceId": "set-a-04",
+          "quote": "Everything happens in Ashgrove"
+        },
+        {
+          "sourceId": "set-a-05",
+          "quote": "The library has been running in Ashgrove since 2014"
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text": "The library's premises are on Fell Road.",
+      "citations": [
+        {
+          "sourceId": "set-a-02",
+          "quote": "premises on Fell Road in Ashgrove"
+        }
+      ]
+    },
+    {
+      "id": "c4",
+      "text": "The library has never had a second site.",
+      "citations": [
+        {
+          "sourceId": "set-a-04",
+          "quote": "we have never had a second site"
+        }
+      ]
+    },
+    {
+      "id": "c5",
+      "text": "The library holds around forty seed varieties.",
+      "citations": [
+        {
+          "sourceId": "set-a-01",
+          "quote": "holds more than forty vegetable and herb varieties"
+        },
+        {
+          "sourceId": "set-a-02",
+          "quote": "The collection stood at forty-two varieties at year end"
+        },
+        {
+          "sourceId": "set-a-03",
+          "quote": "Around forty varieties are available in a typical year"
+        },
+        {
+          "sourceId": "set-a-04",
+          "quote": "we are up to somewhere over forty now"
+        },
+        {
+          "sourceId": "set-a-05",
+          "quote": "forty-odd varieties"
+        }
+      ]
+    },
+    {
+      "id": "c6",
+      "text": "At the end of 2020 the collection stood at forty-two varieties.",
+      "citations": [
+        {
+          "sourceId": "set-a-02",
+          "quote": "The collection stood at forty-two varieties at year end"
+        }
+      ]
+    },
+    {
+      "id": "c7",
+      "text": "The library holds vegetable and herb seed.",
+      "citations": [
+        {
+          "sourceId": "set-a-01",
+          "quote": "vegetable and herb varieties"
+        },
+        {
+          "sourceId": "set-a-03",
+          "quote": "vegetable and herb seed"
+        }
+      ]
+    },
+    {
+      "id": "c8",
+      "text": "The seed the library lends is open-pollinated.",
+      "citations": [
+        {
+          "sourceId": "set-a-03",
+          "quote": "Lends open-pollinated vegetable and herb seed to members"
+        }
+      ]
+    },
+    {
+      "id": "c9",
+      "text": "When the library opened its collection was about a dozen varieties kept in a filing cabinet.",
+      "citations": [
+        {
+          "sourceId": "set-a-04",
+          "quote": "We opened in 2014 with about a dozen varieties in a filing cabinet"
+        }
+      ]
+    },
+    {
+      "id": "c10",
+      "text": "The library lends seed to its members each season.",
+      "citations": [
+        {
+          "sourceId": "set-a-01",
+          "quote": "has lent seed to Ashgrove gardeners every season"
+        },
+        {
+          "sourceId": "set-a-03",
+          "quote": "Lends open-pollinated vegetable and herb seed to members"
+        }
+      ]
+    },
+    {
+      "id": "c11",
+      "text": "Members return seed they have saved from their own plots at the end of the season.",
+      "citations": [
+        {
+          "sourceId": "set-a-03",
+          "quote": "who return seed saved from their own plots at the end of the season"
+        }
+      ]
+    },
+    {
+      "id": "c12",
+      "text": "The library is funded by member dues and a regional grant.",
+      "citations": [
+        {
+          "sourceId": "set-a-02",
+          "quote": "Income came from member dues and a regional cultural grant"
+        },
+        {
+          "sourceId": "set-a-03",
+          "quote": "Funded through membership dues and a regional grant"
+        },
+        {
+          "sourceId": "set-a-04",
+          "quote": "The dues cover the paper and the packets, and the grant covers the rest"
+        },
+        {
+          "sourceId": "set-a-05",
+          "quote": "members pay dues and a regional grant tops it up"
+        }
+      ]
+    },
+    {
+      "id": "c13",
+      "text": "The library holds a seed swap every spring.",
+      "citations": [
+        {
+          "sourceId": "set-a-01",
+          "quote": "Its spring seed swap"
+        },
+        {
+          "sourceId": "set-a-02",
+          "quote": "The spring seed swap moved outdoors in 2020"
+        },
+        {
+          "sourceId": "set-a-03",
+          "quote": "Holds an annual seed swap each spring"
+        },
+        {
+          "sourceId": "set-a-04",
+          "quote": "The swap in spring is the one day of the year when everybody turns up"
+        },
+        {
+          "sourceId": "set-a-05",
+          "quote": "go to the spring swap"
+        }
+      ]
+    },
+    {
+      "id": "c14",
+      "text": "As of 2019 the seed swap was held each April in the parish hall.",
+      "citations": [
+        {
+          "sourceId": "set-a-01",
+          "quote": "held each April in the parish hall"
+        }
+      ]
+    },
+    {
+      "id": "c15",
+      "text": "From 2020 the seed swap has been held outdoors.",
+      "citations": [
+        {
+          "sourceId": "set-a-02",
+          "quote": "The spring seed swap moved outdoors in 2020"
+        }
+      ]
+    },
+    {
+      "id": "c16",
+      "text": "The seed swap is open to people who are not members.",
+      "citations": [
+        {
+          "sourceId": "set-a-03",
+          "quote": "open to non-members"
+        }
+      ]
+    },
+    {
+      "id": "c17",
+      "text": "The 2020 seed swap drew several hundred visitors.",
+      "citations": [
+        {
+          "sourceId": "set-a-02",
+          "quote": "still drew several hundred visitors"
+        }
+      ]
+    },
+    {
+      "id": "c18",
+      "text": "The library has two paid staff.",
+      "citations": [
+        {
+          "sourceId": "set-a-01",
+          "quote": "Two paid staff keep the catalogue in order"
+        },
+        {
+          "sourceId": "set-a-02",
+          "quote": "The library employs two members of staff"
+        },
+        {
+          "sourceId": "set-a-04",
+          "quote": "There are two of us on the payroll"
+        }
+      ]
+    },
+    {
+      "id": "c19",
+      "text": "All work not done by the paid staff is done by volunteers.",
+      "citations": [
+        {
+          "sourceId": "set-a-01",
+          "quote": "supported by a rota of volunteers who clean and package donations through the winter"
+        },
+        {
+          "sourceId": "set-a-02",
+          "quote": "all other work is done by volunteers"
+        },
+        {
+          "sourceId": "set-a-05",
+          "quote": "My winter job was packeting"
+        }
+      ]
+    },
+    {
+      "id": "c20",
+      "text": "Around thirty volunteers help the library across a year.",
+      "citations": [
+        {
+          "sourceId": "set-a-04",
+          "quote": "perhaps thirty volunteers across a year"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "id": "g1",
+      "question": "When was the Thornwood Seed Library founded?",
+      "status": "agreed",
+      "claimIds": ["c1"]
+    },
+    {
+      "id": "g2",
+      "question": "Where is the library based?",
+      "status": "agreed",
+      "claimIds": ["c2", "c3", "c4"]
+    },
+    {
+      "id": "g3",
+      "question": "How many seed varieties does the library hold?",
+      "status": "agreed",
+      "claimIds": ["c5", "c6"]
+    },
+    {
+      "id": "g4",
+      "question": "What kind of seed does the library hold?",
+      "status": "agreed",
+      "claimIds": ["c7", "c8"]
+    },
+    {
+      "id": "g5",
+      "question": "How large was the collection when the library opened?",
+      "status": "agreed",
+      "claimIds": ["c9"]
+    },
+    {
+      "id": "g6",
+      "question": "How does the library's lending model work?",
+      "status": "agreed",
+      "claimIds": ["c10", "c11"]
+    },
+    {
+      "id": "g7",
+      "question": "How is the library funded?",
+      "status": "agreed",
+      "claimIds": ["c12"]
+    },
+    {
+      "id": "g8",
+      "question": "What is the library's annual event?",
+      "status": "agreed",
+      "claimIds": ["c13", "c14", "c15"]
+    },
+    {
+      "id": "g9",
+      "question": "Who may attend the seed swap?",
+      "status": "agreed",
+      "claimIds": ["c16"]
+    },
+    {
+      "id": "g10",
+      "question": "How many people attend the seed swap?",
+      "status": "agreed",
+      "claimIds": ["c17"]
+    },
+    {
+      "id": "g11",
+      "question": "How many paid staff does the library have?",
+      "status": "agreed",
+      "claimIds": ["c18"]
+    },
+    {
+      "id": "g12",
+      "question": "Who does the work the paid staff do not?",
+      "status": "agreed",
+      "claimIds": ["c19", "c20"]
+    }
+  ]
+}
