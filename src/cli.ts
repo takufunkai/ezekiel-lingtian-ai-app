@@ -12,10 +12,10 @@
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { API_KEY_ENV_VAR, MODEL, hasApiKey } from "./client.js";
+import { API_KEY_ENV_VAR, getModel, hasApiKey } from "./client.js";
 import { reconcileCaseFile } from "./engine.js";
 import { callLiveModel } from "./model-caller.js";
-import { PROMPT_VERSION } from "./prompt.js";
+import { getPromptVersion } from "./prompt.js";
 
 export const USAGE = "usage: reconcile <path-to-case.json> --out <out.json>";
 
@@ -74,7 +74,7 @@ async function main(): Promise<number> {
   }
 
   const { casePath, outPath } = parsed.args;
-  console.error(`reconcile: case=${casePath} model=${MODEL} prompt=${PROMPT_VERSION}`);
+  console.error(`reconcile: case=${casePath} model=${getModel()} prompt=${getPromptVersion()}`);
 
   const outcome = await reconcileCaseFile(casePath, { callModel: callLiveModel });
   if (!outcome.ok) {

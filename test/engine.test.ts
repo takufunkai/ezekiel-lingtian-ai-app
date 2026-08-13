@@ -2,8 +2,8 @@ import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { describe, expect, it, vi } from "vitest";
-import { MODEL } from "../src/client.js";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { getModel } from "../src/client.js";
 import { parseArgs } from "../src/cli.js";
 import { toModelInput } from "../src/contract.js";
 import type { ReconciledProfile, SourceDocument } from "../src/contract.js";
@@ -16,7 +16,14 @@ import {
   toTransportSchema,
   type ModelRequest,
 } from "../src/engine.js";
-import { PROMPT_PATH, PROMPT_VERSION, SYSTEM_PROMPT, buildUserMessage } from "../src/prompt.js";
+import {
+  DEFAULT_PROMPT_VERSION,
+  PROMPT_VERSION_ENV_VAR,
+  buildUserMessage,
+  getPromptVersion,
+  getSystemPrompt,
+  promptPathFor,
+} from "../src/prompt.js";
 import { claimsSchema, readJsonFile, validateProfile } from "../src/schema.js";
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -105,7 +112,7 @@ describe("the case manifest never reaches the model", () => {
 });
 
 describe("end-to-end run on the example case with a canned response", () => {
-  it("produces schema-valid JSON with the pinned model stamped on it", async () => {
+  it("produces schema-valid JSON with the configured model stamped on it", async () => {
     const { caller } = cannedCaller(validProfileJson);
     const outcome = await reconcileCaseFile(casePath, { callModel: caller, log: () => {} });
 
@@ -115,7 +122,7 @@ describe("end-to-end run on the example case with a canned response", () => {
     expect(outcome.attempts).toBe(1);
     const check = validateProfile(outcome.profile);
     expect(check.valid).toBe(true);
-    expect(outcome.profile.model).toBe(MODEL);
+    expect(outcome.profile.model).toBe(getModel());
   });
 
   it("every claim carries at least one source id and a verbatim quote", async () => {
@@ -179,7 +186,7 @@ describe("schema violations are rejected and retried, never patched", () => {
     // The result is exactly the valid canned response (plus the model stamp) —
     // nothing was salvaged from the rejected first attempt.
     const expected = JSON.parse(validProfileJson) as ReconciledProfile;
-    expect(outcome.profile).toEqual({ ...expected, model: MODEL });
+    expect(outcome.profile).toEqual({ ...expected, model: getModel() });
   });
 
   it("malformed JSON from the model is a rejection, not a crash", async () => {
@@ -303,12 +310,27 @@ describe("the transport schema", () => {
   });
 });
 
-describe("the prompt is versioned and frozen at v1", () => {
-  it("is tagged v1 and loaded from the versioned file", () => {
-    expect(PROMPT_VERSION).toBe("v1");
-    expect(PROMPT_PATH.endsWith(join("prompts", "reconcile.v1.md"))).toBe(true);
-    expect(SYSTEM_PROMPT.length).toBeGreaterThan(0);
-    expect(SYSTEM_PROMPT).toContain("verbatim");
+describe("the prompt is versioned and selected by PROMPT_VERSION", () => {
+  afterEach(() => {
+    delete process.env[PROMPT_VERSION_ENV_VAR];
+  });
+
+  it("defaults to the recorded best version when the env var is unset", () => {
+    delete process.env[PROMPT_VERSION_ENV_VAR];
+    expect(getPromptVersion()).toBe(DEFAULT_PROMPT_VERSION);
+    expect(getSystemPrompt().length).toBeGreaterThan(0);
+  });
+
+  it("keeps v1 frozen: its file still exists and demands verbatim quotes", () => {
+    process.env[PROMPT_VERSION_ENV_VAR] = "v1";
+    expect(getPromptVersion()).toBe("v1");
+    expect(promptPathFor("v1").endsWith(join("prompts", "reconcile.v1.md"))).toBe(true);
+    expect(getSystemPrompt()).toContain("verbatim");
+  });
+
+  it("rejects a malformed version tag instead of guessing", () => {
+    process.env[PROMPT_VERSION_ENV_VAR] = "latest";
+    expect(() => getPromptVersion()).toThrow(/prompt version/);
   });
 });
 

@@ -16,7 +16,7 @@
  */
 
 import { dirname, join, resolve } from "node:path";
-import { MODEL } from "./client.js";
+import { getModel } from "./client.js";
 import type {
   Entity,
   FixtureCase,
@@ -25,7 +25,7 @@ import type {
   SourceDocument,
 } from "./contract.js";
 import { toModelInput } from "./contract.js";
-import { buildUserMessage, SYSTEM_PROMPT } from "./prompt.js";
+import { buildUserMessage, getSystemPrompt } from "./prompt.js";
 import {
   claimsSchema,
   formatSchemaErrors,
@@ -217,7 +217,7 @@ export async function reconcile(
 
   const { entity, documents } = caseToModelInput(loaded);
   const request: ModelRequest = {
-    system: SYSTEM_PROMPT,
+    system: getSystemPrompt(),
     userMessage: buildUserMessage(entity, documents),
     outputSchema: CLAIMS_TRANSPORT_SCHEMA,
   };
@@ -257,7 +257,7 @@ export async function reconcile(
     }
 
     // Schema-valid. Stamp the run metadata; claim content is never touched.
-    const profile: ReconciledProfile = { ...result.data, model: MODEL };
+    const profile: ReconciledProfile = { ...result.data, model: getModel() };
     return { ok: true, profile, attempts: attempt, failures };
   }
 

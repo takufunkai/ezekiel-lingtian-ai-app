@@ -14,7 +14,7 @@
  *     so determinism is pinned via `MODEL` and `DEFAULT_EFFORT` instead.
  */
 
-import { DEFAULT_EFFORT, DEFAULT_MAX_TOKENS, MODEL, getClient } from "./client.js";
+import { DEFAULT_EFFORT, DEFAULT_MAX_TOKENS, getClient, getModel } from "./client.js";
 import type { ModelRequest } from "./engine.js";
 
 /** Beta flag that turns on transport-level structured outputs. */
@@ -30,7 +30,7 @@ export async function callLiveModel(request: ModelRequest): Promise<string> {
   const client = getClient();
 
   const response = await client.beta.messages.create({
-    model: MODEL,
+    model: getModel(),
     max_tokens: DEFAULT_MAX_TOKENS,
     betas: [STRUCTURED_OUTPUTS_BETA],
     output_format: { type: "json_schema", schema: request.outputSchema },
