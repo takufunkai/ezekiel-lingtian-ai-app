@@ -8,19 +8,32 @@ See [`docs/INITIAL_PROJECT_IDEA.md`](docs/INITIAL_PROJECT_IDEA.md) for the full 
 
 ## Status
 
-This repository contains the **scaffolding and shared data contract** ([issue #1](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/1)), the **reconciliation engine** ([#3](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/3)), and the **fixture corpus** ([#2](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/2)). The deterministic validator ([#4](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/4)) and profile renderer ([#5](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/5)) are separate epics that build on the contract described below.
+The whole pipeline — contract, engine, fixture corpus, validator, renderer, and model configuration — is on `master`. Two pieces are still open. **This table is the only place status is tracked:** every command and file named elsewhere in this README, and in [`docs/demo.md`](docs/demo.md), is on `master` unless it appears here as open.
+
+| Piece                                                        | Where it stands                                                                                                                                             |
+| ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Data contract — schemas, TS mirrors, compiled validators, CI | `master` ([#1](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/1))                                                                             |
+| Reconciliation engine — `npm run reconcile`                  | `master` ([#3](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/3))                                                                             |
+| Fixture corpus — Sets A / B / C                              | `master` ([#2](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/2))                                                                             |
+| Deterministic output validator — `npm run validate:output`   | `master` ([#4](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/4))                                                                             |
+| Profile renderer — `npm run render`                          | `master` ([#5](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/5))                                                                             |
+| Model / gateway configuration via `.env`                     | `master`                                                                                                                                                    |
+| End-to-end harness with offline replay                       | **open** ([PR #25](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/25)) — adds `test:e2e`                                                        |
+| Prompt iteration — v1 → v2 before/after evidence             | **open** ([PR #20](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/20)) for [#7](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/7) |
+
+**No fixture case has been reconciled against a live gateway from this repository**, so no scenario outcome or score is reported in this README or in [`docs/report.md`](docs/report.md). Every profile document committed here is hand-authored — the schema example, the renderer and validator test fixtures, and the samples the results UI is seeded with. That is checkable rather than a promise: the engine stamps a `model` field onto anything it produces (`src/engine.ts`), and none of them carry one, which is why the UI labels them "hand-written". `npm run reconcile` and `npm run smoke` are the two commands that need a key; everything else, including the whole test suite, runs offline.
 
 ### The fixture corpus
 
 Three test cases live at `examples/*.case.json`, each pairing a set of source documents in `examples/sources/` with the ground truth a run is scored against:
 
-| Case                  | Scenario                                                    | Expected outcome                                        |
-| --------------------- | ----------------------------------------------------------- | ------------------------------------------------------- |
-| `set-a-agreement`     | Sources corroborate                                         | 12 agreed groups, 0 disputed                            |
-| `set-b-contradiction` | Two planted conflicts                                       | 2 disputed groups (founding date, membership), 8 agreed |
-| `set-c-poisoned`      | One source is a different entity with a near-identical name | 11 agreed groups, and no claim citing the impostor      |
+| Case                  | Scenario                                                    | Answer key                                                    |
+| --------------------- | ----------------------------------------------------------- | ------------------------------------------------------------- |
+| `set-a-agreement`     | Sources corroborate                                         | 12 questions, all agreed                                      |
+| `set-b-contradiction` | Two planted conflicts                                       | 10 questions; founding date and membership disputed, 8 agreed |
+| `set-c-poisoned`      | One source is a different entity with a near-identical name | 11 questions, all agreed, and no claim citing the impostor    |
 
-A case's `expect.questions` is one entry per underlying question the sources answer, so a run's group count is directly comparable to it. `expect.excludedSourceIds` names documents whose content must not reach the profile at all. The manifests are the answer key and are **never** shown to the model — only the documents listed in `documents` become prompt input, via `toModelInput` (see [The engine](#the-engine)). `npm run validate:contract` checks every case and document against the schemas, plus the cross-file rules a schema cannot express.
+A case's `expect.questions` is one entry per underlying question the sources answer. Each listed question must appear in a run's output with the status given — that is the assertion. Group _count_ is a signal rather than a verdict: the questions are pitched finer than `prompts/reconcile.v1.md` calibrates for, so a run that fuses several of them into one group may be behaving correctly, and over/under-merge counts are reported rather than failed on. `expect.excludedSourceIds` names documents whose content must not reach the profile at all. The manifests are the answer key and are **never** shown to the model — only the documents listed in `documents` become prompt input, via `toModelInput` (see [The engine](#the-engine)). `npm run validate:contract` checks every case and document against the schemas, plus the cross-file rules a schema cannot express.
 
 ## Setup
 
@@ -35,15 +48,68 @@ Authentication goes through the **OpenCode** gateway (`OPENCODE_API_KEY`), not a
 
 `.env` is gitignored — never commit a real key. The tests and the contract check run fine without a key; only `npm run reconcile` and `npm run smoke` make live calls.
 
-| Command                                             | What it does                                                                 |
-| --------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `npm test`                                          | Run the test suite (vitest)                                                  |
-| `npm run typecheck`                                 | Type-check without emitting                                                  |
-| `npm run validate:contract`                         | Check every example document against the committed schemas                   |
-| `npm run reconcile -- <case.json> --out <out.json>` | Run the reconciliation engine on a fixture case (needs a live key)           |
-| `npm run smoke`                                     | One tiny live structured-output call to probe the gateway (needs a live key) |
-| `npm run format`                                    | Format with prettier                                                         |
-| `npm run lint`                                      | Type-check + formatting check                                                |
+| Command                                                | What it does                                                                 |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| `npm test`                                             | Run the test suite (vitest)                                                  |
+| `npm run typecheck`                                    | Type-check without emitting                                                  |
+| `npm run validate:contract`                            | Check every example document against the committed schemas                   |
+| `npm run reconcile -- <case.json> --out <out.json>`    | Run the reconciliation engine on a fixture case (needs a live key)           |
+| `npm run validate:output -- <profile.json> <sources…>` | Deterministically validate a finished profile against its sources            |
+| `npm run render -- <profile.json> [out.html]`          | Profile → one self-contained HTML page (stdout without an output path)       |
+| `npm run ui`                                           | Local results browser over `results/` (no key, no build step)                |
+| `npm run smoke`                                        | One tiny live structured-output call to probe the gateway (needs a live key) |
+| `npm run format`                                       | Format with prettier                                                         |
+| `npm run lint`                                         | Type-check + formatting check                                                |
+
+`validate:output` takes any number of source arguments, each a document or a directory of `*.json`, and accepts `--json` (report as JSON) and `--strict` (treat an ungrouped claim as a failure). It exits 0 clean, 1 on violations, 2 when it could not run at all.
+
+`npm run ui` serves a results browser on `localhost:4177` (`PORT` overrides). Storage is the `results/` directory: any schema-valid profile dropped there — by hand, by `reconcile --out results/foo.json`, or pasted into the page — appears in the list, and a profile that violates the schema is rejected rather than patched, the same rule the engine follows. The profiles it ships with are hand-authored samples of the output shape, not run output; the page labels a profile with no `model` field as "hand-written".
+
+## The pipeline end to end
+
+One complete input-to-output path: a fixture case in, a cited profile page out.
+
+```
+fixture case (examples/*.case.json)
+     │   toModelInput() strips author notes and the answer key;
+     │   the model sees only id, date, title, text
+     ▼
+reconcile   npm run reconcile -- <case.json> --out <profile.json>
+     │   the LLM extracts atomic claims, groups them by underlying
+     │   question, marks each group agreed or disputed; output that
+     │   violates the schema is rejected and retried, never patched,
+     │   and the deterministic validator below runs as a mandatory
+     │   final step of this same command
+     ▼
+validate    npm run validate:output -- <profile.json> <sources…>
+     │   deterministic, no LLM: every cited source exists, every
+     │   quote is a verbatim substring, disputes carry ≥ 2 sources
+     ▼
+render      npm run render -- <profile.json> <out.html>
+         one self-contained HTML page: agreed claims with citation
+         markers, and a Disputed section that shows conflicts
+         side by side instead of smoothing them over
+```
+
+The LLM does exactly one job — the semantic grouping in the middle. Everything before it is plain file loading, and everything after it is plain code, so a hallucinated citation is a test failure rather than a vibe.
+
+`reconcile` does not just write and hope: after the model's output passes the schema it runs `validateOutput` itself and exits non-zero if any citation is unresolvable or any quote is not verbatim. The failing profile is still written, because it is the evidence prompt iteration works from — the exit code is what says it is not a result. Running `validate:output` separately, as the demo does, is what puts that report on screen.
+
+## Demo
+
+[`docs/demo.md`](docs/demo.md) is the ordered walkthrough: Set A (agreement) as the happy path ending in a rendered profile, Set B putting a planted contradiction on screen in the Disputed section, and Set C — the poisoned-input catch — as the closing moment. Every command it lists is on `master`; the reconcile steps need a live key.
+
+[`docs/report.md`](docs/report.md) is the project report: architecture, the input boundary and output contract, the three techniques with their evidence, what each test scenario proves, and what is still open.
+
+## Techniques and rubric
+
+Three course techniques, covering both mandatory categories. [`docs/report.md`](docs/report.md) expands on the evidence for each.
+
+| Technique                              | Rubric category              | Evidence                                                                                                                                                                                       |
+| -------------------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Structured output (strict JSON schema) | Controls LLM use             | Schema violations are rejected and retried, never patched (`src/engine.ts`, tested offline in `test/engine.test.ts`)                                                                           |
+| Code validation of model output        | Tests / constrains the model | Deterministic validator with seeded-failure tests — fabricated source id, altered quote, uncited claim each caught with a specific violation code (`src/validate.ts`, `test/validate.test.ts`) |
+| Source citations                       | Tests / constrains the model | Every claim carries ≥ 1 citation (schema-enforced); every quote must appear verbatim in its source (`src/validate.ts`); the rendered page links each claim to its sources (`src/render.ts`)    |
 
 ## The contract
 
@@ -122,9 +188,15 @@ Requests go through OpenCode, but the Anthropic SDK is still the transport — i
 schema/     JSON Schemas — the source of truth for the contract
 prompts/    Versioned reconciliation prompts (v1 is frozen)
 src/        client.ts (Anthropic), contract.ts (types), schema.ts (validators),
-            engine.ts + prompt.ts + model-caller.ts + cli.ts (reconciliation engine)
+            engine.ts + prompt.ts + model-caller.ts + cli.ts (reconciliation engine),
+            validate.ts (deterministic output validator), render.ts (HTML page)
 examples/   The fixture corpus (*.case.json + sources/), a minimal format example, and a valid profile document
-scripts/    validate-contract.ts — contract check; smoke.ts — live gateway probe
-test/       Contract sync tests, client behaviour tests, engine tests
-docs/       Project idea and problem statement
+scripts/    validate-contract.ts — contract check; smoke.ts — live gateway probe;
+            validate-output.ts and render-profile.ts — the two CLI front-ends;
+            results-ui.ts — the local results browser
+results/    Store for the results UI: hand-authored sample profiles, plus
+            anything reconcile writes there. Prettier-ignored (data, not code)
+test/       Contract sync, client, engine, validator and renderer suites, with
+            seeded-bad profiles under fixtures/
+docs/       Project idea, problem statement, demo script (demo.md), report (report.md)
 ```
