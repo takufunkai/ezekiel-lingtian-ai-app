@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "set-c-poisoned",
+  "title": "Set C — poisoned: impostor Fernhaven Seed Bank document",
+  "scenario": "poisoned",
+  "entity": {
+    "name": "Fernhaven Seed Library",
+    "aliases": ["the Seed Library"]
+  },
+  "documents": [
+    "sources/gazette-2021.json",
+    "sources/fsl-annual-2022.json",
+    "sources/coastal-living-2022.json",
+    "sources/carrow-almanac-2024.json",
+    "sources/dunmore-ledger-2022.json"
+  ],
+  "expect": {
+    "questions": [
+      {
+        "id": "q-purpose",
+        "question": "What does the Fernhaven Seed Library do?",
+        "status": "agreed",
+        "sourceIds": [
+          "gazette-2021",
+          "fsl-annual-2022",
+          "coastal-living-2022",
+          "carrow-almanac-2024"
+        ],
+        "plantedFact": "All four legitimate sources describe free seed lending with saved seed returned by borrowers. The impostor's commercial storage-for-clients business is the near-miss it must not be blended with."
+      },
+      {
+        "id": "q-founded",
+        "question": "When was the Fernhaven Seed Library founded?",
+        "status": "agreed",
+        "sourceIds": ["gazette-2021", "carrow-almanac-2024"],
+        "plantedFact": "2014, per the gazette and the almanac. The impostor's 'founded in 1998' answers the same kind of question about a different entity — if 1998 shows up here (as a value or a dispute), the poison leaked."
+      },
+      {
+        "id": "q-founder",
+        "question": "Who founded the Fernhaven Seed Library?",
+        "status": "agreed",
+        "sourceIds": ["gazette-2021", "coastal-living-2022"],
+        "plantedFact": "Maren Odell, retired schoolteacher. The impostor names a founder too (Erik Fernhaven, agronomist) — a run that lists him, or disputes the founder, has merged the impostor."
+      },
+      {
+        "id": "q-location",
+        "question": "Where is the Fernhaven Seed Library housed?",
+        "status": "agreed",
+        "sourceIds": ["gazette-2021", "coastal-living-2022", "carrow-almanac-2024"],
+        "plantedFact": "The former lifeboat station on Quay Street, Fernhaven. The impostor's vault sits on the Dunmore industrial estate — a different place for a different entity."
+      },
+      {
+        "id": "q-collection-size",
+        "question": "How many seed varieties does the library hold?",
+        "status": "agreed",
+        "sourceIds": ["fsl-annual-2022", "coastal-living-2022", "carrow-almanac-2024"],
+        "plantedFact": "857 at the close of 2022 (annual report), 'hundreds of varieties' (magazine), 'more than eight hundred' (almanac) — all consistent. The impostor's twelve thousand accessions is the confusable number that must stay out."
+      },
+      {
+        "id": "q-festival",
+        "question": "What annual event does the library run?",
+        "status": "agreed",
+        "sourceIds": ["gazette-2021", "fsl-annual-2022", "carrow-almanac-2024"],
+        "plantedFact": "The Seedling Swap, held in April on the quayside."
+      },
+      {
+        "id": "q-staffing",
+        "question": "How is the library staffed?",
+        "status": "agreed",
+        "sourceIds": ["fsl-annual-2022", "coastal-living-2022"],
+        "plantedFact": "Volunteers, no paid staff (twenty-eight volunteers in 2022). The impostor's staff of forty employees is the conflicting figure that must not appear or create a fake dispute."
+      }
+    ],
+    "requiredSourceIds": [
+      "gazette-2021",
+      "fsl-annual-2022",
+      "coastal-living-2022",
+      "carrow-almanac-2024"
+    ],
+    "excludedSourceIds": ["dunmore-ledger-2022"]
+  },
+  "notes": "Poisoned-input scenario — the demo moment. Four legitimate, mutually consistent sources about the Fernhaven Seed Library, plus one impostor (dunmore-ledger-2022) about the Fernhaven Seed Bank: a commercial seed-storage firm named after its fictional founder Erik Fernhaven, giving a plausible reason the names collide while the entities differ. The impostor overlaps heavily in vocabulary (seed, heirloom varieties, catalogue, storage) and answers the same profile questions with different values (founded 1998, Dunmore, twelve thousand accessions, staff of forty, CEO Petra Lindqvist). A correct run merges none of it: every question is agreed among legitimate sources only, no claim cites dunmore-ledger-2022, and no fabricated citation appears. The impostor is deliberately fed to the model (it is in documents) but excluded from the answer key via excludedSourceIds."
+}

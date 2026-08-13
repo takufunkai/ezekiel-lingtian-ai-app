@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "set-a-agreement",
+  "title": "Set A — agreement: five corroborating sources",
+  "scenario": "agreement",
+  "entity": {
+    "name": "Fernhaven Seed Library",
+    "aliases": ["the Seed Library"]
+  },
+  "documents": [
+    "sources/gazette-2019.json",
+    "sources/fsl-annual-2023.json",
+    "sources/carrow-almanac-2023.json",
+    "sources/pottingshed-blog.json",
+    "sources/ccf-newsletter.json"
+  ],
+  "expect": {
+    "questions": [
+      {
+        "id": "q-purpose",
+        "question": "What does the Fernhaven Seed Library do?",
+        "status": "agreed",
+        "sourceIds": [
+          "gazette-2019",
+          "fsl-annual-2023",
+          "carrow-almanac-2023",
+          "pottingshed-blog",
+          "ccf-newsletter"
+        ],
+        "plantedFact": "All five sources describe the same activity in different words: seed is lent free of charge and borrowers return seed saved from their own crops."
+      },
+      {
+        "id": "q-founded",
+        "question": "When was the Fernhaven Seed Library founded?",
+        "status": "agreed",
+        "sourceIds": ["gazette-2019", "carrow-almanac-2023", "ccf-newsletter"],
+        "plantedFact": "Three sources give the founding year with three verbs — 'founded in 2014', 'established in 2014', 'since it was founded in 2014' — all the same year, so the group must come out agreed despite the varied phrasing."
+      },
+      {
+        "id": "q-founder",
+        "question": "Who founded the Fernhaven Seed Library?",
+        "status": "agreed",
+        "sourceIds": ["gazette-2019", "carrow-almanac-2023", "pottingshed-blog"],
+        "plantedFact": "Maren Odell, named as founder by the gazette and the almanac, and identified as 'founder Maren Odell' in the blog. The gazette and blog add that she is a retired schoolteacher."
+      },
+      {
+        "id": "q-location",
+        "question": "Where is the Fernhaven Seed Library housed?",
+        "status": "agreed",
+        "sourceIds": ["gazette-2019", "carrow-almanac-2023", "pottingshed-blog", "ccf-newsletter"],
+        "plantedFact": "Four sources independently place it in the former (converted / old) lifeboat station on Quay Street in Fernhaven."
+      },
+      {
+        "id": "q-collection-size",
+        "question": "How many seed varieties does the library hold?",
+        "status": "agreed",
+        "sourceIds": ["fsl-annual-2023", "carrow-almanac-2023"],
+        "plantedFact": "The 2023 annual report says the catalogue stood at 912 varieties; the 2023 almanac says roughly nine hundred. Consistent figures, deliberately phrased one precise and one rounded — an agreed group, not a dispute."
+      },
+      {
+        "id": "q-festival",
+        "question": "What annual event does the library run?",
+        "status": "agreed",
+        "sourceIds": ["gazette-2019", "fsl-annual-2023", "carrow-almanac-2023"],
+        "plantedFact": "The Seedling Swap, held each April — the gazette covers the fifth one, the annual report and almanac both name it."
+      },
+      {
+        "id": "q-staffing",
+        "question": "How is the library staffed?",
+        "status": "agreed",
+        "sourceIds": ["gazette-2019", "fsl-annual-2023", "pottingshed-blog"],
+        "plantedFact": "Run by volunteers with no paid staff. The annual report is explicit (thirty-one volunteers, no paid staff); the gazette and blog show volunteers running things."
+      },
+      {
+        "id": "q-funding",
+        "question": "How is the library funded?",
+        "status": "agreed",
+        "sourceIds": ["fsl-annual-2023", "ccf-newsletter"],
+        "plantedFact": "Member donations and small grants. The newsletter announces a £4,000 Carrow Coast Community Fund grant; the annual report names the same fund's continued support."
+      }
+    ],
+    "requiredSourceIds": [
+      "gazette-2019",
+      "fsl-annual-2023",
+      "carrow-almanac-2023",
+      "pottingshed-blog",
+      "ccf-newsletter"
+    ],
+    "excludedSourceIds": []
+  },
+  "notes": "Baseline agreement scenario: five sources in five registers (local news, first-party annual report, encyclopedia-ish almanac, personal blog, grant-maker newsletter) that corroborate one another and never conflict. A correct run produces zero disputed groups, cites every source at least once, and merges the varied phrasings ('founded' / 'established', '912' / 'roughly nine hundred') into single agreed groups rather than splitting them."
+}

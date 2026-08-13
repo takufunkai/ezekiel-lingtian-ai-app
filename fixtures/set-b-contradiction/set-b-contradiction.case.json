@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "set-b-contradiction",
+  "title": "Set B — contradiction: three conflicting founding dates",
+  "scenario": "contradiction",
+  "entity": {
+    "name": "Fernhaven Seed Library",
+    "aliases": ["the Seed Library"]
+  },
+  "documents": [
+    "sources/harbour-courier-2016.json",
+    "sources/carrow-almanac-2021.json",
+    "sources/charity-register-2020.json",
+    "sources/odell-interview-2018.json",
+    "sources/fsl-annual-2019.json"
+  ],
+  "expect": {
+    "questions": [
+      {
+        "id": "q-founded",
+        "question": "When was the Fernhaven Seed Library founded?",
+        "status": "disputed",
+        "sourceIds": ["harbour-courier-2016", "carrow-almanac-2021", "charity-register-2020"],
+        "plantedFact": "The planted contradiction. harbour-courier-2016 says 'founded in 2014'; carrow-almanac-2021 says it 'began lending seed to the public in early 2015'; charity-register-2020 says 'incorporated as a charitable trust in December 2013'. Three semantically conflicting answers to when the library came into existence, with no shared wording — string matching cannot group them, and a correct run surfaces them side by side as one disputed group rather than averaging or silently picking one."
+      },
+      {
+        "id": "q-purpose",
+        "question": "What does the Fernhaven Seed Library do?",
+        "status": "agreed",
+        "sourceIds": [
+          "harbour-courier-2016",
+          "carrow-almanac-2021",
+          "charity-register-2020",
+          "odell-interview-2018",
+          "fsl-annual-2019"
+        ],
+        "plantedFact": "All five sources agree it lends seed free of charge and expects borrowers to return saved seed — the profile must not come out all-dispute just because the founding date is contested."
+      },
+      {
+        "id": "q-founder",
+        "question": "Who founded the Fernhaven Seed Library?",
+        "status": "agreed",
+        "sourceIds": ["harbour-courier-2016", "odell-interview-2018"],
+        "plantedFact": "Maren Odell — named as founder in the newspaper feature and in the interview's title. The founder is agreed even though the founding date is disputed; a correct run keeps those two questions separate."
+      },
+      {
+        "id": "q-location",
+        "question": "Where is the Fernhaven Seed Library housed?",
+        "status": "agreed",
+        "sourceIds": [
+          "harbour-courier-2016",
+          "carrow-almanac-2021",
+          "charity-register-2020",
+          "odell-interview-2018"
+        ],
+        "plantedFact": "Quay Street, Fernhaven — the courier and almanac name the former lifeboat station, the register gives the registered office, and Odell explains why she chose the building."
+      },
+      {
+        "id": "q-festival",
+        "question": "What annual event does the library run?",
+        "status": "agreed",
+        "sourceIds": ["odell-interview-2018", "fsl-annual-2019"],
+        "plantedFact": "The Seedling Swap, held in April — described by Odell and reported as the busiest day of the year in the annual report."
+      },
+      {
+        "id": "q-collection-size",
+        "question": "How many seed varieties does the library hold?",
+        "status": "agreed",
+        "sourceIds": ["fsl-annual-2019"],
+        "plantedFact": "Only the 2019 annual report gives a figure (the catalogue passed six hundred varieties). A single-source question is agreed, not disputed."
+      },
+      {
+        "id": "q-staffing",
+        "question": "How is the library staffed?",
+        "status": "agreed",
+        "sourceIds": ["fsl-annual-2019"],
+        "plantedFact": "Only the annual report addresses staffing: run entirely by volunteers, no paid staff."
+      }
+    ],
+    "requiredSourceIds": [
+      "harbour-courier-2016",
+      "carrow-almanac-2021",
+      "charity-register-2020",
+      "odell-interview-2018",
+      "fsl-annual-2019"
+    ],
+    "excludedSourceIds": []
+  },
+  "notes": "Planted-contradiction scenario. Exactly one fact is contested — when the library came into existence — and it is planted across three documents in three registers with deliberately disjoint phrasings ('founded in 2014' / 'began lending seed to the public in early 2015' / 'incorporated as a charitable trust in December 2013'), mirroring the canonical example in the project README. Everything else agrees, so a correct run yields exactly one disputed group among six agreed ones. The two documents without a founding date (interview, annual report) exist to check that sources are not dragged into a dispute they never spoke to. Note the corpus is not consistent across sets by design: Set A fixes the founding at 2014, this set contests it."
+}

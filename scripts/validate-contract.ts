@@ -1,6 +1,7 @@
 #!/usr/bin/env tsx
 /**
- * Proves the committed example documents validate against the committed schemas.
+ * Proves the committed example documents and the fixture corpus validate against
+ * the committed schemas.
  *
  * Run with `npm run validate:contract`. Exits non-zero on the first failure so it
  * can be wired into CI.
@@ -22,6 +23,7 @@ import type { FixtureCase, SourceDocument } from "../src/contract.js";
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const examplesDir = join(repoRoot, "examples");
 const sourcesDir = join(examplesDir, "sources");
+const fixturesDir = join(repoRoot, "fixtures");
 
 let failures = 0;
 
@@ -70,21 +72,22 @@ const profilePath = join(examplesDir, "reconciled-profile.example.json");
 const profileData = load(profilePath);
 if (profileData !== undefined) report(profilePath, validateProfile(profileData));
 
-console.log("fixture cases  (schema/fixture-case.schema.json)");
-const caseFiles = readdirSync(examplesDir)
-  .filter((name) => name.endsWith("case.example.json") || name.endsWith(".case.json"))
-  .sort();
-for (const name of caseFiles) {
-  const path = join(examplesDir, name);
+/**
+ * Checks one fixture case file: schema validation plus the cross-file checks the
+ * schema cannot express — every referenced document must exist, parse, satisfy
+ * the source-document schema, and carry a unique id; every source id named in
+ * the expectations must belong to one of the case's documents.
+ */
+function checkFixtureCase(path: string): void {
   const data = load(path);
-  if (data === undefined) continue;
+  if (data === undefined) return;
 
   const result = validateFixtureCase(data);
-  report(path, result);
-  if (!result.valid) continue;
+  if (!result.valid) {
+    report(path, result);
+    return;
+  }
 
-  // Cross-file checks the schema cannot express: the referenced documents must
-  // exist, and every source id named in the expectations must be one of them.
   const fixtureCase: FixtureCase = result.data;
   const caseDir = dirname(path);
   const problems: string[] = [];
@@ -101,7 +104,19 @@ for (const name of caseFiles) {
       problems.push(`documents: "${ref}" is not valid JSON: ${doc.error}`);
       continue;
     }
-    declaredIds.add((doc.data as SourceDocument).id);
+    const docResult = validateSourceDocument(doc.data);
+    if (!docResult.valid) {
+      problems.push(
+        `documents: "${ref}" fails the source-document schema:`,
+        ...formatSchemaErrors(docResult.errors).map((line) => `  ${line}`),
+      );
+      continue;
+    }
+    const docId = (doc.data as SourceDocument).id;
+    if (declaredIds.has(docId)) {
+      problems.push(`documents: "${ref}" reuses id "${docId}" already used by another document`);
+    }
+    declaredIds.add(docId);
   }
 
   const cited = [
@@ -121,7 +136,36 @@ for (const name of caseFiles) {
     }
   }
 
-  if (problems.length > 0) fail(path, problems);
+  if (problems.length > 0) {
+    fail(path, problems);
+  } else {
+    report(path, result);
+  }
+}
+
+console.log("fixture cases  (schema/fixture-case.schema.json)");
+const caseFiles = readdirSync(examplesDir)
+  .filter((name) => name.endsWith("case.example.json") || name.endsWith(".case.json"))
+  .sort();
+for (const name of caseFiles) {
+  checkFixtureCase(join(examplesDir, name));
+}
+
+// The fixture corpus (issue #2) is what the engine is tested and demoed against,
+// so CI guards it with the same schema and cross-file checks as the examples.
+console.log("fixture corpus  (fixtures/**/*.case.json)");
+const fixtureCaseFiles = existsSync(fixturesDir)
+  ? readdirSync(fixturesDir, { recursive: true })
+      .map(String)
+      .filter((name) => name.endsWith(".case.json"))
+      .sort()
+  : [];
+if (fixtureCaseFiles.length === 0) {
+  console.error("  FAIL  no fixture cases found under fixtures/");
+  failures += 1;
+}
+for (const name of fixtureCaseFiles) {
+  checkFixtureCase(join(fixturesDir, name));
 }
 
 if (failures > 0) {
@@ -129,4 +173,4 @@ if (failures > 0) {
   process.exit(1);
 }
 
-console.log("\nAll example documents validate against the committed schemas.");
+console.log("\nAll example and fixture documents validate against the committed schemas.");
