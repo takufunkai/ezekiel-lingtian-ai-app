@@ -31,6 +31,31 @@ export interface SourceDocument {
   notes?: string;
 }
 
+/**
+ * The subset of a SourceDocument the model is allowed to see.
+ *
+ * `notes` (and any future non-input field) is deliberately absent. This type and
+ * `toModelInput` are the ONLY sanctioned path from documents to prompt text —
+ * prompt construction accepts `ModelSourceDocument`, never `SourceDocument`.
+ */
+export interface ModelSourceDocument {
+  id: string;
+  date: string;
+  title: string;
+  text: string;
+}
+
+/**
+ * Structurally strips everything but the model-input fields from a document.
+ *
+ * Copies the allowed fields one by one rather than deleting `notes`, so a field
+ * added to `SourceDocument` later never leaks to the model by default — it has
+ * to be added here explicitly to become model input.
+ */
+export function toModelInput(doc: SourceDocument): ModelSourceDocument {
+  return { id: doc.id, date: doc.date, title: doc.title, text: doc.text };
+}
+
 /** The entity the profile is about. */
 export interface Entity {
   name: string;
