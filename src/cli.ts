@@ -19,7 +19,7 @@
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { API_KEY_ENV_VAR, MODEL, hasApiKey } from "./client.js";
+import { API_KEY_ENV_VAR, getBaseUrl, getModel, hasApiKey } from "./client.js";
 import { loadCaseWithDocuments, reconcileCaseFile } from "./engine.js";
 import { callLiveModel } from "./model-caller.js";
 import { PROMPT_VERSION } from "./prompt.js";
@@ -82,7 +82,22 @@ async function main(): Promise<number> {
   }
 
   const { casePath, outPath } = parsed.args;
-  console.error(`reconcile: case=${casePath} model=${MODEL} prompt=${PROMPT_VERSION}`);
+
+  // Resolve the effective config up front so a bad env value fails here with
+  // its actionable message, and log the gateway so a redirected base URL is
+  // visible in every run log — not just in `npm run smoke`.
+  let model: string;
+  let gateway: string;
+  try {
+    model = getModel();
+    gateway = getBaseUrl();
+  } catch (error) {
+    console.error(`reconcile: ${error instanceof Error ? error.message : String(error)}`);
+    return 1;
+  }
+  console.error(
+    `reconcile: case=${casePath} gateway=${gateway} model=${model} prompt=${PROMPT_VERSION}`,
+  );
 
   const outcome = await reconcileCaseFile(casePath, { callModel: callLiveModel });
   if (!outcome.ok) {

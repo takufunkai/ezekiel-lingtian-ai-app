@@ -16,7 +16,7 @@
  */
 
 import { dirname, join, resolve } from "node:path";
-import { MODEL } from "./client.js";
+import { getModel } from "./client.js";
 import type {
   Entity,
   FixtureCase,
@@ -257,7 +257,9 @@ export async function reconcile(
     }
 
     // Schema-valid. Stamp the run metadata; claim content is never touched.
-    const profile: ReconciledProfile = { ...result.data, model: MODEL };
+    // getModel(), not the MODEL fallback constant: the profile must record the
+    // model that actually produced it.
+    const profile: ReconciledProfile = { ...result.data, model: getModel() };
     return { ok: true, profile, attempts: attempt, failures };
   }
 
