@@ -57,10 +57,16 @@ const server = createServer((req, res) => {
       if (!check.valid) {
         res.statusCode = 422;
         return res.end(
-          JSON.stringify({ error: "schema violations (rejected, not patched)", details: formatSchemaErrors(check.errors).slice(0, 5) }),
+          JSON.stringify({
+            error: "schema violations (rejected, not patched)",
+            details: formatSchemaErrors(check.errors).slice(0, 5),
+          }),
         );
       }
-      const slug = check.data.entity.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
+      const slug = check.data.entity.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .slice(0, 40);
       const file = `${slug}-${Date.now()}.json`;
       writeFileSync(join(DIR, file), JSON.stringify(check.data, null, 2));
       res.end(JSON.stringify({ ok: true, file }));
@@ -133,4 +139,6 @@ async function imp(){const r=await fetch("/api/results",{method:"POST",body:docu
 load();setInterval(load,4000);
 </script></body></html>`;
 
-server.listen(PORT, () => console.log(`results ui → http://localhost:${PORT}  (storing in ${DIR})`));
+server.listen(PORT, () =>
+  console.log(`results ui → http://localhost:${PORT}  (storing in ${DIR})`),
+);
