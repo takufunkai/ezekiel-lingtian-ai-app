@@ -123,7 +123,7 @@ schema/     JSON Schemas — the source of truth for the contract
 prompts/    Versioned reconciliation prompts (v1 is frozen)
 src/        client.ts (Anthropic), contract.ts (types), schema.ts (validators),
             engine.ts + prompt.ts + model-caller.ts + cli.ts (reconciliation engine)
-examples/   The fixture corpus (*.case.json + sources/) and a valid profile document
+examples/   The fixture corpus (*.case.json + sources/), a minimal format example, and a valid profile document
 scripts/    validate-contract.ts — contract check; smoke.ts — live gateway probe
 test/       Contract sync tests, client behaviour tests, engine tests
 docs/       Project idea and problem statement

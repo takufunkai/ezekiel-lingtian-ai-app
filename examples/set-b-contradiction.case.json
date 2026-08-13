@@ -62,8 +62,8 @@
         "id": "q-premises",
         "question": "What premises does the cooperative occupy?",
         "status": "agreed",
-        "sourceIds": ["set-b-02", "set-b-03"],
-        "plantedFact": "A converted grain store it still occupies (set-b-03), which set-b-02 corroborates as its original registered address. set-b-04 adds a second dyehouse on the same site; that is a separate question rather than a rival answer."
+        "sourceIds": ["set-b-03"],
+        "plantedFact": "A converted grain store it still occupies, stated only by set-b-03. set-b-02 is deliberately not credited: \"remains registered at its original address in Cawden Vale\" says the cooperative has not moved, not what the building is, and crediting it here would invite a claim citing set-b-02 for the grain store. set-b-04 adds a second dyehouse on the same site; that is a separate question rather than a rival answer."
       },
       {
         "id": "q-work-arrangement",
@@ -90,5 +90,5 @@
     "requiredSourceIds": ["set-b-01", "set-b-02", "set-b-03", "set-b-04", "set-b-05"],
     "excludedSourceIds": []
   },
-  "notes": "Expected outcome: ten groups, of which exactly two are disputed (founding date, membership) and eight agreed. This is the set the before/after prompt evidence in Epic 7 should be scored on, because both failure directions are observable in it: under-merging splits the three founding-date answers into three groups, and over-merging or majority-voting collapses a disputed group into a single agreed claim. The question list is intended to be exhaustive over every fact these documents state, single-source ones included, because `fixture-case.schema.json` treats group count as directly comparable to question count."
+  "notes": "Expected outcome: exactly two disputed groups (founding date, membership); every other group agreed. The assertion is that each question below appears with the status given — the two disputed ones especially — while group count is a signal rather than a verdict, since these questions are pitched finer than `prompts/reconcile.v1.md` calibrates for (a run that fuses location with premises, or product with patterns, is behaving reasonably). This is the set the before/after prompt evidence in Epic 7 should be scored on, because both failure directions are observable in it: under-merging splits the three founding-date answers into three groups, and over-merging or majority-voting collapses a disputed group into a single agreed claim. Neither of those is a granularity judgement — they are wrong about whether the sources conflict, which is what this project claims to get right."
 }
