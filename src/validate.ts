@@ -10,6 +10,12 @@
  * are the cross-document checks a JSON Schema cannot express, because they need
  * the source texts the profile was produced from.
  *
+ * Two source lists are in play and they must agree. The input set — the documents
+ * actually supplied to the run — is the ground truth for whether a document exists
+ * and what it says. The profile's own `sources` manifest is a *claim about* that
+ * set, and the renderer resolves citation markers through it, so a citation the
+ * manifest omits renders as an unresolvable marker. Both directions are checked.
+ *
  * The semantic checks run even when the schema check fails, reading the document
  * defensively rather than trusting its shape. A profile with an uncited claim is
  * both a schema violation and a citation violation, and reporting only the former
@@ -22,8 +28,11 @@ import type { SourceDocument } from "./contract.js";
 /** Every violation this validator can report. */
 export const VIOLATION_CODES = [
   "SCHEMA_INVALID",
+  "MANIFEST_SOURCE_NOT_IN_INPUT",
+  "DUPLICATE_CLAIM_ID",
   "CLAIM_NO_CITATIONS",
   "UNKNOWN_SOURCE_ID",
+  "SOURCE_NOT_IN_MANIFEST",
   "QUOTE_NOT_VERBATIM",
   "UNRESOLVED_CLAIM_ID",
   "DISPUTED_GROUP_UNDER_SOURCED",
@@ -46,7 +55,7 @@ export interface Violation {
   message: string;
   /** JSON Pointer (RFC 6901) into the profile document; `""` is the document root. */
   path: string;
-  /** The claim or group id this violation is about, when the document supplies one. */
+  /** The claim, group, or source id this violation is about, when there is one. */
   subjectId?: string;
 }
 
@@ -56,8 +65,9 @@ export interface ValidationReport {
   errorCount: number;
   warningCount: number;
   /**
-   * Deterministic order: schema errors first, then claims in document order, then
-   * groups in document order, then grouping coverage. Same input, same report.
+   * Deterministic order, following the document: schema errors, then the source
+   * manifest, then claims, then groups, then grouping coverage. Within each of
+   * those, array order. Same input, same report.
    */
   violations: Violation[];
 }
@@ -111,8 +121,8 @@ function nearMissHint(text: string, quote: string): string {
  * Checks a reconciled profile against the source documents that produced it.
  *
  * `sources` is the authoritative input set: the documents actually supplied to the
- * run. A citation naming anything else is a fabrication, whether or not the
- * profile's own `sources` manifest lists it.
+ * run. A citation naming anything else is a fabrication, and a manifest entry
+ * naming anything else is an invented document.
  *
  * Never throws, never reads the filesystem, and never calls a model. `profile` is
  * `unknown` on purpose so a raw `JSON.parse` result can be passed straight in.
@@ -139,10 +149,36 @@ export function validateOutput(
   const document: Record<string, unknown> = isRecord(profile) ? profile : {};
   const sourceTexts = new Map(sources.map((source) => [source.id, source.text]));
 
-  // First pass over the claims: the citation checks, plus the two indexes the
-  // group checks need — id to position, and id to the input sources it cites.
+  // The manifest is a claim about the input set, and the renderer resolves citation
+  // markers through it, so an entry naming a document nobody supplied is a made-up
+  // provenance line that will be rendered to a reader as if it were real. Unlike an
+  // ungrouped claim, it asserts the existence of something that does not exist, so
+  // it is an error even when no claim cites it.
+  const manifestIds = new Set<string>();
+  for (const [sourceIndex, entry] of readArray(document, "sources").entries()) {
+    if (!isRecord(entry)) continue;
+
+    const sourceId = readString(entry, "id");
+    if (sourceId === undefined) continue;
+    manifestIds.add(sourceId);
+
+    if (!sourceTexts.has(sourceId)) {
+      violations.push({
+        code: "MANIFEST_SOURCE_NOT_IN_INPUT",
+        severity: "error",
+        message: `the sources manifest lists "${sourceId}", which was never supplied as an input document`,
+        path: `/sources/${sourceIndex}/id`,
+        subjectId: sourceId,
+      });
+    }
+  }
+
+  // First pass over the claims: the citation checks, plus the two indexes the group
+  // checks need — claim id to its position, and each claim's cited input sources.
+  // The second index is keyed by *position*, not id: two claims sharing an id must
+  // not pool their sources into one inflated total (see DUPLICATE_CLAIM_ID below).
   const claimPositions = new Map<string, number>();
-  const citedSourceIds = new Map<string, Set<string>>();
+  const citedSourceIds = new Map<number, Set<string>>();
 
   for (const [claimIndex, entry] of readArray(document, "claims").entries()) {
     if (!isRecord(entry)) continue;
@@ -150,8 +186,21 @@ export function validateOutput(
     const claimPath = `/claims/${claimIndex}`;
     const claimId = readString(entry, "id");
     const claim = claimId ?? claimPath;
-    if (claimId !== undefined && !claimPositions.has(claimId)) {
-      claimPositions.set(claimId, claimIndex);
+    if (claimId !== undefined) {
+      // `claims.schema.json` has no uniqueness constraint on claim ids, so this has
+      // to be caught here. A shared id makes `claimIds` ambiguous: a group naming it
+      // cannot say which claim it means, and the resolution below has to pick one.
+      if (claimPositions.has(claimId)) {
+        violations.push({
+          code: "DUPLICATE_CLAIM_ID",
+          severity: "error",
+          message: `claim id "${claimId}" is used by more than one claim, so a group listing it cannot say which one it means`,
+          path: `${claimPath}/id`,
+          subjectId: claimId,
+        });
+      } else {
+        claimPositions.set(claimId, claimIndex);
+      }
     }
 
     const citations = readArray(entry, "citations");
@@ -186,10 +235,21 @@ export function validateOutput(
 
       // Only real sources count towards a group's source spread, so a dispute
       // propped up by a fabricated id is reported as under-sourced as well.
-      if (claimId !== undefined) {
-        const cited = citedSourceIds.get(claimId) ?? new Set<string>();
-        cited.add(sourceId);
-        citedSourceIds.set(claimId, cited);
+      const cited = citedSourceIds.get(claimIndex) ?? new Set<string>();
+      cited.add(sourceId);
+      citedSourceIds.set(claimIndex, cited);
+
+      // The document exists, but the profile's own manifest does not admit to it.
+      // The renderer resolves citation markers through the manifest, so this is the
+      // difference between a footnote and an unresolvable marker on the page.
+      if (!manifestIds.has(sourceId)) {
+        violations.push({
+          code: "SOURCE_NOT_IN_MANIFEST",
+          severity: "error",
+          message: `claim ${claim} cites input document "${sourceId}", which the profile's own sources manifest omits, so the citation cannot be resolved`,
+          path: `${citationPath}/sourceId`,
+          subjectId: claimId,
+        });
       }
 
       const quote = readString(raw, "quote");
@@ -220,7 +280,8 @@ export function validateOutput(
       if (typeof memberId !== "string") continue;
       groupedClaimIds.add(memberId);
 
-      if (!claimPositions.has(memberId)) {
+      const position = claimPositions.get(memberId);
+      if (position === undefined) {
         violations.push({
           code: "UNRESOLVED_CLAIM_ID",
           severity: "error",
@@ -231,7 +292,9 @@ export function validateOutput(
         continue;
       }
 
-      for (const sourceId of citedSourceIds.get(memberId) ?? []) spread.add(sourceId);
+      // Deliberately the sources of the *one* claim the id resolves to, so a
+      // duplicate id cannot lend a group evidence from a second claim.
+      for (const sourceId of citedSourceIds.get(position) ?? []) spread.add(sourceId);
     }
 
     if (readString(entry, "status") === "disputed" && spread.size < 2) {
@@ -250,7 +313,9 @@ export function validateOutput(
   // walks groups. Grouping every claim is not part of the contract either — the
   // schema says nothing about the union of `claimIds` covering `claims`. So this
   // is a warning that `--strict` can promote, not a hard failure that would sink
-  // an otherwise honest profile.
+  // an otherwise honest profile. Keyed by id, so a claim that is unreachable only
+  // because it shares an id is reported as DUPLICATE_CLAIM_ID instead — the same
+  // defect, named accurately.
   for (const [claimId, claimIndex] of claimPositions) {
     if (groupedClaimIds.has(claimId)) continue;
     violations.push({

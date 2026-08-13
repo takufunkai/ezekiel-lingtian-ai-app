@@ -39,11 +39,15 @@ function codesOf(report: ValidationReport): ViolationCode[] {
   return report.violations.map((violation) => violation.code);
 }
 
-/** Copies the known-good profile so a test can plant exactly one defect in it. */
-function mutateGood(change: (profile: ReconciledProfile) => void): ReconciledProfile {
-  const copy = structuredClone(fixture("good.profile.json")) as ReconciledProfile;
+/** Copies a fixture profile so a test can plant exactly one defect in it. */
+function mutate(name: string, change: (profile: ReconciledProfile) => void): ReconciledProfile {
+  const copy = structuredClone(fixture(name)) as ReconciledProfile;
   change(copy);
   return copy;
+}
+
+function mutateGood(change: (profile: ReconciledProfile) => void): ReconciledProfile {
+  return mutate("good.profile.json", change);
 }
 
 describe("the fixtures themselves are sound", () => {
@@ -147,6 +151,110 @@ describe("seeded bad outputs are each caught by a specific violation", () => {
   });
 });
 
+describe("the sources manifest and the input set must agree", () => {
+  // The crossover case that motivated these checks: the renderer (#5) resolves
+  // citation markers through `profile.sources`, so a citation the manifest omits
+  // renders as an unresolvable marker. Without this the validator called such a
+  // profile clean and the renderer shipped the broken page.
+  it("catches a citation to an input document the manifest omits", () => {
+    const report = validateFixture("bad-source-not-in-manifest.profile.json");
+    expect(codesOf(report)).toEqual(["SOURCE_NOT_IN_MANIFEST", "SOURCE_NOT_IN_MANIFEST"]);
+    expect(report.ok).toBe(false);
+    expect(report.violations[0]?.path).toBe("/claims/1/citations/0/sourceId");
+    expect(report.violations[0]?.subjectId).toBe("c2");
+    expect(report.violations[0]?.message).toContain("src-02");
+    expect(report.violations[1]?.path).toBe("/claims/3/citations/0/sourceId");
+  });
+
+  it("does not mistake a manifest gap for a fabricated source", () => {
+    const report = validateFixture("bad-source-not-in-manifest.profile.json");
+    expect(codesOf(report)).not.toContain("UNKNOWN_SOURCE_ID");
+  });
+
+  it("still checks the quote of a citation the manifest omits", () => {
+    const broken = mutate("bad-source-not-in-manifest.profile.json", (profile) => {
+      profile.claims[1]!.citations[0]!.quote = "founding of Harrow Tin Works in 1952";
+    });
+    expect(codesOf(validateOutput(broken, sources))).toEqual([
+      "SOURCE_NOT_IN_MANIFEST",
+      "QUOTE_NOT_VERBATIM",
+      "SOURCE_NOT_IN_MANIFEST",
+    ]);
+  });
+
+  const invented = { id: "src-03", date: "2011-01-01", title: "Not an input" };
+
+  it("catches a manifest entry for a document nobody supplied", () => {
+    const broken = mutateGood((profile) => {
+      profile.sources.push({ ...invented });
+    });
+    const report = validateOutput(broken, sources);
+    expect(codesOf(report)).toEqual(["MANIFEST_SOURCE_NOT_IN_INPUT"]);
+    expect(report.ok).toBe(false);
+    expect(report.violations[0]?.path).toBe("/sources/2/id");
+    expect(report.violations[0]?.subjectId).toBe("src-03");
+  });
+
+  it("reports both angles when a claim cites an invented manifest entry", () => {
+    const broken = mutateGood((profile) => {
+      profile.sources.push({ ...invented });
+      profile.claims[3]!.citations[0]!.sourceId = "src-03";
+    });
+    expect(codesOf(validateOutput(broken, sources))).toEqual([
+      "MANIFEST_SOURCE_NOT_IN_INPUT",
+      "UNKNOWN_SOURCE_ID",
+    ]);
+  });
+});
+
+describe("duplicate claim ids cannot soften the dispute check", () => {
+  // `claims.schema.json` puts no uniqueness constraint on claim ids, so nothing
+  // upstream of this module rejects a document with two claims called "c2".
+  const duplicateOfC2 = {
+    id: "c2",
+    text: "Harrow Tin Works was founded in 1951.",
+    citations: [{ sourceId: "src-02", quote: "founding of Harrow Tin Works in 1951" }],
+  };
+
+  it("catches two claims sharing an id", () => {
+    const broken = mutateGood((profile) => {
+      profile.claims.push({ ...duplicateOfC2 });
+    });
+    const report = validateOutput(broken, sources);
+    expect(codesOf(report)).toEqual(["DUPLICATE_CLAIM_ID"]);
+    expect(report.ok).toBe(false);
+    expect(report.violations[0]?.path).toBe("/claims/4/id");
+    expect(report.violations[0]?.subjectId).toBe("c2");
+  });
+
+  it("reports every claim after the first that reuses an id", () => {
+    const broken = mutateGood((profile) => {
+      profile.claims.push({ ...duplicateOfC2 }, { ...duplicateOfC2 });
+    });
+    const report = validateOutput(broken, sources);
+    expect(codesOf(report)).toEqual(["DUPLICATE_CLAIM_ID", "DUPLICATE_CLAIM_ID"]);
+    expect(report.violations.map((violation) => violation.path)).toEqual([
+      "/claims/4/id",
+      "/claims/5/id",
+    ]);
+  });
+
+  it("does not pool a duplicate id's sources into a group's spread", () => {
+    // Both halves of the disputed g1 now rest on src-01, and a second claim also
+    // called "c2" cites src-02. Pooling by id would credit g1 with two sources and
+    // hide the single-sourced dispute.
+    const broken = mutateGood((profile) => {
+      profile.claims[1]!.citations[0]!.sourceId = "src-01";
+      profile.claims[1]!.citations[0]!.quote = "on the north bank of the Mersey";
+      profile.claims.push({ ...duplicateOfC2 });
+    });
+    expect(codesOf(validateOutput(broken, sources))).toEqual([
+      "DUPLICATE_CLAIM_ID",
+      "DISPUTED_GROUP_UNDER_SOURCED",
+    ]);
+  });
+});
+
 describe("the quote check is exact substring matching, nothing more", () => {
   function quoteReport(quote: string): ValidationReport {
     const broken = mutateGood((profile) => {
@@ -214,6 +322,7 @@ describe("the report is machine-readable and deterministic", () => {
       "bad-uncited-claim.profile.json",
       "bad-unresolved-claim-id.profile.json",
       "bad-disputed-single-source.profile.json",
+      "bad-source-not-in-manifest.profile.json",
       "ungrouped-claim.profile.json",
     ];
     for (const name of names) {
