@@ -5,7 +5,7 @@
   "scenario": "contradiction",
   "entity": {
     "name": "Halberd Mills Cooperative",
-    "aliases": ["Halberd Mills", "the cooperative"]
+    "aliases": ["Halberd Mills"]
   },
   "documents": [
     "sources/set-b-01.json",
@@ -21,14 +21,14 @@
         "question": "When was Halberd Mills Cooperative founded?",
         "status": "disputed",
         "sourceIds": ["set-b-01", "set-b-02", "set-b-03"],
-        "plantedFact": "Three incompatible answers to one question, sharing no phrase that a string match could key on: \"was founded in 1998\" (set-b-01), \"was incorporated in the spring of 1997\" (set-b-02), \"began trading in 1999\" (set-b-03). Recognising founded, incorporated, and began trading as answers to the same underlying question is the semantic-grouping test this project exists to demonstrate. All three answers must survive side by side — averaging to 1998, or picking the earliest, or preferring the registry because it sounds official, are all failures."
+        "plantedFact": "Three incompatible answers to one question, sharing no phrase a string match could key on: \"was founded in 1998\" (set-b-01), \"was incorporated in the spring of 1997\" (set-b-02), \"began trading in 1999\" (set-b-03). Recognising founded, incorporated, and began trading as answers to the same underlying question is the semantic-grouping test this project exists to demonstrate. All three answers must survive side by side — averaging to 1998, or picking the earliest, or preferring the registry because it sounds official, are all failures. This conflict is immune to temporal reasoning: a founding date cannot change between publications, so no reading of the document dates dissolves it."
       },
       {
         "id": "q-membership",
         "question": "How many members does the cooperative have?",
         "status": "disputed",
         "sourceIds": ["set-b-01", "set-b-02", "set-b-03"],
-        "plantedFact": "\"just over two hundred members\" (set-b-01) and \"a couple of hundred of us, give or take\" (set-b-03) agree with each other and conflict with \"about a hundred and fifty weavers on its rolls\" (set-b-02). Tests whether a disputed group can hold a majority answer and a minority one without collapsing to the majority: two sources agreeing does not settle the question."
+        "plantedFact": "\"just over two hundred members this year\" (set-b-01) and \"a couple of hundred of us, give or take\" this year (set-b-03) agree with each other and conflict with \"about a hundred and fifty weavers on its rolls\" in the return \"for the current year\" (set-b-02). Tests whether a disputed group can hold a majority answer and a minority one without collapsing to the majority: two sources agreeing does not settle the question. All three documents are dated within ten months of each other (2019-01 to 2019-11) and each figure is explicitly current at publication, which closes the escape hatch of reading them as successive snapshots of a growing membership — set-b-01 says growth has been steady, not that it jumped by a third inside a year."
       },
       {
         "id": "q-location",
@@ -42,7 +42,7 @@
         "question": "What does the cooperative make?",
         "status": "agreed",
         "sourceIds": ["set-b-01", "set-b-02", "set-b-03", "set-b-04", "set-b-05"],
-        "plantedFact": "Wool blankets, in all five sources. set-b-02 adds throws and set-b-05 lists patterns (plain, ridge, check); both elaborate the same answer."
+        "plantedFact": "Wool blankets, in all five sources. set-b-02 adds throws, which elaborates the same answer rather than rivalling it."
       },
       {
         "id": "q-award",
@@ -50,10 +50,45 @@
         "status": "agreed",
         "sourceIds": ["set-b-01", "set-b-02", "set-b-03", "set-b-04", "set-b-05"],
         "plantedFact": "The Fenmoor design award, in all five sources. Four date it to 2015 and set-b-02 gives no year — silence is not disagreement, so this question stays agreed."
+      },
+      {
+        "id": "q-patterns",
+        "question": "What blanket patterns does the cooperative make?",
+        "status": "agreed",
+        "sourceIds": ["set-b-01", "set-b-05"],
+        "plantedFact": "Plain, ridge, and check (set-b-05). set-b-01 names the ridge pattern as the award-winning one, which is consistent with that list."
+      },
+      {
+        "id": "q-premises",
+        "question": "What premises does the cooperative occupy?",
+        "status": "agreed",
+        "sourceIds": ["set-b-02", "set-b-03"],
+        "plantedFact": "A converted grain store it still occupies (set-b-03), which set-b-02 corroborates as its original registered address. set-b-04 adds a second dyehouse on the same site; that is a separate question rather than a rival answer."
+      },
+      {
+        "id": "q-work-arrangement",
+        "question": "How do the cooperative's members work?",
+        "status": "agreed",
+        "sourceIds": ["set-b-01", "set-b-04", "set-b-05"],
+        "plantedFact": "On their own looms, to their own hours, with nobody employed directly — \"working from home looms\" (set-b-01), \"employs no weavers directly, since every member works to their own hours\" (set-b-04), \"work their own hours on their own looms\" (set-b-05)."
+      },
+      {
+        "id": "q-dyehouse",
+        "question": "What has the cooperative recently expanded?",
+        "status": "agreed",
+        "sourceIds": ["set-b-04"],
+        "plantedFact": "A second dyehouse, opened because demand had outstripped its single dye vat for three seasons. Stated only by set-b-04, and listed here so a correct run's group for it is not counted as an extra."
+      },
+      {
+        "id": "q-founders",
+        "question": "Who founded the cooperative?",
+        "status": "agreed",
+        "sourceIds": ["set-b-01"],
+        "plantedFact": "A group of hand-weavers, stated only by set-b-01. Note this sits beside a disputed founding *date*: who founded it is not in dispute, only when."
       }
     ],
     "requiredSourceIds": ["set-b-01", "set-b-02", "set-b-03", "set-b-04", "set-b-05"],
     "excludedSourceIds": []
   },
-  "notes": "Expected outcome: five groups, of which exactly two are disputed (founding date, membership) and three agreed (location, product, award). This is the set the before/after prompt evidence in Epic 7 should be scored on, because both failure directions are observable in it: under-merging splits the three founding-date answers into three groups, and over-merging or majority-voting collapses a disputed group into a single agreed claim."
+  "notes": "Expected outcome: ten groups, of which exactly two are disputed (founding date, membership) and eight agreed. This is the set the before/after prompt evidence in Epic 7 should be scored on, because both failure directions are observable in it: under-merging splits the three founding-date answers into three groups, and over-merging or majority-voting collapses a disputed group into a single agreed claim. The question list is intended to be exhaustive over every fact these documents state, single-source ones included, because `fixture-case.schema.json` treats group count as directly comparable to question count."
 }

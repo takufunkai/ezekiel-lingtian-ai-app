@@ -5,7 +5,7 @@
   "scenario": "agreement",
   "entity": {
     "name": "Thornwood Seed Library",
-    "aliases": ["Thornwood", "the library"]
+    "aliases": ["Thornwood"]
   },
   "documents": [
     "sources/set-a-01.json",
@@ -38,6 +38,27 @@
         "plantedFact": "The deliberate false-positive trap for this set. \"more than forty\", \"forty-two varieties\", \"Around forty\", \"somewhere over forty\", and \"forty-odd\" are five different phrasings of one compatible answer. A numerically fuzzy spread is not a contradiction, and this question must stay agreed."
       },
       {
+        "id": "q-collection-scope",
+        "question": "What kind of seed does the library hold?",
+        "status": "agreed",
+        "sourceIds": ["set-a-01", "set-a-02", "set-a-03"],
+        "plantedFact": "Vegetable and herb seed, which set-a-03 specifies as open-pollinated. set-a-02 refers to the same holdings as \"varieties\" without naming the crops."
+      },
+      {
+        "id": "q-initial-size",
+        "question": "How large was the collection when the library opened?",
+        "status": "agreed",
+        "sourceIds": ["set-a-04"],
+        "plantedFact": "About a dozen varieties in a filing cabinet, stated only by set-a-04. A single-source question is still agreed; it is here because a correct run would group it, and leaving it out of the answer key would make that group look like an extra."
+      },
+      {
+        "id": "q-lending-model",
+        "question": "How does the library's lending model work?",
+        "status": "agreed",
+        "sourceIds": ["set-a-01", "set-a-03"],
+        "plantedFact": "Members borrow seed and return seed they have saved from their own plots at the end of the season. set-a-01 states the lending half only; set-a-03 states both halves."
+      },
+      {
         "id": "q-funding",
         "question": "How is the library funded?",
         "status": "agreed",
@@ -49,18 +70,39 @@
         "question": "What is the library's annual event?",
         "status": "agreed",
         "sourceIds": ["set-a-01", "set-a-02", "set-a-03", "set-a-04", "set-a-05"],
-        "plantedFact": "A seed swap held each spring. set-a-01 places it in April in the parish hall and set-a-02 notes it moved outdoors in 2020; both are details of the same event rather than rival answers."
+        "plantedFact": "A seed swap held each spring. Deliberately the hardest agreed question in the set: set-a-01 (2019) places it in April in the parish hall and set-a-02 (2021) says it moved outdoors in 2020, which a careful run could read as a venue conflict. It is not one — the document dates resolve it, since both statements are true of different years — and `Claim` has no time-scoping field, so the resolution has to come from the dates rather than the claim text."
       },
       {
-        "id": "q-staffing",
+        "id": "q-swap-access",
+        "question": "Who may attend the seed swap?",
+        "status": "agreed",
+        "sourceIds": ["set-a-03"],
+        "plantedFact": "Open to non-members, stated only by set-a-03."
+      },
+      {
+        "id": "q-swap-attendance",
+        "question": "How many people attend the seed swap?",
+        "status": "agreed",
+        "sourceIds": ["set-a-02"],
+        "plantedFact": "Several hundred visitors in 2020, stated only by set-a-02."
+      },
+      {
+        "id": "q-paid-staff",
         "question": "How many paid staff does the library have?",
         "status": "agreed",
         "sourceIds": ["set-a-01", "set-a-02", "set-a-04"],
-        "plantedFact": "Two paid staff, with volunteers doing everything else. Phrased as \"Two paid staff\", \"employs two members of staff\", and \"two of us on the payroll\"."
+        "plantedFact": "Two paid staff, phrased as \"Two paid staff\", \"employs two members of staff\", and \"two of us on the payroll\"."
+      },
+      {
+        "id": "q-volunteers",
+        "question": "Who does the work the paid staff do not?",
+        "status": "agreed",
+        "sourceIds": ["set-a-01", "set-a-02", "set-a-04", "set-a-05"],
+        "plantedFact": "Volunteers, numbering perhaps thirty across a year (set-a-04 is the only source to give a figure). set-a-01 describes their winter cleaning and packaging rota, set-a-02 says all non-staff work is theirs, and set-a-05 is written by one of them."
       }
     ],
     "requiredSourceIds": ["set-a-01", "set-a-02", "set-a-03", "set-a-04", "set-a-05"],
     "excludedSourceIds": []
   },
-  "notes": "Expected outcome: six agreed groups, zero disputed, every claim cited, all five sources represented. The interesting failure mode here is over-reporting: the collection-size and founding-date questions are each answered with five different forms of words, so a run that splits them into separate groups has under-merged, and a run that marks either disputed has confused paraphrase with disagreement."
+  "notes": "Expected outcome: twelve agreed groups, zero disputed, every claim cited, all five sources represented. The question list is intended to be exhaustive over every fact these documents state about the entity, including the single-source ones, because `fixture-case.schema.json` defines group count as directly comparable to question count — a shorter list would make a correct run look under-merged. The interesting failure mode here is over-reporting: the founding-date and collection-size questions are each answered with five different forms of words, so a run that splits either into separate groups has under-merged, and a run that marks either disputed has confused paraphrase with disagreement."
 }

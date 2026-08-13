@@ -8,7 +8,19 @@ See [`docs/INITIAL_PROJECT_IDEA.md`](docs/INITIAL_PROJECT_IDEA.md) for the full 
 
 ## Status
 
-This repository currently contains the **scaffolding and the shared data contract** ([issue #1](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/1)). The reconciliation engine, deterministic validator, renderer, and fixture corpus are separate epics ([#2](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/2)–[#5](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/5)) that all build on the contract described below.
+This repository contains the **scaffolding and shared data contract** ([issue #1](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/1)), the **reconciliation engine** ([#3](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/3)), and the **fixture corpus** ([#2](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/2)). The deterministic validator ([#4](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/4)) and profile renderer ([#5](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/5)) are separate epics that build on the contract described below.
+
+### The fixture corpus
+
+Three test cases live at `examples/*.case.json`, each pairing a set of source documents in `examples/sources/` with the ground truth a run is scored against:
+
+| Case                  | Scenario                                                    | Expected outcome                                        |
+| --------------------- | ----------------------------------------------------------- | ------------------------------------------------------- |
+| `set-a-agreement`     | Sources corroborate                                         | 12 agreed groups, 0 disputed                            |
+| `set-b-contradiction` | Two planted conflicts                                       | 2 disputed groups (founding date, membership), 8 agreed |
+| `set-c-poisoned`      | One source is a different entity with a near-identical name | 11 agreed groups, and no claim citing the impostor      |
+
+A case's `expect.questions` is one entry per underlying question the sources answer, so a run's group count is directly comparable to it. `expect.excludedSourceIds` names documents whose content must not reach the profile at all. The manifests are the answer key and are **never** shown to the model — only the documents listed in `documents` become prompt input, via `toModelInput` (see [The engine](#the-engine)). `npm run validate:contract` checks every case and document against the schemas, plus the cross-file rules a schema cannot express.
 
 ## Setup
 
@@ -111,7 +123,7 @@ schema/     JSON Schemas — the source of truth for the contract
 prompts/    Versioned reconciliation prompts (v1 is frozen)
 src/        client.ts (Anthropic), contract.ts (types), schema.ts (validators),
             engine.ts + prompt.ts + model-caller.ts + cli.ts (reconciliation engine)
-examples/   A valid profile document and two format-example sources
+examples/   The fixture corpus (*.case.json + sources/) and a valid profile document
 scripts/    validate-contract.ts — contract check; smoke.ts — live gateway probe
 test/       Contract sync tests, client behaviour tests, engine tests
 docs/       Project idea and problem statement
