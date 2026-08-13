@@ -17,10 +17,13 @@ import Anthropic from "@anthropic-ai/sdk";
 import { config as loadDotenv } from "dotenv";
 
 /**
- * The pinned model. Change it here and nowhere else.
+ * The fallback model when `LLM_MODEL` is not set in the environment.
  * Must be a model id the configured OpenCode gateway serves.
  */
 export const MODEL = "claude-opus-5" as const;
+
+/** Env var selecting the model id. Loaded from `.env`, which is gitignored. */
+export const MODEL_ENV_VAR = "LLM_MODEL";
 
 /**
  * Default output ceiling. 16k keeps non-streaming requests inside the SDK's HTTP
@@ -37,8 +40,17 @@ export const API_KEY_ENV_VAR = "OPENCODE_API_KEY";
 /** Optional env var overriding the gateway base URL. */
 export const BASE_URL_ENV_VAR = "OPENCODE_BASE_URL";
 
-/** Gateway used when `OPENCODE_BASE_URL` is not set. */
-export const DEFAULT_BASE_URL = "https://opencode.ai/zen/v1";
+/** Also honored (OpenAI-style tooling convention), after `OPENCODE_BASE_URL`. */
+export const OPENAI_BASE_URL_ENV_VAR = "OPENAI_BASE_URL";
+
+/**
+ * Gateway used when no base-URL env var is set.
+ *
+ * No `/v1` suffix: the Anthropic SDK appends `/v1/messages` itself, which is
+ * why the previous default (`https://opencode.ai/zen/v1`) 404'd — requests
+ * went to `/zen/v1/v1/messages`.
+ */
+export const DEFAULT_BASE_URL = "https://opencode.ai/zen";
 
 let dotenvLoaded = false;
 let client: Anthropic | undefined;
@@ -57,10 +69,24 @@ export function hasApiKey(): boolean {
   return Boolean(process.env[API_KEY_ENV_VAR]);
 }
 
-/** The gateway base URL in effect. */
+/** The model id in effect: `LLM_MODEL` from the env when set, else `MODEL`. */
+export function getModel(): string {
+  ensureDotenv();
+  return process.env[MODEL_ENV_VAR] || MODEL;
+}
+
+/**
+ * The gateway base URL in effect.
+ *
+ * A configured value ending in `/v1` (the convention OpenAI-style tooling
+ * expects, e.g. `OPENAI_BASE_URL=https://opencode.ai/zen/go/v1`) is stripped of
+ * that suffix, because the Anthropic SDK appends `/v1/messages` itself.
+ */
 export function getBaseUrl(): string {
   ensureDotenv();
-  return process.env[BASE_URL_ENV_VAR] || DEFAULT_BASE_URL;
+  const configured =
+    process.env[BASE_URL_ENV_VAR] || process.env[OPENAI_BASE_URL_ENV_VAR] || DEFAULT_BASE_URL;
+  return configured.replace(/\/v1\/?$/, "");
 }
 
 /**
