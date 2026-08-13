@@ -1,0 +1,309 @@
+{
+  "schemaVersion": "1.0.0",
+  "entity": {
+    "name": "Marrow Lane Press",
+    "aliases": ["Marrow Lane"]
+  },
+  "generatedAt": "2026-08-13T09:28:41Z",
+  "sources": [
+    {
+      "id": "set-c-01",
+      "date": "2018-07-05",
+      "title": "Publisher listing: Marrow Lane Press"
+    },
+    {
+      "id": "set-c-02",
+      "date": "2020-10-12",
+      "title": "Small press, long memory: ten years of Marrow Lane"
+    },
+    {
+      "id": "set-c-03",
+      "date": "2022-02-17",
+      "title": "\"Six books is enough\": Marrow Lane Press on staying small"
+    },
+    {
+      "id": "set-c-04",
+      "date": "2023-05-20",
+      "title": "Marrow Lane Press at the Kelmore Book Weekend"
+    },
+    {
+      "id": "set-c-05",
+      "date": "2021-03-08",
+      "title": "Company profile: Marrowlane Press Ltd"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Marrow Lane Press was founded in 2009.",
+      "citations": [
+        {
+          "sourceId": "set-c-01",
+          "quote": "has published poetry from Kelmore since 2009"
+        },
+        {
+          "sourceId": "set-c-02",
+          "quote": "Founded in 2009"
+        },
+        {
+          "sourceId": "set-c-03",
+          "quote": "We started in 2009 above a bakery in Kelmore"
+        },
+        {
+          "sourceId": "set-c-04",
+          "quote": "publishing poetry in Kelmore since 2009"
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text": "The press is based in Kelmore.",
+      "citations": [
+        {
+          "sourceId": "set-c-01",
+          "quote": "published poetry from Kelmore"
+        },
+        {
+          "sourceId": "set-c-02",
+          "quote": "poetry from Kelmore"
+        },
+        {
+          "sourceId": "set-c-03",
+          "quote": "above a bakery in Kelmore"
+        },
+        {
+          "sourceId": "set-c-04",
+          "quote": "publishing poetry in Kelmore"
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text": "The press publishes about six titles a year.",
+      "citations": [
+        {
+          "sourceId": "set-c-01",
+          "quote": "It issues around six titles a year"
+        },
+        {
+          "sourceId": "set-c-02",
+          "quote": "at six or so books a year"
+        },
+        {
+          "sourceId": "set-c-03",
+          "quote": "Six titles a year is what two editors can edit properly"
+        },
+        {
+          "sourceId": "set-c-04",
+          "quote": "three of this year's six titles"
+        }
+      ]
+    },
+    {
+      "id": "c4",
+      "text": "The press runs the Kelmore Pamphlet Prize.",
+      "citations": [
+        {
+          "sourceId": "set-c-01",
+          "quote": "runs the Kelmore Pamphlet Prize"
+        },
+        {
+          "sourceId": "set-c-02",
+          "quote": "its pamphlet prize"
+        },
+        {
+          "sourceId": "set-c-03",
+          "quote": "The pamphlet prize costs us money every year and we run it anyway"
+        },
+        {
+          "sourceId": "set-c-04",
+          "quote": "the winner of the Kelmore Pamphlet Prize"
+        }
+      ]
+    },
+    {
+      "id": "c5",
+      "text": "The pamphlet prize loses the press money every year.",
+      "citations": [
+        {
+          "sourceId": "set-c-03",
+          "quote": "The pamphlet prize costs us money every year"
+        }
+      ]
+    },
+    {
+      "id": "c6",
+      "text": "The pamphlet prize is for poets who have not published a full-length book.",
+      "citations": [
+        {
+          "sourceId": "set-c-01",
+          "quote": "for poets without a full-length book"
+        }
+      ]
+    },
+    {
+      "id": "c7",
+      "text": "Three poets who won the pamphlet prize later won national awards.",
+      "citations": [
+        {
+          "sourceId": "set-c-02",
+          "quote": "its pamphlet prize has launched three poets who later won national awards"
+        }
+      ]
+    },
+    {
+      "id": "c8",
+      "text": "The press has two editors.",
+      "citations": [
+        {
+          "sourceId": "set-c-01",
+          "quote": "The press is run by two editors"
+        },
+        {
+          "sourceId": "set-c-03",
+          "quote": "what two editors can edit properly"
+        },
+        {
+          "sourceId": "set-c-04",
+          "quote": "Both editors will be at the small-press table"
+        }
+      ]
+    },
+    {
+      "id": "c9",
+      "text": "The press reads unsolicited submissions in a single window each autumn.",
+      "citations": [
+        {
+          "sourceId": "set-c-01",
+          "quote": "reads unsolicited submissions in a single window each autumn"
+        }
+      ]
+    },
+    {
+      "id": "c10",
+      "text": "The press publishes poetry.",
+      "citations": [
+        {
+          "sourceId": "set-c-01",
+          "quote": "has published poetry from Kelmore"
+        },
+        {
+          "sourceId": "set-c-02",
+          "quote": "when they talk about poetry from Kelmore"
+        },
+        {
+          "sourceId": "set-c-04",
+          "quote": "publishing poetry in Kelmore"
+        }
+      ]
+    },
+    {
+      "id": "c11",
+      "text": "Most of the press's titles are first collections.",
+      "citations": [
+        {
+          "sourceId": "set-c-01",
+          "quote": "most of them first collections"
+        }
+      ]
+    },
+    {
+      "id": "c12",
+      "text": "The press occupies two rooms above a bakery, which it has held since 2009.",
+      "citations": [
+        {
+          "sourceId": "set-c-03",
+          "quote": "We started in 2009 above a bakery in Kelmore and we are still in the same two rooms"
+        }
+      ]
+    },
+    {
+      "id": "c13",
+      "text": "The press brings three of the year's six titles and the pamphlet prize winner to the festival.",
+      "citations": [
+        {
+          "sourceId": "set-c-04",
+          "quote": "brings three of this year's six titles to the festival, along with the winner of the Kelmore Pamphlet Prize"
+        }
+      ]
+    },
+    {
+      "id": "c14",
+      "text": "Both of the press's editors attend the festival's small-press table on the Saturday.",
+      "citations": [
+        {
+          "sourceId": "set-c-04",
+          "quote": "Both editors will be at the small-press table on Saturday afternoon"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "id": "g1",
+      "question": "When was Marrow Lane Press founded?",
+      "status": "agreed",
+      "claimIds": ["c1"]
+    },
+    {
+      "id": "g2",
+      "question": "Where is the press based?",
+      "status": "agreed",
+      "claimIds": ["c2"]
+    },
+    {
+      "id": "g3",
+      "question": "How many books does the press publish each year?",
+      "status": "agreed",
+      "claimIds": ["c3"]
+    },
+    {
+      "id": "g4",
+      "question": "What prize does the press run?",
+      "status": "agreed",
+      "claimIds": ["c4", "c5"]
+    },
+    {
+      "id": "g5",
+      "question": "Who is eligible for the pamphlet prize?",
+      "status": "agreed",
+      "claimIds": ["c6"]
+    },
+    {
+      "id": "g6",
+      "question": "What has the pamphlet prize led to for its winners?",
+      "status": "agreed",
+      "claimIds": ["c7"]
+    },
+    {
+      "id": "g7",
+      "question": "How many editors does the press have?",
+      "status": "agreed",
+      "claimIds": ["c8"]
+    },
+    {
+      "id": "g8",
+      "question": "How does the press accept submissions?",
+      "status": "agreed",
+      "claimIds": ["c9"]
+    },
+    {
+      "id": "g9",
+      "question": "What kind of books does the press publish?",
+      "status": "agreed",
+      "claimIds": ["c10", "c11"]
+    },
+    {
+      "id": "g10",
+      "question": "What premises does the press occupy?",
+      "status": "agreed",
+      "claimIds": ["c12"]
+    },
+    {
+      "id": "g11",
+      "question": "What festival does the press appear at?",
+      "status": "agreed",
+      "claimIds": ["c13", "c14"]
+    }
+  ]
+}
