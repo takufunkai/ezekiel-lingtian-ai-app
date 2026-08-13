@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "set-c-poisoned",
+  "title": "Set C — poisoned input, a near-identically named different entity",
+  "scenario": "poisoned",
+  "entity": {
+    "name": "Marrow Lane Press",
+    "aliases": ["Marrow Lane"]
+  },
+  "documents": [
+    "sources/set-c-01.json",
+    "sources/set-c-02.json",
+    "sources/set-c-03.json",
+    "sources/set-c-04.json",
+    "sources/set-c-05.json"
+  ],
+  "expect": {
+    "questions": [
+      {
+        "id": "q-founding",
+        "question": "When was Marrow Lane Press founded?",
+        "status": "agreed",
+        "sourceIds": ["set-c-01", "set-c-02", "set-c-03", "set-c-04"],
+        "plantedFact": "All four genuine sources say 2009. The impostor (set-c-05) says 1986, so a run that merges it produces a disputed founding-date group — 2009 against 1986 — where the correct answer is an agreed group at 2009 with the impostor excluded entirely. That specific wrong output is the failure this case is built to catch, and it is the demo moment: the model must decline to reconcile two entities that merely share a name."
+      },
+      {
+        "id": "q-location",
+        "question": "Where is the press based?",
+        "status": "agreed",
+        "sourceIds": ["set-c-01", "set-c-02", "set-c-03", "set-c-04"],
+        "plantedFact": "Kelmore in all four genuine sources. The impostor is in Tarnbridge, so a merged run yields a bogus Kelmore-versus-Tarnbridge dispute."
+      },
+      {
+        "id": "q-output",
+        "question": "How many books does the press publish each year?",
+        "status": "agreed",
+        "sourceIds": ["set-c-01", "set-c-02", "set-c-03", "set-c-04"],
+        "plantedFact": "Six titles a year, phrased as \"around six titles a year\", \"six or so books a year\", \"Six titles a year\", and \"three of this year's six titles\". The impostor states no title count at all — it prints for clients and says it does not publish under its own imprint — so there is nothing here to conflict with, only something to wrongly import."
+      },
+      {
+        "id": "q-prize",
+        "question": "What prize does the press run?",
+        "status": "agreed",
+        "sourceIds": ["set-c-01", "set-c-02", "set-c-03", "set-c-04"],
+        "plantedFact": "The Kelmore Pamphlet Prize, in all four genuine sources. set-c-02 calls it simply \"its pamphlet prize\", which is the same prize under a shorter name rather than a second one. set-c-03 adds that it runs at a loss."
+      },
+      {
+        "id": "q-prize-eligibility",
+        "question": "Who is eligible for the pamphlet prize?",
+        "status": "agreed",
+        "sourceIds": ["set-c-01"],
+        "plantedFact": "Poets without a full-length book, stated only by set-c-01."
+      },
+      {
+        "id": "q-prize-outcomes",
+        "question": "What has the pamphlet prize led to for its winners?",
+        "status": "agreed",
+        "sourceIds": ["set-c-02"],
+        "plantedFact": "Three poets who later won national awards, stated only by set-c-02."
+      },
+      {
+        "id": "q-editors",
+        "question": "How many editors does the press have?",
+        "status": "agreed",
+        "sourceIds": ["set-c-01", "set-c-03", "set-c-04"],
+        "plantedFact": "Two — \"run by two editors\" (set-c-01), \"what two editors can edit properly\" (set-c-03), \"Both editors\" (set-c-04). Note the impostor's forty staff is a rival answer only if the entities are merged, which is exactly the mistake under test."
+      },
+      {
+        "id": "q-submissions",
+        "question": "How does the press accept submissions?",
+        "status": "agreed",
+        "sourceIds": ["set-c-01"],
+        "plantedFact": "Unsolicited submissions in a single window each autumn, stated only by set-c-01."
+      },
+      {
+        "id": "q-focus",
+        "question": "What kind of books does the press publish?",
+        "status": "agreed",
+        "sourceIds": ["set-c-01", "set-c-02", "set-c-04"],
+        "plantedFact": "Poetry, mostly first collections (set-c-01). set-c-02 and set-c-04 both identify the output as poetry without narrowing it to debuts."
+      },
+      {
+        "id": "q-premises",
+        "question": "What premises does the press occupy?",
+        "status": "agreed",
+        "sourceIds": ["set-c-03"],
+        "plantedFact": "Two rooms above a bakery, occupied since 2009, stated only by set-c-03."
+      },
+      {
+        "id": "q-festival",
+        "question": "What festival does the press appear at?",
+        "status": "agreed",
+        "sourceIds": ["set-c-04"],
+        "plantedFact": "The Kelmore Book Weekend, where it brings three of the year's six titles and the pamphlet prize winner. Stated only by set-c-04."
+      }
+    ],
+    "requiredSourceIds": ["set-c-01", "set-c-02", "set-c-03", "set-c-04"],
+    "excludedSourceIds": ["set-c-05"]
+  },
+  "notes": "Expected outcome: eleven agreed groups, zero disputed, and not one claim citing set-c-05. The impostor is a commercial printer in Tarnbridge called Marrowlane Press Ltd — one space and one suffix away from the real subject, with shared vocabulary (press, printing, founded) to make name-similarity matching look reasonable. The disambiguating signal is available to a careful reader: it prints packaging and labels for clients and explicitly does not publish under its own imprint, so it cannot be the poetry publisher the other four sources describe. Any claim citing set-c-05 is a test failure, however plausible the claim itself sounds. Note the question list covers only the genuine entity and is intended to be exhaustive over it, so a group answering a question about the printer is both an extra group and a citation of an excluded source."
+}

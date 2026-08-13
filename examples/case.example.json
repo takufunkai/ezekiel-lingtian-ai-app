@@ -35,5 +35,5 @@
     "requiredSourceIds": ["src-01", "src-02"],
     "excludedSourceIds": []
   },
-  "notes": "Worked example of the fixture-case format, reusing the two format-example source documents. Epic 2 replaces this with real Set A / Set B / Set C cases; this file exists so the format has a committed reference that CI validates."
+  "notes": "Minimal worked example of the fixture-case format, reusing the two format-example source documents. The real corpus lives alongside it in set-a-agreement.case.json, set-b-contradiction.case.json, and set-c-poisoned.case.json; this file stays as the smallest committed reference for the format, small enough to read in one screen, and CI validates it like any other case."
 }
