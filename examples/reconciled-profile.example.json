@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.0.0",
+  "entity": {
+    "name": "Nimbus Cartography Collective",
+    "aliases": ["Nimbus", "the Nimbus Collective"]
+  },
+  "generatedAt": "2026-08-13T09:30:00Z",
+  "sources": [
+    {
+      "id": "src-01",
+      "date": "2021-03-14",
+      "title": "Nimbus Cartography Collective: A Brief History"
+    },
+    {
+      "id": "src-02",
+      "date": "2022-08-02",
+      "title": "Profile: Inside the Nimbus Collective"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "The Nimbus Cartography Collective was founded in 2011.",
+      "citations": [{ "sourceId": "src-01", "quote": "was founded in 2011" }]
+    },
+    {
+      "id": "c2",
+      "text": "The Nimbus Cartography Collective began operations in early 2012.",
+      "citations": [{ "sourceId": "src-02", "quote": "began operations in early 2012" }]
+    },
+    {
+      "id": "c3",
+      "text": "The Nimbus Cartography Collective is based in Rotterdam.",
+      "citations": [
+        { "sourceId": "src-01", "quote": "a shared studio in Rotterdam" },
+        { "sourceId": "src-02", "quote": "is headquartered in Rotterdam" }
+      ]
+    },
+    {
+      "id": "c4",
+      "text": "By 2019 the collective employed twelve people.",
+      "citations": [{ "sourceId": "src-01", "quote": "By 2019 the collective employed twelve people" }]
+    }
+  ],
+  "groups": [
+    {
+      "id": "g1",
+      "question": "When was the Nimbus Cartography Collective founded?",
+      "status": "disputed",
+      "claimIds": ["c1", "c2"]
+    },
+    {
+      "id": "g2",
+      "question": "Where is the Nimbus Cartography Collective based?",
+      "status": "agreed",
+      "claimIds": ["c3"]
+    },
+    {
+      "id": "g3",
+      "question": "How many people does the collective employ?",
+      "status": "agreed",
+      "claimIds": ["c4"]
+    }
+  ]
+}

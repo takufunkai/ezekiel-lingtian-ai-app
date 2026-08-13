@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+
+# secrets — never commit a real key
+.env
+.env.*
+!.env.example
+
+# build output
+dist/
+build/
+*.tsbuildinfo
+
+# test / tooling caches
+coverage/
+.vitest/
+.cache/
+
+# editors and OS
+.DS_Store
+Thumbs.db
+*.log

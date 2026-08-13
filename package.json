@@ -1,0 +1,32 @@
+{
+  "name": "cited-profile-reconciler",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Reconcile several source documents about one entity into a cited profile that separates agreement from dispute.",
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "validate:contract": "tsx scripts/validate-contract.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "npm run typecheck && npm run format:check"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "dotenv": "^17.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

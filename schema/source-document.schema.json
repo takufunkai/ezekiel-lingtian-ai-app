@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/takufunkai/ezekiel-lingtian-ai-app/schema/source-document.schema.json",
+  "title": "SourceDocument",
+  "description": "One local source document about the entity under profile. Each fixture file contains exactly one of these objects.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "date", "title", "text"],
+  "properties": {
+    "id": {
+      "description": "Stable identifier for this source, unique within a fixture case. Claims cite this value.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "date": {
+      "description": "Publication date of the source, ISO 8601 calendar date (YYYY-MM-DD).",
+      "type": "string",
+      "format": "date"
+    },
+    "title": {
+      "description": "Human-readable title, shown by the renderer next to citations.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300
+    },
+    "text": {
+      "description": "Full body text of the source. Quote spans in claims must appear verbatim (exact substring) in this field.",
+      "type": "string",
+      "minLength": 1
+    },
+    "notes": {
+      "description": "Optional author notes about why this fixture exists (e.g. 'plants a conflicting founding date'). Never shown to the model or the renderer.",
+      "type": "string"
+    }
+  }
+}
