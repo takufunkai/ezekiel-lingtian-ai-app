@@ -1,0 +1,167 @@
+Scored with src/score.ts (Epic 6, #25) against examples/set-b-contradiction.case.json.
+over-merge / under-merge come from a one-to-one assignment; status and
+answered-at-all come from a loose non-exclusive match. No model call, no API key.
+
+=== v1 run 1 ===
+source     : docs/evidence/prompt-iteration/set-b.v1.run1.json
+provenance : recorded run committed with this PR, attributed to minimax-m3 under PROMPT_VERSION=v1
+model field: minimax-m3
+
+validator  : ok
+
+merge quality — set-b-contradiction
+  questions in manifest : 10
+  groups emitted        : 7
+  matched one-to-one    : 7
+  over-merge            : 3  (q-patterns, q-premises, q-founders)
+  under-merge           : 0  (none)
+  disputed groups       : 2  (g1, g4)
+  unanswered questions  : 0  (none)
+  status mismatches     : 1  (q-founders: expected agreed, got disputed)
+  missing required srcs : 0  (none)
+  excluded-source cites : 0  (none)
+  claims in >1 group    : 0  (none)
+
+loose match (expected question -> answering group):
+  ok    q-founding [disputed] -> g1 [disputed] "When was Halberd Mills Cooperative founded or established?" (src 1.00 lex 0.89)
+  ok    q-membership [disputed] -> g4 [disputed] "How many members or weavers does Halberd Mills Cooperative have?" (src 1.00 lex 0.57)
+  ok    q-location [agreed] -> g3 [agreed] "What products does Halberd Mills Cooperative make?" (src 1.00 lex 0.29)
+  ok    q-product [agreed] -> g3 [agreed] "What products does Halberd Mills Cooperative make?" (src 1.00 lex 0.57)
+  ok    q-award [agreed] -> g6 [agreed] "Has Halberd Mills Cooperative won the Fenmoor design award, and if so when?" (src 1.00 lex 0.55)
+  ok    q-patterns [agreed] -> g5 [agreed] "How do members of Halberd Mills Cooperative work?" (src 0.80 lex 0.22)
+  ok    q-premises [agreed] -> g2 [agreed] "Where is Halberd Mills Cooperative based?" (src 0.50 lex 0.29)
+  ok    q-work-arrangement [agreed] -> g5 [agreed] "How do members of Halberd Mills Cooperative work?" (src 1.00 lex 0.67)
+  ok    q-dyehouse [agreed] -> g7 [agreed] "Has Halberd Mills Cooperative recently expanded its facilities?" (src 1.00 lex 0.67)
+  STATUS q-founders [agreed] -> g1 [disputed] "When was Halberd Mills Cooperative founded or established?" (src 0.50 lex 0.57)
+
+=== v1 run 2 ===
+source     : docs/evidence/prompt-iteration/set-b.v1.run2.json
+provenance : recorded run committed with this PR, attributed to minimax-m3 under PROMPT_VERSION=v1
+model field: minimax-m3
+
+validator  : 1 error(s)
+  error  QUOTE_NOT_VERBATIM  /claims/7/citations/0/quote  claim c8 quotes "halberd Mills Cooperative was founded in 1998 by a group of …", which is not a verbatim substring of set-b-01 (differs only in letter case)
+
+merge quality — set-b-contradiction
+  questions in manifest : 10
+  groups emitted        : 8
+  matched one-to-one    : 8
+  over-merge            : 2  (q-patterns, q-premises)
+  under-merge           : 0  (none)
+  disputed groups       : 2  (g1, g4)
+  unanswered questions  : 0  (none)
+  status mismatches     : 1  (q-premises: expected agreed, got disputed)
+  missing required srcs : 0  (none)
+  excluded-source cites : 0  (none)
+  claims in >1 group    : 0  (none)
+
+loose match (expected question -> answering group):
+  ok    q-founding [disputed] -> g1 [disputed] "When was Halberd Mills Cooperative founded or established?" (src 1.00 lex 0.89)
+  ok    q-membership [disputed] -> g4 [disputed] "How many members does Halberd Mills Cooperative have?" (src 1.00 lex 0.67)
+  ok    q-location [agreed] -> g3 [agreed] "Where is Halberd Mills Cooperative located?" (src 1.00 lex 0.33)
+  ok    q-product [agreed] -> g3 [agreed] "Where is Halberd Mills Cooperative located?" (src 1.00 lex 0.33)
+  ok    q-award [agreed] -> g3 [agreed] "Where is Halberd Mills Cooperative located?" (src 1.00 lex 0.29)
+  ok    q-patterns [agreed] -> g2 [agreed] "What does Halberd Mills Cooperative make?" (src 0.67 lex 0.50)
+  STATUS q-premises [agreed] -> g4 [disputed] "How many members does Halberd Mills Cooperative have?" (src 0.50 lex 0.29)
+  ok    q-work-arrangement [agreed] -> g6 [agreed] "When did Halberd Mills Cooperative win the Fenmoor design award?" (src 0.86 lex 0.17)
+  ok    q-dyehouse [agreed] -> g8 [agreed] "Has Halberd Mills Cooperative expanded its facilities?" (src 1.00 lex 0.50)
+  ok    q-founders [agreed] -> g7 [agreed] "What is notable about Halberd Mills Cooperative's Fenmoor design award win?" (src 0.67 lex 0.17)
+
+=== v1 run 3 ===
+source     : docs/evidence/prompt-iteration/set-b.v1.run3.json
+provenance : recorded run committed with this PR, attributed to minimax-m3 under PROMPT_VERSION=v1
+model field: minimax-m3
+
+validator  : ok
+
+merge quality — set-b-contradiction
+  questions in manifest : 10
+  groups emitted        : 7
+  matched one-to-one    : 7
+  over-merge            : 3  (q-location, q-patterns, q-founders)
+  under-merge           : 0  (none)
+  disputed groups       : 2  (g1, g3)
+  unanswered questions  : 0  (none)
+  status mismatches     : 1  (q-founders: expected agreed, got disputed)
+  missing required srcs : 0  (none)
+  excluded-source cites : 0  (none)
+  claims in >1 group    : 0  (none)
+
+loose match (expected question -> answering group):
+  ok    q-founding [disputed] -> g1 [disputed] "When was Halberd Mills Cooperative founded or established?" (src 1.00 lex 0.89)
+  ok    q-membership [disputed] -> g3 [disputed] "How many members or weavers does Halberd Mills Cooperative have?" (src 1.00 lex 0.57)
+  ok    q-location [agreed] -> g4 [agreed] "When did Halberd Mills Cooperative win the Fenmoor design award, and what is the significance of that win?" (src 1.00 lex 0.18)
+  ok    q-product [agreed] -> g4 [agreed] "When did Halberd Mills Cooperative win the Fenmoor design award, and what is the significance of that win?" (src 1.00 lex 0.18)
+  ok    q-award [agreed] -> g4 [agreed] "When did Halberd Mills Cooperative win the Fenmoor design award, and what is the significance of that win?" (src 1.00 lex 0.33)
+  ok    q-patterns [agreed] -> g2 [agreed] "What products does Halberd Mills Cooperative make?" (src 0.67 lex 0.44)
+  ok    q-premises [agreed] -> g7 [agreed] "Where is Halberd Mills Cooperative located?" (src 0.67 lex 0.29)
+  ok    q-work-arrangement [agreed] -> g6 [agreed] "How are the cooperative's weavers employed?" (src 0.80 lex 0.50)
+  ok    q-dyehouse [agreed] -> g5 [agreed] "What new facilities has Halberd Mills Cooperative added at its site?" (src 1.00 lex 0.20)
+  STATUS q-founders [agreed] -> g1 [disputed] "When was Halberd Mills Cooperative founded or established?" (src 0.50 lex 0.57)
+
+=== v2 run 1 ===
+source     : docs/evidence/prompt-iteration/set-b.v2.run1.json
+provenance : recorded run committed with this PR, attributed to minimax-m3 under PROMPT_VERSION=v2 (single sample)
+model field: minimax-m3
+
+validator  : ok
+  warn   CLAIM_NOT_GROUPED  /claims/11  claim c12 belongs to no group, so the rendered profile will never show it
+  warn   CLAIM_NOT_GROUPED  /claims/24  claim c25 belongs to no group, so the rendered profile will never show it
+
+merge quality — set-b-contradiction
+  questions in manifest : 10
+  groups emitted        : 13
+  matched one-to-one    : 10
+  over-merge            : 0  (none)
+  under-merge           : 3  (g9, g10, g13)
+  disputed groups       : 2  (g1, g6)
+  unanswered questions  : 0  (none)
+  status mismatches     : 0  (none)
+  missing required srcs : 0  (none)
+  excluded-source cites : 0  (none)
+  claims in >1 group    : 5  (c1 in g1/disputed + g2/agreed, c2 in g1/disputed + g2/agreed, c3 in g1/disputed + g2/agreed, c10 in g3/agreed + g4/agreed, c17 in g7/agreed + g8/agreed)
+
+loose match (expected question -> answering group):
+  ok    q-founding [disputed] -> g1 [disputed] "When was Halberd Mills Cooperative founded or incorporated?" (src 1.00 lex 0.89)
+  ok    q-membership [disputed] -> g6 [disputed] "How many members or weavers does Halberd Mills Cooperative have?" (src 1.00 lex 0.57)
+  ok    q-location [agreed] -> g3 [agreed] "What does Halberd Mills Cooperative manufacture or sell?" (src 1.00 lex 0.29)
+  ok    q-product [agreed] -> g3 [agreed] "What does Halberd Mills Cooperative manufacture or sell?" (src 1.00 lex 0.29)
+  ok    q-award [agreed] -> g3 [agreed] "What does Halberd Mills Cooperative manufacture or sell?" (src 1.00 lex 0.25)
+  ok    q-patterns [agreed] -> g7 [agreed] "Where do Halberd Mills Cooperative's weavers work?" (src 0.80 lex 0.20)
+  ok    q-premises [agreed] -> g5 [agreed] "Has Halberd Mills Cooperative's product range changed?" (src 1.00 lex 0.20)
+  ok    q-work-arrangement [agreed] -> g7 [agreed] "Where do Halberd Mills Cooperative's weavers work?" (src 1.00 lex 0.60)
+  ok    q-dyehouse [agreed] -> g8 [agreed] "Does Halberd Mills Cooperative employ weavers directly?" (src 1.00 lex 0.22)
+  ok    q-founders [agreed] -> g12 [agreed] "What was historically unusual about Halberd Mills Cooperative's Fenmoor design award?" (src 1.00 lex 0.17)
+
+=== Epic 6 replay cache ===
+source     : test/fixtures/harness/set-b-contradiction.response.json
+provenance : HAND-AUTHORED, not recorded from a model (stated in #25's own PR body) — measures the harness and the fixture, NOT the v1 prompt
+model field: claude-opus-5
+
+validator  : ok
+
+merge quality — set-b-contradiction
+  questions in manifest : 10
+  groups emitted        : 10
+  matched one-to-one    : 10
+  over-merge            : 0  (none)
+  under-merge           : 0  (none)
+  disputed groups       : 2  (g1, g2)
+  unanswered questions  : 0  (none)
+  status mismatches     : 0  (none)
+  missing required srcs : 0  (none)
+  excluded-source cites : 0  (none)
+  claims in >1 group    : 0  (none)
+
+loose match (expected question -> answering group):
+  ok    q-founding [disputed] -> g1 [disputed] "When was Halberd Mills Cooperative founded?" (src 1.00 lex 1.00)
+  ok    q-membership [disputed] -> g2 [disputed] "How many members does the cooperative have?" (src 1.00 lex 1.00)
+  ok    q-location [agreed] -> g3 [agreed] "Where is the cooperative based?" (src 1.00 lex 1.00)
+  ok    q-product [agreed] -> g4 [agreed] "What does the cooperative make?" (src 1.00 lex 1.00)
+  ok    q-award [agreed] -> g5 [agreed] "What award has the cooperative won?" (src 1.00 lex 1.00)
+  ok    q-patterns [agreed] -> g6 [agreed] "What blanket patterns does the cooperative make?" (src 1.00 lex 1.00)
+  ok    q-premises [agreed] -> g7 [agreed] "What premises does the cooperative occupy?" (src 0.67 lex 1.00)
+  ok    q-work-arrangement [agreed] -> g8 [agreed] "How do the cooperative's members work?" (src 1.00 lex 1.00)
+  ok    q-dyehouse [agreed] -> g9 [agreed] "What has the cooperative recently expanded?" (src 1.00 lex 1.00)
+  ok    q-founders [agreed] -> g10 [agreed] "Who founded the cooperative?" (src 1.00 lex 1.00)
+

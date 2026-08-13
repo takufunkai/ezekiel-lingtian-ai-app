@@ -25,7 +25,7 @@ import type {
   SourceDocument,
 } from "./contract.js";
 import { toModelInput } from "./contract.js";
-import { buildUserMessage, SYSTEM_PROMPT } from "./prompt.js";
+import { buildUserMessage, getSystemPrompt } from "./prompt.js";
 import {
   claimsSchema,
   formatSchemaErrors,
@@ -217,7 +217,7 @@ export async function reconcile(
 
   const { entity, documents } = caseToModelInput(loaded);
   const request: ModelRequest = {
-    system: SYSTEM_PROMPT,
+    system: getSystemPrompt(),
     userMessage: buildUserMessage(entity, documents),
     outputSchema: CLAIMS_TRANSPORT_SCHEMA,
   };

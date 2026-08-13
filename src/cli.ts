@@ -22,7 +22,7 @@ import { pathToFileURL } from "node:url";
 import { API_KEY_ENV_VAR, getBaseUrl, getModel, hasApiKey } from "./client.js";
 import { loadCaseWithDocuments, reconcileCaseFile } from "./engine.js";
 import { callLiveModel } from "./model-caller.js";
-import { PROMPT_VERSION } from "./prompt.js";
+import { getPromptVersion } from "./prompt.js";
 import { formatViolations, validateOutput } from "./validate.js";
 
 export const USAGE = "usage: reconcile <path-to-case.json> --out <out.json>";
@@ -85,18 +85,22 @@ async function main(): Promise<number> {
 
   // Resolve the effective config up front so a bad env value fails here with
   // its actionable message, and log the gateway so a redirected base URL is
-  // visible in every run log — not just in `npm run smoke`.
+  // visible in every run log — not just in `npm run smoke`. The prompt version
+  // is resolved here for the same reason: `PROMPT_VERSION=v` is a configuration
+  // bug, and it should be reported as one rather than thrown from mid-run.
   let model: string;
   let gateway: string;
+  let promptVersion: string;
   try {
     model = getModel();
     gateway = getBaseUrl();
+    promptVersion = getPromptVersion();
   } catch (error) {
     console.error(`reconcile: ${error instanceof Error ? error.message : String(error)}`);
     return 1;
   }
   console.error(
-    `reconcile: case=${casePath} gateway=${gateway} model=${model} prompt=${PROMPT_VERSION}`,
+    `reconcile: case=${casePath} gateway=${gateway} model=${model} prompt=${promptVersion}`,
   );
 
   const outcome = await reconcileCaseFile(casePath, { callModel: callLiveModel });
