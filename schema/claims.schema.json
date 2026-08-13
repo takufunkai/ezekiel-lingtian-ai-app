@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/takufunkai/ezekiel-lingtian-ai-app/schema/claims.schema.json",
+  "title": "ReconciledProfile",
+  "description": "The complete structured output of one reconciliation run: atomic claims with citations, grouped by the underlying question they answer, each group marked agreed or disputed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "entity", "generatedAt", "sources", "claims", "groups"],
+  "properties": {
+    "schemaVersion": {
+      "description": "Version of this contract the document was produced against. Bump on any breaking schema change.",
+      "const": "1.0.0"
+    },
+    "entity": {
+      "$ref": "#/$defs/entity"
+    },
+    "generatedAt": {
+      "description": "When this profile was produced, RFC 3339 / ISO 8601 date-time.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "model": {
+      "description": "Model id that produced this profile. Omitted for hand-written documents such as the example.",
+      "type": "string",
+      "minLength": 1
+    },
+    "sources": {
+      "description": "Manifest of every source document that was supplied as input. A citation may only reference an id listed here.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/sourceRef" }
+    },
+    "claims": {
+      "description": "Flat list of atomic claims extracted from the sources. Grouping lives in `groups`, not here.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/claim" }
+    },
+    "groups": {
+      "description": "Claims grouped by the underlying question they answer, with an agreement status per group.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/group" }
+    }
+  },
+  "$defs": {
+    "id": {
+      "description": "Lowercase identifier, unique within its own collection.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "entity": {
+      "description": "The single (fictional) entity this profile is about.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "aliases": {
+          "description": "Other names the sources use for the same entity. Useful for the poisoned-input test case.",
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      }
+    },
+    "sourceRef": {
+      "description": "One entry in the source manifest. Mirrors the identifying fields of a SourceDocument fixture.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "date", "title"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "date": { "type": "string", "format": "date" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 300 }
+      }
+    },
+    "citation": {
+      "description": "One supporting source for a claim, together with the verbatim span from that source that supports it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceId", "quote"],
+      "properties": {
+        "sourceId": {
+          "description": "Must match the `id` of an entry in the profile's `sources` manifest.",
+          "$ref": "#/$defs/id"
+        },
+        "quote": {
+          "description": "Verbatim span copied from that source's `text`. The deterministic validator checks this is an exact substring — no paraphrasing, no ellipses, no normalisation.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      }
+    },
+    "claim": {
+      "description": "One atomic, self-contained factual assertion about the entity.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "text", "citations"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "text": {
+          "description": "The claim as a single self-contained sentence, readable without the surrounding group.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "citations": {
+          "description": "At least one citation. A claim supported by several sources carries one citation per source, so a claim can have more than one supporting source id.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/citation" }
+        }
+      }
+    },
+    "group": {
+      "description": "A set of claims that answer the same underlying question, plus whether the sources agree on the answer.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "question", "status", "claimIds"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "question": {
+          "description": "The underlying question the member claims all answer, phrased as a question.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "status": {
+          "description": "`agreed` when the member claims are mutually consistent; `disputed` when at least two member claims give conflicting answers to the question.",
+          "enum": ["agreed", "disputed"]
+        },
+        "claimIds": {
+          "description": "Ids of the member claims, referencing the profile's `claims` array.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/id" }
+        }
+      },
+      "allOf": [
+        {
+          "description": "A disputed group must hold at least two claims side by side — the conflicting answers are never merged or resolved.",
+          "if": {
+            "properties": { "status": { "const": "disputed" } },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": { "claimIds": { "type": "array", "minItems": 2 } }
+          }
+        }
+      ]
+    }
+  }
+}

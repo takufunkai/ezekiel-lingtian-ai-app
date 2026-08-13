@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/takufunkai/ezekiel-lingtian-ai-app/schema/fixture-case.schema.json",
+  "title": "FixtureCase",
+  "description": "One test scenario: the set of source documents fed to a single reconciliation run, plus the ground truth the test harness asserts against. This manifest is the answer key — it is never shown to the model.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "title", "scenario", "entity", "documents", "expect"],
+  "properties": {
+    "schemaVersion": {
+      "description": "Version of this contract the case was written against. Bump on any breaking schema change.",
+      "const": "1.0.0"
+    },
+    "id": {
+      "description": "Stable identifier for the case, unique across the fixture corpus (e.g. `set-b-contradiction`).",
+      "$ref": "#/$defs/id"
+    },
+    "title": {
+      "description": "Human-readable name, shown in test output.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "scenario": {
+      "description": "Which of the three canonical scenarios this case exercises. `agreement`: sources corroborate, nothing disputed. `contradiction`: sources give conflicting answers to the same question. `poisoned`: one source is about a different entity with a similar name.",
+      "enum": ["agreement", "contradiction", "poisoned"]
+    },
+    "entity": {
+      "description": "The entity the profile is about. In a `poisoned` case this is the real subject, not the impostor.",
+      "$ref": "#/$defs/entity"
+    },
+    "documents": {
+      "description": "Source document files making up this case, as POSIX paths relative to the case file. Order is the order they are supplied to the model.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[^/].*\\.json$",
+        "minLength": 1
+      }
+    },
+    "expect": {
+      "description": "Ground truth the harness asserts against. Written by hand when the fixtures are authored.",
+      "$ref": "#/$defs/expectation"
+    },
+    "notes": {
+      "description": "Optional author notes about why this case exists. Never shown to the model or the renderer.",
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "id": {
+      "description": "Lowercase identifier, unique within its own collection.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "entity": {
+      "description": "The single (fictional) entity a case is about.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "description": "Canonical name of the entity.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "aliases": {
+          "description": "Other names the sources use for the same entity.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "expectation": {
+      "description": "What a correct reconciliation of this case looks like.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["questions"],
+      "properties": {
+        "questions": {
+          "description": "Every underlying question the sources answer, one entry each. This is the grouping ground truth: a run that emits more groups than there are questions has under-merged, fewer has over-merged.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/expectedQuestion" }
+        },
+        "requiredSourceIds": {
+          "description": "Source ids that must each support at least one claim in the output. Catches a run that silently drops an input document.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/id" }
+        },
+        "excludedSourceIds": {
+          "description": "Source ids whose content must NOT appear in the profile — the impostor documents in a `poisoned` case. A claim citing one of these is a test failure.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/id" }
+        }
+      }
+    },
+    "expectedQuestion": {
+      "description": "One underlying question the sources answer, and whether they agree on the answer.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "question", "status", "sourceIds"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "question": {
+          "description": "The underlying question, phrased as a question. Matched semantically by the harness, not by string equality.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "status": {
+          "description": "`agreed` when the sources answering this question are mutually consistent; `disputed` when at least two of them conflict.",
+          "enum": ["agreed", "disputed"]
+        },
+        "sourceIds": {
+          "description": "Sources that answer this question. A `disputed` question is answered by at least two.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/id" }
+        },
+        "plantedFact": {
+          "description": "Optional. The fact deliberately planted here, in the author's words (e.g. 'src-01 says 2011, src-02 says December 2010').",
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "description": "A disputed question must be answered by at least two sources — a single source cannot conflict with itself.",
+          "if": {
+            "properties": { "status": { "const": "disputed" } },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": { "sourceIds": { "type": "array", "minItems": 2 } }
+          }
+        }
+      ]
+    }
+  }
+}

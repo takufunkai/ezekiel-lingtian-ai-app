@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "example-contradiction",
+  "title": "Format example — planted founding-date contradiction",
+  "scenario": "contradiction",
+  "entity": {
+    "name": "Nimbus Cartography Collective",
+    "aliases": ["Nimbus Collective", "Nimbus"]
+  },
+  "documents": ["sources/src-01.json", "sources/src-02.json"],
+  "expect": {
+    "questions": [
+      {
+        "id": "q-founding",
+        "question": "When was the Nimbus Cartography Collective founded?",
+        "status": "disputed",
+        "sourceIds": ["src-01", "src-02"],
+        "plantedFact": "src-01 says founded in 2011; src-02 says began operations in early 2012. Semantically the same question, phrased differently, so it cannot be caught by string matching."
+      },
+      {
+        "id": "q-headquarters",
+        "question": "Where is the collective based?",
+        "status": "agreed",
+        "sourceIds": ["src-01", "src-02"],
+        "plantedFact": "Both sources independently place it in Rotterdam."
+      },
+      {
+        "id": "q-headcount",
+        "question": "How many people did the collective employ?",
+        "status": "agreed",
+        "sourceIds": ["src-01"],
+        "plantedFact": "Only src-01 reports headcount (twelve people by 2019). A single-source question is still agreed, not disputed."
+      }
+    ],
+    "requiredSourceIds": ["src-01", "src-02"],
+    "excludedSourceIds": []
+  },
+  "notes": "Worked example of the fixture-case format, reusing the two format-example source documents. Epic 2 replaces this with real Set A / Set B / Set C cases; this file exists so the format has a committed reference that CI validates."
+}
