@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0.0",
+  "entity": {
+    "name": "Toast Junction Kopitiam",
+    "aliases": ["Toast Junction", "TJ Kopitiam"]
+  },
+  "generatedAt": "2026-08-13T09:30:00Z",
+  "sources": [
+    { "id": "straits-chronicle", "date": "2019-04-12", "title": "The last of the third-wave kopitiams" },
+    { "id": "lion-city-ledger", "date": "2021-08-30", "title": "Toast Junction expands beyond the void deck" },
+    { "id": "kopi-times", "date": "2023-02-17", "title": "Interview: the siblings behind Toast Junction" },
+    { "id": "heritage-board-note", "date": "2022-11-05", "title": "Vanishing trades registry: kopitiam entry 47" }
+  ],
+  "claims": [
+    {
+      "id": "claim-01",
+      "text": "Toast Junction Kopitiam opened its first stall in Tiong Bahru in 1987.",
+      "citations": [{ "sourceId": "straits-chronicle", "quote": "opened its first stall in Tiong Bahru in 1987" }]
+    },
+    {
+      "id": "claim-02",
+      "text": "The founding outlet was a corner unit in Katong, according to the founders themselves.",
+      "citations": [{ "sourceId": "kopi-times", "quote": "we started from a corner coffeeshop unit in Katong lah, not Tiong Bahru" }]
+    },
+    {
+      "id": "claim-03",
+      "text": "The heritage registry records the original premises as a Tiong Bahru shophouse.",
+      "citations": [{ "sourceId": "heritage-board-note", "quote": "original premises: shophouse unit, Tiong Bahru estate" }]
+    },
+    {
+      "id": "claim-04",
+      "text": "Toast Junction is run by the second-generation Ng siblings.",
+      "citations": [
+        { "sourceId": "kopi-times", "quote": "the Ng siblings, who took over from their father" },
+        { "sourceId": "lion-city-ledger", "quote": "second-generation owners Adeline and Marcus Ng" }
+      ]
+    },
+    {
+      "id": "claim-05",
+      "text": "The kopitiam operated eleven outlets across the island by 2021.",
+      "citations": [{ "sourceId": "lion-city-ledger", "quote": "eleven outlets from Jurong West to Pasir Ris" }]
+    },
+    {
+      "id": "claim-06",
+      "text": "Its kaya is still made in-house daily using a charcoal-fired double boiler.",
+      "citations": [
+        { "sourceId": "straits-chronicle", "quote": "kaya made fresh each morning over a charcoal-fired double boiler" },
+        { "sourceId": "kopi-times", "quote": "the kaya is cooked in-house every day, same charcoal method" }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "id": "group-01",
+      "question": "Where did Toast Junction Kopitiam open its first outlet?",
+      "status": "disputed",
+      "claimIds": ["claim-01", "claim-02", "claim-03"]
+    },
+    {
+      "id": "group-02",
+      "question": "Who runs Toast Junction today?",
+      "status": "agreed",
+      "claimIds": ["claim-04"]
+    },
+    {
+      "id": "group-03",
+      "question": "How many outlets does the kopitiam operate?",
+      "status": "agreed",
+      "claimIds": ["claim-05"]
+    },
+    {
+      "id": "group-04",
+      "question": "How is the kaya produced?",
+      "status": "agreed",
+      "claimIds": ["claim-06"]
+    }
+  ]
+}
