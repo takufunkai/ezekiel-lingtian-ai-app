@@ -1,0 +1,7 @@
+{
+  "id": "src-01",
+  "date": "1997-06-02",
+  "title": "Harrow Tin Works: a short history",
+  "text": "Harrow Tin Works opened its doors in 1948 on the north bank of the Mersey. The works employed forty-two people at its peak and shipped enamelled cookware across the north of England.",
+  "notes": "Validator fixture. Establishes the 1948 opening date that src-02 contradicts."
+}
