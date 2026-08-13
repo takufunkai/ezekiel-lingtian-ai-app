@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "1.0.0",
+  "entity": {
+    "name": "Meridian Aerostat Works",
+    "aliases": ["Meridian Works", "MAW"]
+  },
+  "generatedAt": "2026-08-13T09:30:00Z",
+  "model": "hand-written-renderer-fixture",
+  "sources": [
+    {
+      "id": "src-01",
+      "date": "2019-05-04",
+      "title": "Meridian Aerostat Works: Twenty-Five Years Aloft"
+    },
+    {
+      "id": "src-02",
+      "date": "2021-11-12",
+      "title": "The Balloon Builders of Bergen"
+    },
+    {
+      "id": "src-03",
+      "date": "2023-02-28",
+      "title": "Meridian Aerostat Works — Company Register Extract"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Meridian Aerostat Works was founded in 1994.",
+      "citations": [
+        {
+          "sourceId": "src-01",
+          "quote": "the workshop was founded in 1994 by two balloon riggers"
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text": "Meridian Aerostat Works began operations in 1996.",
+      "citations": [
+        {
+          "sourceId": "src-02",
+          "quote": "began operations in 1996, two years after the plans were drawn"
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text": "Meridian Aerostat Works was incorporated in December 1993.",
+      "citations": [
+        {
+          "sourceId": "src-03",
+          "quote": "Date of incorporation: 14 December 1993"
+        }
+      ]
+    },
+    {
+      "id": "c4",
+      "text": "Meridian Aerostat Works is based in Bergen, Norway.",
+      "citations": [
+        {
+          "sourceId": "src-01",
+          "quote": "a hangar on the north edge of Bergen"
+        },
+        {
+          "sourceId": "src-02",
+          "quote": "the Bergen workshop"
+        },
+        {
+          "sourceId": "src-03",
+          "quote": "Registered office: Bergen, Norway"
+        }
+      ]
+    },
+    {
+      "id": "c5",
+      "text": "Meridian Aerostat Works builds high-altitude research balloons.",
+      "citations": [
+        {
+          "sourceId": "src-02",
+          "quote": "builds high-altitude research balloons for university teams"
+        }
+      ]
+    },
+    {
+      "id": "c6",
+      "text": "Meridian Aerostat Works employed thirty-one people in 2018.",
+      "citations": [
+        {
+          "sourceId": "src-01",
+          "quote": "thirty-one people worked there in 2018"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "id": "g1",
+      "question": "When was Meridian Aerostat Works founded?",
+      "status": "disputed",
+      "claimIds": ["c1", "c2", "c3"]
+    },
+    {
+      "id": "g2",
+      "question": "Where is Meridian Aerostat Works based?",
+      "status": "agreed",
+      "claimIds": ["c4"]
+    },
+    {
+      "id": "g3",
+      "question": "What does Meridian Aerostat Works make?",
+      "status": "agreed",
+      "claimIds": ["c5"]
+    },
+    {
+      "id": "g4",
+      "question": "How many people does Meridian Aerostat Works employ?",
+      "status": "agreed",
+      "claimIds": ["c6"]
+    }
+  ]
+}

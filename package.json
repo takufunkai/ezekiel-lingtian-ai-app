@@ -9,6 +9,7 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "render": "tsx scripts/render-profile.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "validate:contract": "tsx scripts/validate-contract.ts",

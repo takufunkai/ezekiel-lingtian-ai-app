@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0.0",
+  "entity": {
+    "name": "Skjold & Vaerft <Aerostat Division>",
+    "aliases": ["S&V", "\"the Division\""]
+  },
+  "generatedAt": "2026-08-13T09:31:00Z",
+  "sources": [
+    {
+      "id": "src-a",
+      "date": "2020-01-09",
+      "title": "Notes on <b>Skjold & Vaerft</b> — the founder's own account"
+    },
+    {
+      "id": "src-b",
+      "date": "2024-07-19",
+      "title": "\"A Division Apart\" & other essays"
+    }
+  ],
+  "claims": [
+    {
+      "id": "x1",
+      "text": "The trading name is written \"Skjold & Vaerft <Aerostat Division>\" on the deed.",
+      "citations": [
+        {
+          "sourceId": "src-a",
+          "quote": "<script>alert('xss')</script> appears verbatim in the scanned margin note"
+        }
+      ]
+    },
+    {
+      "id": "x2",
+      "text": "The division's own filings shorten the name to \"S&V\".",
+      "citations": [
+        {
+          "sourceId": "src-b",
+          "quote": "shortened to \"S&V\" wherever the form's field was <30 characters"
+        }
+      ]
+    },
+    {
+      "id": "x3",
+      "text": "The founder's memoir dates the split to 1988 & no earlier.",
+      "citations": [
+        {
+          "sourceId": "src-a",
+          "quote": "the split came in 1988 & no earlier, whatever the register says"
+        }
+      ]
+    },
+    {
+      "id": "x4",
+      "text": "The register dates the split to 1990 <presumed>.",
+      "citations": [
+        {
+          "sourceId": "src-b",
+          "quote": "register entry reads 1990 <presumed> in the clerk's hand"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "id": "gx1",
+      "question": "When did the <Aerostat Division> split off?",
+      "status": "disputed",
+      "claimIds": ["x3", "x4"]
+    },
+    {
+      "id": "gx2",
+      "question": "How is the name \"Skjold & Vaerft\" written?",
+      "status": "agreed",
+      "claimIds": ["x1", "x2"]
+    }
+  ]
+}
