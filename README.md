@@ -21,15 +21,17 @@ cp .env.example .env      # then add your OpenCode key
 
 Authentication goes through the **OpenCode** gateway (`OPENCODE_API_KEY`), not a personal Anthropic key. Set `OPENCODE_BASE_URL` only if you need to point at a gateway other than the default.
 
-`.env` is gitignored — never commit a real key. Nothing in this epic makes a live API call, so the tests and the contract check run fine without a key.
+`.env` is gitignored — never commit a real key. The tests and the contract check run fine without a key; only `npm run reconcile` and `npm run smoke` make live calls.
 
-| Command                     | What it does                                               |
-| --------------------------- | ---------------------------------------------------------- |
-| `npm test`                  | Run the test suite (vitest)                                |
-| `npm run typecheck`         | Type-check without emitting                                |
-| `npm run validate:contract` | Check every example document against the committed schemas |
-| `npm run format`            | Format with prettier                                       |
-| `npm run lint`              | Type-check + formatting check                              |
+| Command                                             | What it does                                                                 |
+| --------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `npm test`                                          | Run the test suite (vitest)                                                  |
+| `npm run typecheck`                                 | Type-check without emitting                                                  |
+| `npm run validate:contract`                         | Check every example document against the committed schemas                   |
+| `npm run reconcile -- <case.json> --out <out.json>` | Run the reconciliation engine on a fixture case (needs a live key)           |
+| `npm run smoke`                                     | One tiny live structured-output call to probe the gateway (needs a live key) |
+| `npm run format`                                    | Format with prettier                                                         |
+| `npm run lint`                                      | Type-check + formatting check                                                |
 
 ## The contract
 
@@ -98,13 +100,19 @@ import { MODEL, getClient } from "./client.js";
 
 Requests go through OpenCode, but the Anthropic SDK is still the transport — it is simply pointed at the gateway via `baseURL`, so the Messages API surface is unchanged for callers. The module deliberately contains no prompt and no pipeline; those belong to the engine epic. If `OPENCODE_API_KEY` is missing, `getClient()` throws with a message explaining how to fix it; use `hasApiKey()` to skip live calls in tests and scripts.
 
+## The engine
+
+`npm run reconcile -- <case.json> --out <out.json>` is the app's input→output path: it loads a fixture case, feeds **only** the referenced source documents to the model (author `notes` and the case's `expect` answer key are structurally unreachable from prompt construction — see `toModelInput` in `src/contract.ts`), and writes a profile that validates against `schema/claims.schema.json`. Output that violates the schema is **rejected and retried** (bounded attempts), never patched; if every attempt fails, the run logs each rejection reason and exits non-zero. The prompt lives in [`prompts/reconcile.v1.md`](prompts/reconcile.v1.md) — versioned and frozen; prompt iteration (issue #7) adds `v2` rather than editing `v1`. The model call is injected (`ModelCaller` in `src/engine.ts`), so the pipeline is fully tested offline with canned responses; `npm run smoke` is the one-call live check that the gateway serves the pinned model and passes structured outputs through.
+
 ## Layout
 
 ```
 schema/     JSON Schemas — the source of truth for the contract
-src/        client.ts (Anthropic), contract.ts (types), schema.ts (compiled validators)
+prompts/    Versioned reconciliation prompts (v1 is frozen)
+src/        client.ts (Anthropic), contract.ts (types), schema.ts (validators),
+            engine.ts + prompt.ts + model-caller.ts + cli.ts (reconciliation engine)
 examples/   A valid profile document and two format-example sources
-scripts/    validate-contract.ts — checks the examples against the schemas
-test/       Contract sync tests and client behaviour tests
+scripts/    validate-contract.ts — contract check; smoke.ts — live gateway probe
+test/       Contract sync tests, client behaviour tests, engine tests
 docs/       Project idea and problem statement
 ```

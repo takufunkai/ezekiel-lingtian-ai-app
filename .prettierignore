@@ -6,3 +6,7 @@ package-lock.json
 
 # Hand-authored project documents — prettier's markdown restyling only adds diff noise.
 docs/
+
+# Versioned model prompts are frozen artifacts — reformatting one silently changes
+# what the model sees, so prettier must never touch them.
+prompts/
