@@ -17,6 +17,7 @@
     "validate:output": "tsx scripts/validate-output.ts",
     "reconcile": "tsx src/cli.ts",
     "score:evidence": "tsx scripts/score-evidence.ts",
+    "ui": "tsx scripts/results-ui.ts",
     "smoke": "tsx scripts/smoke.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

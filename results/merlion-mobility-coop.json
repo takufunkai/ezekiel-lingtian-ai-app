@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "1.0.0",
+  "entity": {
+    "name": "Merlion Mobility Co-operative",
+    "aliases": ["Merlion Mobility", "MerMob"]
+  },
+  "generatedAt": "2026-08-13T09:45:00Z",
+  "sources": [
+    { "id": "channel-8-digest", "date": "2020-06-21", "title": "Community bike co-op launches at Bishan park connector" },
+    { "id": "lion-city-ledger", "date": "2022-03-14", "title": "MerMob's fleet numbers don't add up" },
+    { "id": "coop-annual-report", "date": "2023-01-31", "title": "Merlion Mobility Co-operative annual report FY2022" },
+    { "id": "cycling-sg-blog", "date": "2022-09-02", "title": "Riding every MerMob node in one weekend" }
+  ],
+  "claims": [
+    {
+      "id": "claim-01",
+      "text": "Merlion Mobility began as a volunteer bicycle-sharing scheme along the Bishan park connector in 2020.",
+      "citations": [{ "sourceId": "channel-8-digest", "quote": "a volunteer bicycle-sharing scheme along the Bishan park connector" }]
+    },
+    {
+      "id": "claim-02",
+      "text": "The co-operative claims a fleet of 480 bicycles.",
+      "citations": [{ "sourceId": "coop-annual-report", "quote": "fleet strength stood at 480 bicycles" }]
+    },
+    {
+      "id": "claim-03",
+      "text": "An independent count found only around 310 usable bicycles.",
+      "citations": [{ "sourceId": "lion-city-ledger", "quote": "our count across all 22 nodes found roughly 310 in usable condition" }]
+    },
+    {
+      "id": "claim-04",
+      "text": "MerMob operates docking nodes at 22 locations, mostly beside MRT stations and hawker centres.",
+      "citations": [
+        { "sourceId": "lion-city-ledger", "quote": "all 22 nodes" },
+        { "sourceId": "cycling-sg-blog", "quote": "22 nodes, most of them a short walk from an MRT exit or a hawker centre" }
+      ]
+    },
+    {
+      "id": "claim-05",
+      "text": "Membership is priced at eight Singapore dollars a month with the first month free for students.",
+      "citations": [{ "sourceId": "coop-annual-report", "quote": "membership remained at S$8 per month, first month waived for full-time students" }]
+    }
+  ],
+  "groups": [
+    {
+      "id": "group-01",
+      "question": "How did Merlion Mobility start?",
+      "status": "agreed",
+      "claimIds": ["claim-01"]
+    },
+    {
+      "id": "group-02",
+      "question": "How many bicycles are in the fleet?",
+      "status": "disputed",
+      "claimIds": ["claim-02", "claim-03"]
+    },
+    {
+      "id": "group-03",
+      "question": "Where does the co-operative operate?",
+      "status": "agreed",
+      "claimIds": ["claim-04"]
+    },
+    {
+      "id": "group-04",
+      "question": "What does membership cost?",
+      "status": "agreed",
+      "claimIds": ["claim-05"]
+    }
+  ]
+}
