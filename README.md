@@ -8,7 +8,7 @@ See [`docs/INITIAL_PROJECT_IDEA.md`](docs/INITIAL_PROJECT_IDEA.md) for the full 
 
 ## Status
 
-The whole pipeline — contract, engine, fixture corpus, validator, renderer, and model configuration — is on `master`. Two pieces are still open. **This table is the only place status is tracked:** every command and file named elsewhere in this README, and in [`docs/demo.md`](docs/demo.md), is on `master` unless it appears here as open.
+The whole pipeline — contract, engine, fixture corpus, validator, renderer, and model configuration — is on `master`. Three pieces are still open. **This table is the only place status is tracked:** every command and file named elsewhere in this README, and in [`docs/demo.md`](docs/demo.md), is on `master` unless it appears here as open.
 
 | Piece                                                        | Where it stands                                                                                                                                             |
 | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -20,6 +20,7 @@ The whole pipeline — contract, engine, fixture corpus, validator, renderer, an
 | Model / gateway configuration via `.env`                     | `master`                                                                                                                                                    |
 | End-to-end harness with offline replay                       | **open** ([PR #25](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/25)) — adds `test:e2e`                                                        |
 | Prompt iteration — v1 → v2 before/after evidence             | **open** ([PR #20](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/20)) for [#7](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/7) |
+| Optional live source gathering — `npm run gather`            | **open** ([PR #28](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/28)) — the live path is unverified; the offline `--replay` path works         |
 
 **No fixture case has been reconciled against a live gateway from this repository**, so no scenario outcome or score is reported in this README or in [`docs/report.md`](docs/report.md). Every profile document committed here is hand-authored — the schema example, the renderer and validator test fixtures, and the samples the results UI is seeded with. That is checkable rather than a promise: the engine stamps a `model` field onto anything it produces (`src/engine.ts`), and none of them carry one, which is why the UI labels them "hand-written". `npm run reconcile`, `npm run smoke` and `npm run gather` are the commands that need a key; everything else, including the whole test suite, runs offline (`gather --replay <path>` runs offline too).
 
