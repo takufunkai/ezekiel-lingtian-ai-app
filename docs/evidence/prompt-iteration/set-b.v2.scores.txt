@@ -1,0 +1,23 @@
+case: set-b-contradiction   run: /mnt/c/users/takuf/dev/tinker-claude/ai-app/.claude/worktrees/agent-a6e3b54220ea5dbf0/docs/evidence/prompt-iteration/set-b.v2.run1.json
+model: minimax-m3
+
+groups: 13 (expected 10)  merge delta: +3 (under-merged)
+question recall: 10/10
+status accuracy (of matched): 10/10
+disputed recall: 2/2
+
+alignment (expected question -> matched group):
+  ok    q-founding [disputed] -> g1 [disputed] "When was Halberd Mills Cooperative founded or incorporated?" (score 2.00)
+  ok    q-membership [disputed] -> g6 [disputed] "How many members or weavers does Halberd Mills Cooperative have?" (score 2.00)
+  ok    q-location [agreed] -> g3 [agreed] "What does Halberd Mills Cooperative manufacture or sell?" (score 1.50)
+  ok    q-product [agreed] -> g2 [agreed] "Where did Halberd Mills Cooperative begin or remain located?" (score 1.30)
+  ok    q-award [agreed] -> g11 [agreed] "When did Halberd Mills Cooperative win the Fenmoor design award?" (score 1.47)
+  ok    q-patterns [agreed] -> g4 [agreed] "What varieties of blankets does Halberd Mills Cooperative make?" (score 1.00)
+  ok    q-premises [agreed] -> g5 [agreed] "Has Halberd Mills Cooperative's product range changed?" (score 0.83)
+  ok    q-work-arrangement [agreed] -> g7 [agreed] "Where do Halberd Mills Cooperative's weavers work?" (score 1.67)
+  ok    q-dyehouse [agreed] -> g8 [agreed] "Does Halberd Mills Cooperative employ weavers directly?" (score 1.33)
+  ok    q-founders [agreed] -> g12 [agreed] "What was historically unusual about Halberd Mills Cooperative's Fenmoor design award?" (score 1.50)
+unmatched groups (3):
+  EXTRA g9 [agreed] "What new facility did Halberd Mills Cooperative open?" sources={set-b-04}
+  EXTRA g10 [agreed] "Why did Halberd Mills Cooperative open a second dyehouse?" sources={set-b-04}
+  EXTRA g13 [agreed] "Is the Fenmoor design award recorded in Halberd Mills Cooperative's filings?" sources={set-b-02}

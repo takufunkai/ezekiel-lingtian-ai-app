@@ -1,0 +1,423 @@
+{
+  "schemaVersion": "1.0.0",
+  "entity": {
+    "name": "Halberd Mills Cooperative",
+    "aliases": [
+      "Halberd Mills"
+    ]
+  },
+  "generatedAt": "2026-08-13T00:00:00Z",
+  "sources": [
+    {
+      "id": "set-b-01",
+      "date": "2019-02-11",
+      "title": "Halberd Mills: a cooperative that outlasted the trade"
+    },
+    {
+      "id": "set-b-02",
+      "date": "2019-01-22",
+      "title": "Cooperative register: Halberd Mills, filing summary"
+    },
+    {
+      "id": "set-b-03",
+      "date": "2019-11-03",
+      "title": "Inside Halberd Mills"
+    },
+    {
+      "id": "set-b-04",
+      "date": "2018-05-30",
+      "title": "Cawden Vale blanket-makers expand dyehouse"
+    },
+    {
+      "id": "set-b-05",
+      "date": "2022-04-18",
+      "title": "The secretary's view: two decades of Cawden Vale weaving"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Halberd Mills Cooperative was founded in 1998 by a group of hand-weavers in Cawden Vale.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "Halberd Mills Cooperative was founded in 1998 by a group of hand-weavers in Cawden Vale"
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text": "Halberd Mills Cooperative was incorporated in the spring of 1997.",
+      "citations": [
+        {
+          "sourceId": "set-b-02",
+          "quote": "Halberd Mills Cooperative was incorporated in the spring of 1997"
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text": "Halberd Mills Cooperative began trading in 1999.",
+      "citations": [
+        {
+          "sourceId": "set-b-03",
+          "quote": "The cooperative began trading in 1999"
+        }
+      ]
+    },
+    {
+      "id": "c4",
+      "text": "Halberd Mills Cooperative has produced wool blankets in Cawden Vale ever since its founding in 1998.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "and it has produced wool blankets there ever since."
+        }
+      ]
+    },
+    {
+      "id": "c5",
+      "text": "Halberd Mills Cooperative remains registered at its original address in Cawden Vale.",
+      "citations": [
+        {
+          "sourceId": "set-b-02",
+          "quote": "and remains registered at its original address in Cawden Vale."
+        }
+      ]
+    },
+    {
+      "id": "c6",
+      "text": "Halberd Mills Cooperative still occupies a converted grain store in Cawden Vale.",
+      "citations": [
+        {
+          "sourceId": "set-b-03",
+          "quote": "in a converted grain store in Cawden Vale that it still occupies."
+        }
+      ]
+    },
+    {
+      "id": "c7",
+      "text": "Halberd Mills Cooperative's principal activity is the manufacture of wool blankets and throws.",
+      "citations": [
+        {
+          "sourceId": "set-b-02",
+          "quote": "Principal activity: manufacture of wool blankets and throws."
+        }
+      ]
+    },
+    {
+      "id": "c8",
+      "text": "Everything Halberd Mills Cooperative sells is a wool blanket of one kind or another.",
+      "citations": [
+        {
+          "sourceId": "set-b-03",
+          "quote": "Everything it sells is a wool blanket of one kind or another"
+        }
+      ]
+    },
+    {
+      "id": "c9",
+      "text": "Halberd Mills Cooperative makes wool blankets.",
+      "citations": [
+        {
+          "sourceId": "set-b-04",
+          "quote": "The cooperative, which makes wool blankets"
+        }
+      ]
+    },
+    {
+      "id": "c10",
+      "text": "Halberd Mills Cooperative has never made anything but blankets: plain, ridge, and check.",
+      "citations": [
+        {
+          "sourceId": "set-b-05",
+          "quote": "we have never made anything but blankets: plain, ridge, and check."
+        }
+      ]
+    },
+    {
+      "id": "c11",
+      "text": "Halberd Mills Cooperative's product range has barely changed.",
+      "citations": [
+        {
+          "sourceId": "set-b-03",
+          "quote": "and the range has barely changed."
+        }
+      ]
+    },
+    {
+      "id": "c12",
+      "text": "Membership in Halberd Mills Cooperative has grown steadily.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "Membership has grown steadily"
+        }
+      ]
+    },
+    {
+      "id": "c13",
+      "text": "Halberd Mills Cooperative has just over two hundred members this year, most working from home looms.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "the cooperative counts just over two hundred members this year, most of them working from home looms."
+        }
+      ]
+    },
+    {
+      "id": "c14",
+      "text": "Halberd Mills Cooperative's current-year return reports about one hundred and fifty weavers on its rolls.",
+      "citations": [
+        {
+          "sourceId": "set-b-02",
+          "quote": "The cooperative's return for the current year reports about a hundred and fifty weavers on its rolls."
+        }
+      ]
+    },
+    {
+      "id": "c15",
+      "text": "Halberd Mills Cooperative has a couple of hundred members this year, give or take.",
+      "citations": [
+        {
+          "sourceId": "set-b-03",
+          "quote": "Asked about the size of the place this year, members put it at a couple of hundred of us, give or take."
+        }
+      ]
+    },
+    {
+      "id": "c16",
+      "text": "Most Halberd Mills Cooperative members work from home looms.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "most of them working from home looms."
+        }
+      ]
+    },
+    {
+      "id": "c17",
+      "text": "Halberd Mills Cooperative employs no weavers directly because every member works their own hours.",
+      "citations": [
+        {
+          "sourceId": "set-b-04",
+          "quote": "It employs no weavers directly, since every member works to their own hours"
+        }
+      ]
+    },
+    {
+      "id": "c18",
+      "text": "Halberd Mills Cooperative members work their own hours on their own looms.",
+      "citations": [
+        {
+          "sourceId": "set-b-05",
+          "quote": "Our members work their own hours on their own looms"
+        }
+      ]
+    },
+    {
+      "id": "c19",
+      "text": "Halberd Mills Cooperative opened a second dyehouse at its Cawden Vale site.",
+      "citations": [
+        {
+          "sourceId": "set-b-04",
+          "quote": "Halberd Mills Cooperative has opened a second dyehouse at its Cawden Vale site."
+        }
+      ]
+    },
+    {
+      "id": "c20",
+      "text": "Demand for Halberd Mills Cooperative's products has outstripped its single dye vat for three seasons running.",
+      "citations": [
+        {
+          "sourceId": "set-b-04",
+          "quote": "The cooperative, which makes wool blankets, says demand has outstripped its single dye vat for three seasons running."
+        }
+      ]
+    },
+    {
+      "id": "c21",
+      "text": "Halberd Mills Cooperative won the Fenmoor design award in 2015.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "In 2015 its ridge-pattern blanket took the Fenmoor design award"
+        },
+        {
+          "sourceId": "set-b-03",
+          "quote": "The Fenmoor design award, won in 2015, hangs framed in the entrance."
+        },
+        {
+          "sourceId": "set-b-04",
+          "quote": "it has held the Fenmoor design award since 2015."
+        },
+        {
+          "sourceId": "set-b-05",
+          "quote": "The Fenmoor award in 2015 changed how the shops treated us."
+        }
+      ]
+    },
+    {
+      "id": "c22",
+      "text": "Halberd Mills Cooperative's 2015 Fenmoor design award was the first time a cooperative rather than a mill won the award.",
+      "citations": [
+        {
+          "sourceId": "set-b-01",
+          "quote": "the first time a cooperative rather than a mill had won it."
+        }
+      ]
+    },
+    {
+      "id": "c23",
+      "text": "The Fenmoor design award is recorded in Halberd Mills Cooperative's members' filings.",
+      "citations": [
+        {
+          "sourceId": "set-b-02",
+          "quote": "Awards recorded in members' filings include the Fenmoor design award."
+        }
+      ]
+    },
+    {
+      "id": "c24",
+      "text": "Halberd Mills Cooperative has been in the same valley throughout its history.",
+      "citations": [
+        {
+          "sourceId": "set-b-05",
+          "quote": "We have been in the same valley the whole time"
+        }
+      ]
+    },
+    {
+      "id": "c25",
+      "text": "Halberd Mills Cooperative's working arrangements make it sound smaller than it is.",
+      "citations": [
+        {
+          "sourceId": "set-b-05",
+          "quote": "which makes the cooperative sound smaller than it is."
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "id": "g1",
+      "question": "When was Halberd Mills Cooperative founded or incorporated?",
+      "status": "disputed",
+      "claimIds": [
+        "c1",
+        "c2",
+        "c3"
+      ]
+    },
+    {
+      "id": "g2",
+      "question": "Where did Halberd Mills Cooperative begin or remain located?",
+      "status": "agreed",
+      "claimIds": [
+        "c1",
+        "c2",
+        "c3",
+        "c5",
+        "c6",
+        "c24"
+      ]
+    },
+    {
+      "id": "g3",
+      "question": "What does Halberd Mills Cooperative manufacture or sell?",
+      "status": "agreed",
+      "claimIds": [
+        "c4",
+        "c7",
+        "c8",
+        "c9",
+        "c10"
+      ]
+    },
+    {
+      "id": "g4",
+      "question": "What varieties of blankets does Halberd Mills Cooperative make?",
+      "status": "agreed",
+      "claimIds": [
+        "c10"
+      ]
+    },
+    {
+      "id": "g5",
+      "question": "Has Halberd Mills Cooperative's product range changed?",
+      "status": "agreed",
+      "claimIds": [
+        "c11"
+      ]
+    },
+    {
+      "id": "g6",
+      "question": "How many members or weavers does Halberd Mills Cooperative have?",
+      "status": "disputed",
+      "claimIds": [
+        "c13",
+        "c14",
+        "c15"
+      ]
+    },
+    {
+      "id": "g7",
+      "question": "Where do Halberd Mills Cooperative's weavers work?",
+      "status": "agreed",
+      "claimIds": [
+        "c16",
+        "c17",
+        "c18"
+      ]
+    },
+    {
+      "id": "g8",
+      "question": "Does Halberd Mills Cooperative employ weavers directly?",
+      "status": "agreed",
+      "claimIds": [
+        "c17"
+      ]
+    },
+    {
+      "id": "g9",
+      "question": "What new facility did Halberd Mills Cooperative open?",
+      "status": "agreed",
+      "claimIds": [
+        "c19"
+      ]
+    },
+    {
+      "id": "g10",
+      "question": "Why did Halberd Mills Cooperative open a second dyehouse?",
+      "status": "agreed",
+      "claimIds": [
+        "c20"
+      ]
+    },
+    {
+      "id": "g11",
+      "question": "When did Halberd Mills Cooperative win the Fenmoor design award?",
+      "status": "agreed",
+      "claimIds": [
+        "c21"
+      ]
+    },
+    {
+      "id": "g12",
+      "question": "What was historically unusual about Halberd Mills Cooperative's Fenmoor design award?",
+      "status": "agreed",
+      "claimIds": [
+        "c22"
+      ]
+    },
+    {
+      "id": "g13",
+      "question": "Is the Fenmoor design award recorded in Halberd Mills Cooperative's filings?",
+      "status": "agreed",
+      "claimIds": [
+        "c23"
+      ]
+    }
+  ],
+  "model": "minimax-m3"
+}
