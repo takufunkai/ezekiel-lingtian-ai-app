@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "set-b-contradiction",
+  "title": "Set B — planted contradictions on founding date and membership",
+  "scenario": "contradiction",
+  "entity": {
+    "name": "Halberd Mills Cooperative",
+    "aliases": ["Halberd Mills", "the cooperative"]
+  },
+  "documents": [
+    "sources/set-b-01.json",
+    "sources/set-b-02.json",
+    "sources/set-b-03.json",
+    "sources/set-b-04.json",
+    "sources/set-b-05.json"
+  ],
+  "expect": {
+    "questions": [
+      {
+        "id": "q-founding",
+        "question": "When was Halberd Mills Cooperative founded?",
+        "status": "disputed",
+        "sourceIds": ["set-b-01", "set-b-02", "set-b-03"],
+        "plantedFact": "Three incompatible answers to one question, sharing no phrase that a string match could key on: \"was founded in 1998\" (set-b-01), \"was incorporated in the spring of 1997\" (set-b-02), \"began trading in 1999\" (set-b-03). Recognising founded, incorporated, and began trading as answers to the same underlying question is the semantic-grouping test this project exists to demonstrate. All three answers must survive side by side — averaging to 1998, or picking the earliest, or preferring the registry because it sounds official, are all failures."
+      },
+      {
+        "id": "q-membership",
+        "question": "How many members does the cooperative have?",
+        "status": "disputed",
+        "sourceIds": ["set-b-01", "set-b-02", "set-b-03"],
+        "plantedFact": "\"just over two hundred members\" (set-b-01) and \"a couple of hundred of us, give or take\" (set-b-03) agree with each other and conflict with \"about a hundred and fifty weavers on its rolls\" (set-b-02). Tests whether a disputed group can hold a majority answer and a minority one without collapsing to the majority: two sources agreeing does not settle the question."
+      },
+      {
+        "id": "q-location",
+        "question": "Where is the cooperative based?",
+        "status": "agreed",
+        "sourceIds": ["set-b-01", "set-b-02", "set-b-03", "set-b-04", "set-b-05"],
+        "plantedFact": "Cawden Vale in all five sources. Included so the set is not uniformly disputed: a run that marks everything disputed once it finds one real conflict should fail here."
+      },
+      {
+        "id": "q-product",
+        "question": "What does the cooperative make?",
+        "status": "agreed",
+        "sourceIds": ["set-b-01", "set-b-02", "set-b-03", "set-b-04", "set-b-05"],
+        "plantedFact": "Wool blankets, in all five sources. set-b-02 adds throws and set-b-05 lists patterns (plain, ridge, check); both elaborate the same answer."
+      },
+      {
+        "id": "q-award",
+        "question": "What award has the cooperative won?",
+        "status": "agreed",
+        "sourceIds": ["set-b-01", "set-b-02", "set-b-03", "set-b-04", "set-b-05"],
+        "plantedFact": "The Fenmoor design award, in all five sources. Four date it to 2015 and set-b-02 gives no year — silence is not disagreement, so this question stays agreed."
+      }
+    ],
+    "requiredSourceIds": ["set-b-01", "set-b-02", "set-b-03", "set-b-04", "set-b-05"],
+    "excludedSourceIds": []
+  },
+  "notes": "Expected outcome: five groups, of which exactly two are disputed (founding date, membership) and three agreed (location, product, award). This is the set the before/after prompt evidence in Epic 7 should be scored on, because both failure directions are observable in it: under-merging splits the three founding-date answers into three groups, and over-merging or majority-voting collapses a disputed group into a single agreed claim."
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "set-a-agreement",
+  "title": "Set A — all sources agree",
+  "scenario": "agreement",
+  "entity": {
+    "name": "Thornwood Seed Library",
+    "aliases": ["Thornwood", "the library"]
+  },
+  "documents": [
+    "sources/set-a-01.json",
+    "sources/set-a-02.json",
+    "sources/set-a-03.json",
+    "sources/set-a-04.json",
+    "sources/set-a-05.json"
+  ],
+  "expect": {
+    "questions": [
+      {
+        "id": "q-founding",
+        "question": "When was the Thornwood Seed Library founded?",
+        "status": "agreed",
+        "sourceIds": ["set-a-01", "set-a-02", "set-a-03", "set-a-04", "set-a-05"],
+        "plantedFact": "All five sources place the founding in 2014, worded five different ways: \"was founded in 2014\", \"established in 2014\", \"operating since 2014\", \"We opened in 2014\", \"has been running in Ashgrove since 2014\". Reporting this as disputed means paraphrase has been mistaken for conflict."
+      },
+      {
+        "id": "q-location",
+        "question": "Where is the library based?",
+        "status": "agreed",
+        "sourceIds": ["set-a-01", "set-a-02", "set-a-03", "set-a-04", "set-a-05"],
+        "plantedFact": "Every source places it in Ashgrove. set-a-02 adds the street (Fell Road) and set-a-04 states there has never been a second site; both are narrower than the others but consistent with them, not in conflict."
+      },
+      {
+        "id": "q-collection-size",
+        "question": "How many seed varieties does the library hold?",
+        "status": "agreed",
+        "sourceIds": ["set-a-01", "set-a-02", "set-a-03", "set-a-04", "set-a-05"],
+        "plantedFact": "The deliberate false-positive trap for this set. \"more than forty\", \"forty-two varieties\", \"Around forty\", \"somewhere over forty\", and \"forty-odd\" are five different phrasings of one compatible answer. A numerically fuzzy spread is not a contradiction, and this question must stay agreed."
+      },
+      {
+        "id": "q-funding",
+        "question": "How is the library funded?",
+        "status": "agreed",
+        "sourceIds": ["set-a-02", "set-a-03", "set-a-04", "set-a-05"],
+        "plantedFact": "Member dues plus a regional grant, in all four sources that mention money. set-a-01 is silent on funding, so a run that cites it here has invented support."
+      },
+      {
+        "id": "q-annual-event",
+        "question": "What is the library's annual event?",
+        "status": "agreed",
+        "sourceIds": ["set-a-01", "set-a-02", "set-a-03", "set-a-04", "set-a-05"],
+        "plantedFact": "A seed swap held each spring. set-a-01 places it in April in the parish hall and set-a-02 notes it moved outdoors in 2020; both are details of the same event rather than rival answers."
+      },
+      {
+        "id": "q-staffing",
+        "question": "How many paid staff does the library have?",
+        "status": "agreed",
+        "sourceIds": ["set-a-01", "set-a-02", "set-a-04"],
+        "plantedFact": "Two paid staff, with volunteers doing everything else. Phrased as \"Two paid staff\", \"employs two members of staff\", and \"two of us on the payroll\"."
+      }
+    ],
+    "requiredSourceIds": ["set-a-01", "set-a-02", "set-a-03", "set-a-04", "set-a-05"],
+    "excludedSourceIds": []
+  },
+  "notes": "Expected outcome: six agreed groups, zero disputed, every claim cited, all five sources represented. The interesting failure mode here is over-reporting: the collection-size and founding-date questions are each answered with five different forms of words, so a run that splits them into separate groups has under-merged, and a run that marks either disputed has confused paraphrase with disagreement."
+}
