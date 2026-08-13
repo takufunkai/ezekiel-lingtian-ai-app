@@ -2,7 +2,7 @@
 
 Given several source documents about one entity, produce a **cited profile** that separates what the sources agree on from what they dispute.
 
-The interesting part is not summarisation — it is reconciliation. Deciding that "founded in 2011", "began operations in early 2012", and "incorporated December 2010" are three answers to *one* question, and that they conflict, is semantic grouping. No regex, template, or string match does that, which is why an LLM is genuinely required here. Contradictions get their own **Disputed** section rather than being silently smoothed over, and every claim carries a citation back to the source that supports it.
+The interesting part is not summarisation — it is reconciliation. Deciding that "founded in 2011", "began operations in early 2012", and "incorporated December 2010" are three answers to _one_ question, and that they conflict, is semantic grouping. No regex, template, or string match does that, which is why an LLM is genuinely required here. Contradictions get their own **Disputed** section rather than being silently smoothed over, and every claim carries a citation back to the source that supports it.
 
 See [`docs/INITIAL_PROJECT_IDEA.md`](docs/INITIAL_PROJECT_IDEA.md) for the full rationale.
 
@@ -23,13 +23,13 @@ Authentication goes through the **OpenCode** gateway (`OPENCODE_API_KEY`), not a
 
 `.env` is gitignored — never commit a real key. Nothing in this epic makes a live API call, so the tests and the contract check run fine without a key.
 
-| Command | What it does |
-| --- | --- |
-| `npm test` | Run the test suite (vitest) |
-| `npm run typecheck` | Type-check without emitting |
+| Command                     | What it does                                               |
+| --------------------------- | ---------------------------------------------------------- |
+| `npm test`                  | Run the test suite (vitest)                                |
+| `npm run typecheck`         | Type-check without emitting                                |
 | `npm run validate:contract` | Check every example document against the committed schemas |
-| `npm run format` | Format with prettier |
-| `npm run lint` | Type-check + formatting check |
+| `npm run format`            | Format with prettier                                       |
+| `npm run lint`              | Type-check + formatting check                              |
 
 ## The contract
 

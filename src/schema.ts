@@ -44,8 +44,7 @@ const validateSourceDocumentFn: ValidateFunction = ajv.compile(sourceDocumentSch
 
 /** Result of a schema check. Never throws — callers decide what a failure means. */
 export type SchemaResult<T> =
-  | { valid: true; data: T; errors: [] }
-  | { valid: false; data: null; errors: ErrorObject[] };
+  { valid: true; data: T; errors: [] } | { valid: false; data: null; errors: ErrorObject[] };
 
 function run<T>(validate: ValidateFunction, data: unknown): SchemaResult<T> {
   if (validate(data)) {

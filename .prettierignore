@@ -3,3 +3,6 @@ dist/
 build/
 coverage/
 package-lock.json
+
+# Hand-authored project documents — prettier's markdown restyling only adds diff noise.
+docs/

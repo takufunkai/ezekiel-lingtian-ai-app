@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type-check and formatting
+        run: npm run lint
+
+      - name: Tests
+        run: npm test
+
+      # Guards the contract itself: every committed example must still satisfy
+      # the schemas after a change to either side.
+      - name: Example documents match the schemas
+        run: npm run validate:contract
