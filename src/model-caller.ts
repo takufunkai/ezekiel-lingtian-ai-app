@@ -11,10 +11,14 @@
  *     `{type: "enabled", budget_tokens}` and adaptive-style configs are not
  *     expressible/accepted on this SDK+model pairing.
  *   - `temperature`/`top_p`/`top_k` are omitted: the model rejects them (400),
- *     so determinism is pinned via `MODEL` and `DEFAULT_EFFORT` instead.
+ *     so determinism is pinned via the model id and `DEFAULT_EFFORT` instead.
+ *
+ * This shape is model-specific, which is why `getModel()` only accepts ids on
+ * the `SUPPORTED_MODELS` allowlist — each entry has been verified against this
+ * exact request via `npm run smoke`.
  */
 
-import { DEFAULT_EFFORT, DEFAULT_MAX_TOKENS, MODEL, getClient } from "./client.js";
+import { DEFAULT_EFFORT, DEFAULT_MAX_TOKENS, getClient, getModel } from "./client.js";
 import type { ModelRequest } from "./engine.js";
 
 /** Beta flag that turns on transport-level structured outputs. */
@@ -30,7 +34,7 @@ export async function callLiveModel(request: ModelRequest): Promise<string> {
   const client = getClient();
 
   const response = await client.beta.messages.create({
-    model: MODEL,
+    model: getModel(),
     max_tokens: DEFAULT_MAX_TOKENS,
     betas: [STRUCTURED_OUTPUTS_BETA],
     output_format: { type: "json_schema", schema: request.outputSchema },

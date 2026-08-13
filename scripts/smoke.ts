@@ -3,12 +3,13 @@
  * Live gateway smoke test — `npm run smoke`.
  *
  * Makes ONE tiny beta structured-output call and prints what the gateway
- * supports: does it serve the pinned model, and does it pass transport-level
- * structured outputs through? Requires `OPENCODE_API_KEY` in `.env`; exits 2
- * without making any call when the key is missing. Never wired into CI.
+ * supports: does it serve the configured model, and does it pass
+ * transport-level structured outputs through? Requires `OPENCODE_API_KEY` in
+ * `.env`; exits 2 without making any call when the key is missing. Never
+ * wired into CI.
  */
 
-import { DEFAULT_EFFORT, MODEL, getBaseUrl, getClient, hasApiKey } from "../src/client.js";
+import { DEFAULT_EFFORT, getBaseUrl, getClient, getModel, hasApiKey } from "../src/client.js";
 import { STRUCTURED_OUTPUTS_BETA } from "../src/model-caller.js";
 
 const tinySchema = {
@@ -26,14 +27,16 @@ if (!hasApiKey()) {
   process.exit(2);
 }
 
+const model = getModel();
+
 console.log(`smoke: gateway   ${getBaseUrl()}`);
-console.log(`smoke: model     ${MODEL}`);
+console.log(`smoke: model     ${model}`);
 console.log(`smoke: beta      ${STRUCTURED_OUTPUTS_BETA}`);
 console.log(`smoke: effort    ${DEFAULT_EFFORT}`);
 
 try {
   const response = await getClient().beta.messages.create({
-    model: MODEL,
+    model,
     max_tokens: 256,
     betas: [STRUCTURED_OUTPUTS_BETA],
     output_format: { type: "json_schema", schema: tinySchema },
@@ -57,7 +60,7 @@ try {
     .join("");
   console.log(`smoke: text        ${text}`);
 
-  const servesModel = response.model.includes("opus");
+  const servesModel = response.model.includes(model);
   let structuredOk = false;
   try {
     const parsed = JSON.parse(text) as Record<string, unknown>;
@@ -66,7 +69,7 @@ try {
     structuredOk = false;
   }
 
-  console.log(`smoke: gateway serves ${MODEL}:            ${servesModel ? "yes" : "UNCLEAR"}`);
+  console.log(`smoke: gateway serves ${model}:            ${servesModel ? "yes" : "UNCLEAR"}`);
   console.log(`smoke: structured output passed through:  ${structuredOk ? "yes" : "NO"}`);
   process.exit(structuredOk ? 0 : 1);
 } catch (error) {
