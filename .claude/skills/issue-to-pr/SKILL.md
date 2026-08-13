@@ -17,13 +17,15 @@ Work through the phases below **in order**. Do not skip a phase, and do not star
 
 ## Phase 2 — Craft the plan
 
-Write a concrete implementation plan containing:
+Write a **detailed** implementation plan containing:
 
 - **Goal** — one paragraph restating the issue in your own words.
 - **Approach** — the chosen design and why, including alternatives you rejected.
-- **Changes** — every file to be created or modified, with a one-line description of each change.
+- **Changes** — every file to be created or modified. For each file, name the functions/sections that change and describe the new behavior, signatures, and data shapes involved.
 - **Tests** — what will be added or updated to prove the fix/feature works.
 - **Out of scope** — things deliberately not done, so the PR stays reviewable.
+
+The bar for detail: a competent implementor must be able to execute the plan mechanically, without making a single new decision. A step like "update X appropriately" or "handle errors as needed" is not detailed enough — spell out what "appropriately" means. Every decision made during implementation instead of during planning is a crack the implementation can drift through.
 
 ## Phase 3 — Review the plan until happy
 
@@ -41,7 +43,7 @@ Iterate on the plan until it passes ALL of these checks. Re-review after every r
 
 1. Create a branch named `issue-<number>-<short-slug>` off the default branch.
 2. Implement exactly what the plan says. The plan is the contract: no drive-by fixes, no extra features, no "while I'm here" changes.
-3. If reality forces a deviation (the plan turns out to be wrong or incomplete), keep the deviation minimal and record it in a **deviation log** — what changed, and why. If a deviation would change the shape of the solution (not just its details), go back to Phase 3 and re-review the plan first.
+3. **Do NOT deviate from the plan — ever.** Deviating mid-implementation is how work goes off on a tangent. If the plan turns out to be wrong or incomplete, stop implementing immediately; do not improvise a workaround, "adjust as you go", or write code the plan doesn't describe. Go back to Phase 3, revise the plan, re-review it (asking the owner if the revision involves a decision that is theirs), and only then resume. The code must never be ahead of the plan.
 4. Run the project's tests/build as you go; leave the branch green.
 
 ## Phase 5 — Review the code against the plan
@@ -49,19 +51,19 @@ Iterate on the plan until it passes ALL of these checks. Re-review after every r
 Review the full diff (`git diff <default-branch>...HEAD`) against the plan:
 
 - Every item in the plan's **Changes** list is implemented — nothing silently dropped.
-- Nothing in the diff falls outside the plan plus the deviation log — nothing silently added.
+- Nothing in the diff falls outside the plan — nothing silently added. Any unplanned code is a tangent: either remove it, or go back to Phase 3 and get it into the plan before keeping it.
 - The tests listed in the plan exist and pass.
 - The issue's acceptance criteria are demonstrably met.
 
-Fix any gaps found and re-review. Only proceed when the diff and the plan (plus deviation log) match exactly.
+Fix any gaps found and re-review. Only proceed when the diff and the plan match exactly.
 
 ## Phase 6 — Open the PR
 
 1. Push the branch and open the PR with `gh pr create --reviewer lingtian`, tagging **lingtian** as the reviewer.
 2. PR body must include:
    - Summary of the change and `Closes #<number>` to link the issue.
-   - The plan (Goal / Approach / Changes / Tests).
-   - The deviation log, or "No deviations from plan."
+   - The final plan (Goal / Approach / Changes / Tests).
+   - If the plan was revised during implementation (via Phase 3), a note of what changed and why — the code itself never deviated from the plan it was built against.
    - How it was tested.
 
 ## Phase 7 — Post-implementation discovery document
