@@ -1,6 +1,6 @@
 ---
 name: issue-to-pr
-description: End-to-end workflow that takes a GitHub issue from reading to merged-ready PR. Reads the issue, crafts and self-reviews an implementation plan (asking the owner only when a real decision is needed), executes the plan faithfully, reviews the resulting code against the plan, opens a PR with lingtian as reviewer, and writes a post-implementation discovery document of new useful features. Use when asked to implement, fix, or work on a GitHub issue (e.g. "/issue-to-pr 42", "implement issue #42", or an issue URL).
+description: End-to-end workflow that takes a GitHub issue from reading to merged-ready PR. Only works on issues assigned to the authenticated user — refuses all others. Reads the issue, crafts and self-reviews an implementation plan (asking the owner only when a real decision is needed), executes the plan faithfully, reviews the resulting code against the plan, opens a PR with lingtian as reviewer, and writes a post-implementation discovery document of new useful features. Use when asked to implement, fix, or work on a GitHub issue (e.g. "/issue-to-pr 42", "implement issue #42", or an issue URL).
 ---
 
 # Issue to PR
@@ -11,9 +11,10 @@ Work through the phases below **in order**. Do not skip a phase, and do not star
 
 ## Phase 1 — Read the issue
 
-1. Fetch the full issue including all comments: `gh issue view <number> --comments`.
-2. Extract: the problem statement, any acceptance criteria, constraints, and decisions already made in the comment thread (comments often override the original body).
-3. Explore the parts of the codebase the issue touches until you can explain, in your own words, what needs to change and why. Check for linked issues/PRs that add context.
+1. **Assignment gate — check this FIRST.** The owner only works on issues assigned to them. Compare the issue's assignees (`gh issue view <number> --json assignees --jq '.assignees[].login'`) against the authenticated user (`gh api user --jq .login`). If the owner is not among the assignees, STOP: do not plan, do not implement, do not touch the issue in any way. Report that the issue isn't assigned to them and end there.
+2. Fetch the full issue including all comments: `gh issue view <number> --comments`.
+3. Extract: the problem statement, any acceptance criteria, constraints, and decisions already made in the comment thread (comments often override the original body).
+4. Explore the parts of the codebase the issue touches until you can explain, in your own words, what needs to change and why. Check for linked issues/PRs that add context.
 
 ## Phase 2 — Craft the plan
 
