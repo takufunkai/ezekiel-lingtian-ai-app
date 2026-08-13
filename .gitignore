@@ -16,6 +16,9 @@ coverage/
 .vitest/
 .cache/
 
+# agent worktrees — separate checkouts, never part of this tree
+.claude/worktrees/
+
 # editors and OS
 .DS_Store
 Thumbs.db

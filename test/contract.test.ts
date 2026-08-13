@@ -4,17 +4,23 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
   claimsSchema,
+  fixtureCaseSchema,
   formatSchemaErrors,
   readJsonFile,
   sourceDocumentSchema,
+  validateFixtureCase,
   validateProfile,
   validateSourceDocument,
 } from "../src/schema.js";
+import { SCHEMA_VERSION } from "../src/contract.js";
 import type {
+  CaseExpectation,
   Citation,
   Claim,
   ClaimGroup,
   Entity,
+  ExpectedQuestion,
+  FixtureCase,
   ReconciledProfile,
   SourceDocument,
   SourceRef,
@@ -48,6 +54,13 @@ function defOf(name: string): unknown {
   const defs = (claimsSchema as { $defs?: Record<string, unknown> }).$defs ?? {};
   const node = defs[name];
   expect(node, `claims.schema.json is missing $defs.${name}`).toBeDefined();
+  return node;
+}
+
+function caseDefOf(name: string): unknown {
+  const defs = (fixtureCaseSchema as { $defs?: Record<string, unknown> }).$defs ?? {};
+  const node = defs[name];
+  expect(node, `fixture-case.schema.json is missing $defs.${name}`).toBeDefined();
   return node;
 }
 
@@ -215,5 +228,105 @@ describe("TypeScript types stay in sync with the JSON Schemas", () => {
   it("SourceDocument", () => {
     const keys = exhaustiveKeys<SourceDocument>()(["id", "date", "title", "text", "notes"]);
     expect([...keys].sort()).toEqual(schemaProps(sourceDocumentSchema));
+  });
+
+  it("FixtureCase", () => {
+    const keys = exhaustiveKeys<FixtureCase>()([
+      "schemaVersion",
+      "id",
+      "title",
+      "scenario",
+      "entity",
+      "documents",
+      "expect",
+      "notes",
+    ]);
+    expect([...keys].sort()).toEqual(schemaProps(fixtureCaseSchema));
+  });
+
+  it("CaseExpectation", () => {
+    const keys = exhaustiveKeys<CaseExpectation>()([
+      "questions",
+      "requiredSourceIds",
+      "excludedSourceIds",
+    ]);
+    expect([...keys].sort()).toEqual(schemaProps(caseDefOf("expectation")));
+  });
+
+  it("ExpectedQuestion", () => {
+    const keys = exhaustiveKeys<ExpectedQuestion>()([
+      "id",
+      "question",
+      "status",
+      "sourceIds",
+      "plantedFact",
+    ]);
+    expect([...keys].sort()).toEqual(schemaProps(caseDefOf("expectedQuestion")));
+  });
+
+  // The version constant is the one field the key-name comparison above cannot
+  // catch: both sides can keep the same shape while drifting in value.
+  it("SCHEMA_VERSION matches the value pinned in both schemas", () => {
+    const constOf = (schema: unknown): unknown =>
+      (schema as { properties: { schemaVersion: { const: unknown } } }).properties.schemaVersion
+        .const;
+    expect(constOf(claimsSchema)).toBe(SCHEMA_VERSION);
+    expect(constOf(fixtureCaseSchema)).toBe(SCHEMA_VERSION);
+  });
+});
+
+describe("the example fixture case", () => {
+  const examplePath = join(examplesDir, "case.example.json");
+  const exampleCase = readJsonFile(examplePath);
+
+  it("matches fixture-case.schema.json", () => {
+    const result = validateFixtureCase(exampleCase);
+    expect(formatSchemaErrors(result.errors)).toEqual([]);
+    expect(result.valid).toBe(true);
+  });
+
+  function mutate(change: (fixtureCase: FixtureCase) => void): unknown {
+    const copy = structuredClone(exampleCase) as FixtureCase;
+    change(copy);
+    return copy;
+  }
+
+  it("rejects a disputed question answered by a single source", () => {
+    const broken = mutate((fixtureCase) => {
+      const disputed = fixtureCase.expect.questions.find((q) => q.status === "disputed")!;
+      disputed.sourceIds = ["src-01"];
+    });
+    expect(validateFixtureCase(broken).valid).toBe(false);
+  });
+
+  it("accepts an agreed question answered by a single source", () => {
+    const ok = mutate((fixtureCase) => {
+      fixtureCase.expect.questions.forEach((q) => {
+        q.status = "agreed";
+        q.sourceIds = ["src-01"];
+      });
+    });
+    expect(validateFixtureCase(ok).valid).toBe(true);
+  });
+
+  it("rejects an unknown scenario", () => {
+    const broken = mutate((fixtureCase) => {
+      (fixtureCase as { scenario: string }).scenario = "ambiguous";
+    });
+    expect(validateFixtureCase(broken).valid).toBe(false);
+  });
+
+  it("rejects an absolute document path", () => {
+    const broken = mutate((fixtureCase) => {
+      fixtureCase.documents = ["/etc/passwd.json"];
+    });
+    expect(validateFixtureCase(broken).valid).toBe(false);
+  });
+
+  it("rejects a case with no expectations", () => {
+    const broken = mutate((fixtureCase) => {
+      fixtureCase.expect.questions = [];
+    });
+    expect(validateFixtureCase(broken).valid).toBe(false);
   });
 });

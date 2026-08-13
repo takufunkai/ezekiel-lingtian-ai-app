@@ -86,3 +86,53 @@ export interface ReconciledProfile {
   claims: Claim[];
   groups: ClaimGroup[];
 }
+
+/** Which of the three canonical scenarios a fixture case exercises. */
+export type FixtureScenario = "agreement" | "contradiction" | "poisoned";
+
+/** One underlying question the sources answer, and whether they agree on it. */
+export interface ExpectedQuestion {
+  id: string;
+  /** Matched semantically by the harness, not by string equality. */
+  question: string;
+  status: GroupStatus;
+  /** Sources answering this question. A `disputed` question has at least two. */
+  sourceIds: string[];
+  /** The fact deliberately planted here, in the author's words. */
+  plantedFact?: string;
+}
+
+/** What a correct reconciliation of a case looks like. */
+export interface CaseExpectation {
+  /**
+   * The grouping ground truth, one entry per underlying question. A run that
+   * emits more groups than there are questions has under-merged; fewer,
+   * over-merged. That difference is the merge-quality score.
+   */
+  questions: ExpectedQuestion[];
+  /** Sources that must each support at least one claim in the output. */
+  requiredSourceIds?: string[];
+  /** Sources whose content must not appear at all — the impostor documents. */
+  excludedSourceIds?: string[];
+}
+
+/**
+ * One test scenario: the documents fed to a single reconciliation run plus the
+ * ground truth to assert against.
+ *
+ * The manifest is the answer key. It must never reach the model — `documents`
+ * lists files to load, and only the loaded `SourceDocument`s are prompt input.
+ */
+export interface FixtureCase {
+  schemaVersion: typeof SCHEMA_VERSION;
+  id: string;
+  title: string;
+  scenario: FixtureScenario;
+  /** In a `poisoned` case this is the real subject, not the impostor. */
+  entity: Entity;
+  /** POSIX paths relative to the case file, in the order supplied to the model. */
+  documents: string[];
+  expect: CaseExpectation;
+  /** Author notes. Never shown to the model or the renderer. */
+  notes?: string;
+}

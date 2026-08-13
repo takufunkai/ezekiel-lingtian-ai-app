@@ -12,7 +12,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Ajv2020, type ErrorObject, type ValidateFunction } from "ajv/dist/2020.js";
 import * as ajvFormatsModule from "ajv-formats";
-import type { ReconciledProfile, SourceDocument } from "./contract.js";
+import type { FixtureCase, ReconciledProfile, SourceDocument } from "./contract.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -21,10 +21,26 @@ export const SCHEMA_DIR = join(here, "..", "schema");
 
 export const CLAIMS_SCHEMA_PATH = join(SCHEMA_DIR, "claims.schema.json");
 export const SOURCE_DOCUMENT_SCHEMA_PATH = join(SCHEMA_DIR, "source-document.schema.json");
+export const FIXTURE_CASE_SCHEMA_PATH = join(SCHEMA_DIR, "fixture-case.schema.json");
 
-/** Reads and parses a JSON file. */
+/** Reads and parses a JSON file. Throws on malformed JSON. */
 export function readJsonFile(path: string): unknown {
   return JSON.parse(readFileSync(path, "utf8"));
+}
+
+/**
+ * Reads a JSON file without throwing on malformed input.
+ *
+ * The fixture corpus is hand-written, so a trailing comma is a likely mistake.
+ * Callers report it as a failure alongside schema violations rather than dying
+ * with a stack trace part-way through a run.
+ */
+export function tryReadJsonFile(path: string): { ok: true; data: unknown } | { ok: false; error: string } {
+  try {
+    return { ok: true, data: JSON.parse(readFileSync(path, "utf8")) };
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : String(error) };
+  }
 }
 
 export const claimsSchema = readJsonFile(CLAIMS_SCHEMA_PATH) as Record<string, unknown>;
@@ -32,6 +48,7 @@ export const sourceDocumentSchema = readJsonFile(SOURCE_DOCUMENT_SCHEMA_PATH) as
   string,
   unknown
 >;
+export const fixtureCaseSchema = readJsonFile(FIXTURE_CASE_SCHEMA_PATH) as Record<string, unknown>;
 
 // ajv-formats ships CJS, so its callable export sits behind `.default` under Node ESM.
 const addFormats = (ajvFormatsModule as unknown as { default: (ajv: Ajv2020) => void }).default;
@@ -41,6 +58,7 @@ addFormats(ajv);
 
 const validateProfileFn: ValidateFunction = ajv.compile(claimsSchema);
 const validateSourceDocumentFn: ValidateFunction = ajv.compile(sourceDocumentSchema);
+const validateFixtureCaseFn: ValidateFunction = ajv.compile(fixtureCaseSchema);
 
 /** Result of a schema check. Never throws — callers decide what a failure means. */
 export type SchemaResult<T> =
@@ -61,6 +79,11 @@ export function validateProfile(data: unknown): SchemaResult<ReconciledProfile> 
 /** Checks a document against `schema/source-document.schema.json`. */
 export function validateSourceDocument(data: unknown): SchemaResult<SourceDocument> {
   return run<SourceDocument>(validateSourceDocumentFn, data);
+}
+
+/** Checks a document against `schema/fixture-case.schema.json`. */
+export function validateFixtureCase(data: unknown): SchemaResult<FixtureCase> {
+  return run<FixtureCase>(validateFixtureCaseFn, data);
 }
 
 /** Renders ajv errors as one human-readable line each. */
