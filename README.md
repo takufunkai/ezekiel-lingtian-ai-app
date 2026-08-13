@@ -19,7 +19,7 @@ npm install
 cp .env.example .env      # then add your OpenCode key
 ```
 
-Authentication goes through the **OpenCode** gateway (`OPENCODE_API_KEY`), not a personal Anthropic key. `LLM_MODEL` selects the model (falling back to the pinned default in `src/client.ts`), and `OPENCODE_BASE_URL` / `OPENAI_BASE_URL` override the gateway URL if you need a route other than the default.
+Authentication goes through the **OpenCode** gateway (`OPENCODE_API_KEY`), not a personal Anthropic key. `LLM_MODEL` selects the model — it must be on the `SUPPORTED_MODELS` allowlist in `src/client.ts` (the structured-output request shape is model-specific, so new models are verified with `npm run smoke` before being added), and falls back to the pinned default when unset. `OPENCODE_BASE_URL` / `OPENAI_BASE_URL` override the gateway URL; a trailing `/v1` on either is stripped automatically because the Anthropic SDK appends `/v1/messages` itself. `OPENAI_BASE_URL` must be `https` (it is a machine-wide convention other tools set; the project-owned `OPENCODE_BASE_URL` carries no such restriction and takes precedence).
 
 `.env` is gitignored — never commit a real key. The tests and the contract check run fine without a key; only `npm run reconcile` and `npm run smoke` make live calls.
 
@@ -92,17 +92,17 @@ Three constraints are worth knowing because they shape how the other epics work:
 
 ## Talking to the model
 
-[`src/client.ts`](src/client.ts) is the only module that constructs a client. The API key, gateway base URL, model id, token ceiling, and reasoning effort are pinned there and nowhere else:
+[`src/client.ts`](src/client.ts) is the only module that constructs a client. The API key, gateway base URL, model selection (`LLM_MODEL` env var, validated against the `SUPPORTED_MODELS` allowlist, with a pinned fallback), token ceiling, and reasoning effort all live there and nowhere else:
 
 ```ts
-import { MODEL, getClient } from "./client.js";
+import { getModel, getClient } from "./client.js";
 ```
 
 Requests go through OpenCode, but the Anthropic SDK is still the transport — it is simply pointed at the gateway via `baseURL`, so the Messages API surface is unchanged for callers. The module deliberately contains no prompt and no pipeline; those belong to the engine epic. If `OPENCODE_API_KEY` is missing, `getClient()` throws with a message explaining how to fix it; use `hasApiKey()` to skip live calls in tests and scripts.
 
 ## The engine
 
-`npm run reconcile -- <case.json> --out <out.json>` is the app's input→output path: it loads a fixture case, feeds **only** the referenced source documents to the model (author `notes` and the case's `expect` answer key are structurally unreachable from prompt construction — see `toModelInput` in `src/contract.ts`), and writes a profile that validates against `schema/claims.schema.json`. Output that violates the schema is **rejected and retried** (bounded attempts), never patched; if every attempt fails, the run logs each rejection reason and exits non-zero. The prompt lives in [`prompts/reconcile.v1.md`](prompts/reconcile.v1.md) — versioned and frozen; prompt iteration (issue #7) adds `v2` rather than editing `v1`. The model call is injected (`ModelCaller` in `src/engine.ts`), so the pipeline is fully tested offline with canned responses; `npm run smoke` is the one-call live check that the gateway serves the pinned model and passes structured outputs through.
+`npm run reconcile -- <case.json> --out <out.json>` is the app's input→output path: it loads a fixture case, feeds **only** the referenced source documents to the model (author `notes` and the case's `expect` answer key are structurally unreachable from prompt construction — see `toModelInput` in `src/contract.ts`), and writes a profile that validates against `schema/claims.schema.json`. Output that violates the schema is **rejected and retried** (bounded attempts), never patched; if every attempt fails, the run logs each rejection reason and exits non-zero. The prompt lives in [`prompts/reconcile.v1.md`](prompts/reconcile.v1.md) — versioned and frozen; prompt iteration (issue #7) adds `v2` rather than editing `v1`. The model call is injected (`ModelCaller` in `src/engine.ts`), so the pipeline is fully tested offline with canned responses; `npm run smoke` is the one-call live check that the gateway serves the configured model and passes structured outputs through.
 
 ## Layout
 
