@@ -19,6 +19,11 @@ coverage/
 # agent worktrees — separate checkouts, never part of this tree
 .claude/worktrees/
 
+# gathered sets — retrieved source material written by `npm run gather`.
+# Data, not fixtures: it is not reproducible, it carries no ground truth, and the
+# committed corpus in examples/ stays the input the tests run against.
+gathered/
+
 # editors and OS
 .DS_Store
 Thumbs.db

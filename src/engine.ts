@@ -13,6 +13,10 @@
  *
  * The model call is injected (`ModelCaller`), so the whole pipeline is testable
  * offline with canned responses. The live caller lives in `model-caller.ts`.
+ *
+ * `reconcileDocuments` is the same loop taking an entity and documents directly,
+ * for the optional gathered-source path (`reconcile --sources`), which has no
+ * case file and no answer key. `reconcile` is that function applied to a case.
  */
 
 import { dirname, join, resolve } from "node:path";
@@ -140,13 +144,18 @@ export function caseToModelInput(loaded: LoadedCase): {
   entity: Entity;
   documents: ModelSourceDocument[];
 } {
-  const { entity } = loaded.fixtureCase;
   return {
-    // Copied field by field for the same reason as toModelInput: a field added
-    // to the case's entity later must opt in here to reach the model.
-    entity: entity.aliases ? { name: entity.name, aliases: entity.aliases } : { name: entity.name },
+    entity: toModelEntity(loaded.fixtureCase.entity),
     documents: loaded.documents.map(toModelInput),
   };
+}
+
+/**
+ * Copies the entity field by field, for the same reason as `toModelInput`: a
+ * field added to `Entity` later must opt in here to reach the model.
+ */
+function toModelEntity(entity: Entity): Entity {
+  return entity.aliases ? { name: entity.name, aliases: entity.aliases } : { name: entity.name };
 }
 
 /**
@@ -212,13 +221,30 @@ export async function reconcile(
   loaded: LoadedCase,
   options: ReconcileOptions,
 ): Promise<ReconcileOutcome> {
+  return reconcileDocuments(loaded.fixtureCase.entity, loaded.documents, options);
+}
+
+/**
+ * Runs one reconciliation from an entity and its documents directly — the same
+ * loop as {@link reconcile}, without a fixture case.
+ *
+ * This is what the optional gathered-source path uses (`reconcile --sources`).
+ * A gathered set has no answer key, so there is no `FixtureCase` to build from
+ * it, and none is faked: only the entity and the documents were ever prompt
+ * input anyway — the manifest never crossed this line. Everything downstream is
+ * unchanged, including the mandatory deterministic validation in `cli.ts`.
+ */
+export async function reconcileDocuments(
+  entity: Entity,
+  documents: readonly SourceDocument[],
+  options: ReconcileOptions,
+): Promise<ReconcileOutcome> {
   const { callModel, maxAttempts = DEFAULT_MAX_ATTEMPTS } = options;
   const log = options.log ?? ((line: string) => console.error(line));
 
-  const { entity, documents } = caseToModelInput(loaded);
   const request: ModelRequest = {
     system: SYSTEM_PROMPT,
-    userMessage: buildUserMessage(entity, documents),
+    userMessage: buildUserMessage(toModelEntity(entity), documents.map(toModelInput)),
     outputSchema: CLAIMS_TRANSPORT_SCHEMA,
   };
 
