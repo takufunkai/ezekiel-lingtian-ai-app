@@ -91,6 +91,17 @@ What to point at on screen:
 - No claim cites `set-c-05` (the `grep` line prints `impostor not cited`): the impostor appears in the source manifest, because it was an input, but contributes nothing.
 - This is the failure mode current AI search products actually have, caught by construction: the fixture's manifest lists `set-c-05` in `excludedSourceIds`, so once the end-to-end harness lands ([PR #25](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/25)) this scene becomes a permanent regression test rather than a live demo.
 
+## Optional coda — the three profiles side by side
+
+`npm run ui` serves a results browser on `localhost:4177` backed by the `results/` directory, so if you write the demo's output there instead of `out/`:
+
+```bash
+npm run reconcile -- examples/set-b-contradiction.case.json --out results/set-b.json
+npm run ui        # then open the printed URL
+```
+
+all three runs are listed together, each with its disputed-group count, and clicking one shows agreed and disputed groups with clickable citations. Two honest notes for the audience: the profiles the store ships with are **hand-authored samples** of the output shape, not run output — the page labels anything without a `model` field "hand-written" — and pasting an invalid profile into the Import box gets it rejected with schema errors rather than quietly stored, the same rule the engine follows.
+
 ## Troubleshooting
 
 - **`OPENCODE_API_KEY is not set`** — copy `.env.example` to `.env` and add the key; no call is made without it.

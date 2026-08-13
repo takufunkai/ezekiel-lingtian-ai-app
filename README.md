@@ -21,7 +21,7 @@ The whole pipeline — contract, engine, fixture corpus, validator, renderer, an
 | End-to-end harness with offline replay                       | **open** ([PR #25](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/25)) — adds `test:e2e`                                                        |
 | Prompt iteration — v1 → v2 before/after evidence             | **open** ([PR #20](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/20)) for [#7](https://github.com/takufunkai/ezekiel-lingtian-ai-app/issues/7) |
 
-No reconciliation run has been made against a live gateway from this repository — there is no key on the machine the epics were built on — so no scenario outcome or score is reported anywhere in these docs. `npm run reconcile` and `npm run smoke` are the two commands that need one; everything else, including the whole test suite, runs offline.
+**No fixture case has been reconciled against a live gateway from this repository**, so no scenario outcome or score is reported in this README or in [`docs/report.md`](docs/report.md). Every profile document committed here is hand-authored — the schema example, the renderer and validator test fixtures, and the samples the results UI is seeded with. That is checkable rather than a promise: the engine stamps a `model` field onto anything it produces (`src/engine.ts`), and none of them carry one, which is why the UI labels them "hand-written". `npm run reconcile` and `npm run smoke` are the two commands that need a key; everything else, including the whole test suite, runs offline.
 
 ### The fixture corpus
 
@@ -56,11 +56,14 @@ Authentication goes through the **OpenCode** gateway (`OPENCODE_API_KEY`), not a
 | `npm run reconcile -- <case.json> --out <out.json>`    | Run the reconciliation engine on a fixture case (needs a live key)           |
 | `npm run validate:output -- <profile.json> <sources…>` | Deterministically validate a finished profile against its sources            |
 | `npm run render -- <profile.json> [out.html]`          | Profile → one self-contained HTML page (stdout without an output path)       |
+| `npm run ui`                                           | Local results browser over `results/` (no key, no build step)                |
 | `npm run smoke`                                        | One tiny live structured-output call to probe the gateway (needs a live key) |
 | `npm run format`                                       | Format with prettier                                                         |
 | `npm run lint`                                         | Type-check + formatting check                                                |
 
 `validate:output` takes any number of source arguments, each a document or a directory of `*.json`, and accepts `--json` (report as JSON) and `--strict` (treat an ungrouped claim as a failure). It exits 0 clean, 1 on violations, 2 when it could not run at all.
+
+`npm run ui` serves a results browser on `localhost:4177` (`PORT` overrides). Storage is the `results/` directory: any schema-valid profile dropped there — by hand, by `reconcile --out results/foo.json`, or pasted into the page — appears in the list, and a profile that violates the schema is rejected rather than patched, the same rule the engine follows. The profiles it ships with are hand-authored samples of the output shape, not run output; the page labels a profile with no `model` field as "hand-written".
 
 ## The pipeline end to end
 
@@ -189,7 +192,10 @@ src/        client.ts (Anthropic), contract.ts (types), schema.ts (validators),
             validate.ts (deterministic output validator), render.ts (HTML page)
 examples/   The fixture corpus (*.case.json + sources/), a minimal format example, and a valid profile document
 scripts/    validate-contract.ts — contract check; smoke.ts — live gateway probe;
-            validate-output.ts and render-profile.ts — the two CLI front-ends
+            validate-output.ts and render-profile.ts — the two CLI front-ends;
+            results-ui.ts — the local results browser
+results/    Store for the results UI: hand-authored sample profiles, plus
+            anything reconcile writes there. Prettier-ignored (data, not code)
 test/       Contract sync, client, engine, validator and renderer suites, with
             seeded-bad profiles under fixtures/
 docs/       Project idea, problem statement, demo script (demo.md), report (report.md)

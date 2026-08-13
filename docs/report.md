@@ -4,7 +4,9 @@ Given several source documents about one entity, produce a **cited profile** tha
 
 **Why an LLM is genuinely required:** deciding that "founded in 2011", "began operations in early 2012", and "incorporated December 2010" are three answers to _one_ question, and that they conflict, is semantic grouping. No regex, template, or string match does that. The LLM does exactly that one job; everything around it is deterministic code.
 
-This report states only what exists. The whole pipeline described below — contract, engine, fixture corpus, deterministic validator, renderer, model configuration — is merged to `master`; two things are not, and both are named where they matter rather than sprinkled through the text as markers. **No test result, scenario outcome or score is claimed anywhere in this report**, because none has been produced: there is no API key on the machine these epics were built on, so no reconciliation run has ever been made against a live gateway.
+This report states only what exists. The whole pipeline described below — contract, engine, fixture corpus, deterministic validator, renderer, model configuration, and a local results browser — is merged to `master`; two things are not, and both are named where they matter rather than sprinkled through the text as markers.
+
+**No scenario outcome or score is claimed anywhere in this report**, because none has been produced: no fixture case has been reconciled against a live gateway from this repository. Every profile document committed to it is hand-authored — the schema example, the validator and renderer test fixtures, and the samples the results UI is seeded with. That is checkable rather than a promise: `src/engine.ts` stamps a `model` field onto every profile it emits, and none of the committed ones carry one, which is why the UI displays them as "hand-written". What *is* evidenced is the code around the model call, and that is evidenced by tests that run offline.
 
 ## Architecture overview
 
@@ -22,6 +24,7 @@ fixture case ──▶ reconcile (LLM) ──▶ validate (code) ──▶ rende
 | `examples/set-{a,b,c}-*.case.json` | The three-scenario fixture corpus: 15 hand-authored documents + answer-key manifests           | master         |
 | `src/validate.ts`                  | Deterministic validator: `validateOutput(profile, sources)` → violations with codes + pointers | master         |
 | `src/render.ts`                    | Deterministic renderer: profile JSON → one self-contained HTML page                            | master         |
+| `scripts/results-ui.ts`            | `npm run ui`: local browser over `results/`; schema-invalid input rejected, never patched      | master         |
 | `src/harness.ts`, `src/score.ts`   | Record/replay end-to-end suite and merge-quality scoring for the three cases                   | open ([PR #25](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/25)) |
 | `docs/prompt-iteration.md`         | v1 → v2 before/after evidence on Set B                                                         | open ([PR #20](https://github.com/takufunkai/ezekiel-lingtian-ai-app/pull/20)) |
 
@@ -106,7 +109,7 @@ The mechanism is implemented in `src/score.ts` on the open harness PR, and it is
 
 ## Known limits
 
-- **No run has ever been made against a live gateway from this repository.** Every claim in this report is about committed code, schemas and fixtures, or about tests that run offline. There are no scenario outcomes, scores, or sample profiles produced by a model.
+- **No run has ever been made against a live gateway from this repository.** Every claim in this report is about committed code, schemas and fixtures, or about tests that run offline. There are no scenario outcomes, no scores, and no committed profile that a model produced — including the samples in `results/`, which are hand-authored illustrations of the output shape.
 - Reconciliation needs a live key. Deterministic offline replay of the full pipeline is issue #6's deliverable, written but not merged (PR #25) — and even that replays hand-authored cached responses, so it exercises the pipeline and the scorer, not the model.
 - The before-and-after prompt-iteration evidence the rubric asks for does not exist on `master` yet (PR #20).
 - Group-count agreement with a case manifest is deliberately **not** a pass/fail criterion; see the scoring section above. A reader looking for a single headline accuracy number will not find one, and that is a considered choice rather than an omission.
