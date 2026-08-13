@@ -35,7 +35,9 @@ export function readJsonFile(path: string): unknown {
  * Callers report it as a failure alongside schema violations rather than dying
  * with a stack trace part-way through a run.
  */
-export function tryReadJsonFile(path: string): { ok: true; data: unknown } | { ok: false; error: string } {
+export function tryReadJsonFile(
+  path: string,
+): { ok: true; data: unknown } | { ok: false; error: string } {
   try {
     return { ok: true, data: JSON.parse(readFileSync(path, "utf8")) };
   } catch (error) {
