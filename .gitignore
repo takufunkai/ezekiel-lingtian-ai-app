@@ -22,7 +22,10 @@ coverage/
 # gathered sets — retrieved source material written by `npm run gather`.
 # Data, not fixtures: it is not reproducible, it carries no ground truth, and the
 # committed corpus in examples/ stays the input the tests run against.
-gathered/
+# Anchored with a leading slash on purpose: an unanchored `gathered/` matches at
+# any depth and would silently swallow test/fixtures/gathered/, which holds the
+# committed canned search results the offline tests replay.
+/gathered/
 
 # editors and OS
 .DS_Store

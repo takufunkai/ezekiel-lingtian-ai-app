@@ -1,0 +1,21 @@
+{
+  "sources": [
+    {
+      "url": "https://example.org/nimbus/history",
+      "title": "Nimbus Cartography Collective: A Brief History",
+      "date": "2021-03-14",
+      "text": "The Nimbus Cartography Collective was founded in 2011 by four cartographers working out of a rented loft. It now maintains open elevation datasets for three river basins."
+    },
+    {
+      "url": "https://news.example.com/2022/nimbus-profile?utm_source=feed#top",
+      "title": "Ten years of open maps",
+      "date": "2022-06-02T09:30:00Z",
+      "text": "Nimbus began operations in early 2012, according to its co-founder, and today counts forty-one contributing members across two countries."
+    },
+    {
+      "url": "https://blog.example.net/undated-nimbus-note",
+      "title": "A note on Nimbus's datasets",
+      "text": "Nimbus publishes its elevation data under a permissive licence. The collective describes forty-one members as of its most recent report."
+    }
+  ]
+}
